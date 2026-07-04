@@ -95,45 +95,45 @@ REVIEWS = [
 ]
 
 SERVICES = [
-    ("Website Landing Videos", "The video at the top of your homepage is usually the first impression you make. I build ones that make people stick around — and actually click the button.", "M4 6h16v10H4z M8 20h8 M12 16v4"),
-    ("Social Media Videos", "Short, scroll-stopping videos cut for each platform. The goal isn't likes — it's customers who remember you when they're ready to buy.", "M12 3v18 M3 12h18"),
-    ("Commercial Ads", "Real commercials, from first idea to final cut. Big-agency polish without the big-agency invoice — and you talk to the same person the whole way through.", "M23 7l-7 5 7 5V7z M1 5h15v14H1z"),
-    ("Professional Interviews", "Good lighting, clean audio, and questions that put people at ease. You'll come across exactly like the expert you are — even if you hate being on camera.", "M12 1a4 4 0 0 1 4 4v6a4 4 0 0 1-8 0V5a4 4 0 0 1 4-4z M19 10a7 7 0 0 1-14 0 M12 17v6"),
-    ("Brand Photography", "Headshots, product shots, team photos — pictures that make your whole brand feel put-together, everywhere they show up.", "M23 19V8l-4 2V7H1v12h22z M12 13m-3 0a3 3 0 1 0 6 0a3 3 0 1 0-6 0"),
-    ("Drone Videography", "FAA Part 107 licensed aerial footage that makes your project look epic. Legal, insured, and honestly just fun to watch.", "M12 2l3 7h7l-6 5 2 8-6-4-6 4 2-8-6-5h7z"),
-    ("Event Recap Content", "Your event lasts a day — the video works for months. I catch the moments and testimonials that prove to everyone what they missed.", "M8 2v4 M16 2v4 M3 8h18 M3 4h18v18H3z"),
-    ("Vertical + Standard Formats", "I shoot horizontal and vertical at the same time, so one shoot covers your website, YouTube, and Instagram — without paying for two.", "M7 2h10v20H7z M2 7h4v10H2z M18 7h4v10h-4z"),
+    ("Website Landing Videos", "Someone lands on your homepage and gives you about eight seconds. A good landing video buys you three minutes. I make the kind that ends with people clicking the button you want clicked.", "M4 6h16v10H4z M8 20h8 M12 16v4"),
+    ("Social Media Videos", "Nobody opens Instagram hoping to see an ad. So I don't make ads — I make thirty seconds of something worth watching that happens to sell your thing. Cut natively for Reels, TikTok, and YouTube.", "M12 3v18 M3 12h18"),
+    ("Commercial Ads", "A real commercial — concept, script, shoot, edit, color, sound. The polish you'd expect from an agency with a lobby, minus the lobby and the invoice that pays for it.", "M23 7l-7 5 7 5V7z M1 5h15v14H1z"),
+    ("Professional Interviews", "Most people hate being on camera. My job is to make you forget it's there — good light, clean sound, real conversation. You'll watch it back and think, 'huh, I sound like I know what I'm doing.' You do.", "M12 1a4 4 0 0 1 4 4v6a4 4 0 0 1-8 0V5a4 4 0 0 1 4-4z M19 10a7 7 0 0 1-14 0 M12 17v6"),
+    ("Brand Photography", "Headshots that don't look like DMV photos. Product, team, and office shots — a library of images so your website, proposals, and posts all feel like the same company.", "M23 19V8l-4 2V7H1v12h22z M12 13m-3 0a3 3 0 1 0 6 0a3 3 0 1 0-6 0"),
+    ("Drone Videography", "There's a version of your business that's only visible from 200 feet up at golden hour. FAA Part 107 certified, insured, and slightly addicted to that shot.", "M12 2l3 7h7l-6 5 2 8-6-4-6 4 2-8-6-5h7z"),
+    ("Event Recap Content", "Your event took months to plan and was over in a day. The recap keeps working — proof for sponsors, FOMO for next year's crowd, and content for months of posts.", "M8 2v4 M16 2v4 M3 8h18 M3 4h18v18H3z"),
+    ("Vertical + Standard Formats", "I frame every shoot for horizontal and vertical at once. One day of filming fills your website, your YouTube, and your Reels — no 'can we crop this?' emails.", "M7 2h10v20H7z M2 7h4v10H2z M18 7h4v10h-4z"),
 ]
 
 INDUSTRIES = {
     "education": dict(
         slug="education.html", name="Education",
         img="education-speaker.jpg",
-        tagline="Videos that help families say yes",
+        tagline="Films that make a campus feel like home",
         h1="Education Video Production in Phoenix",
         desc="Video production for schools, universities, and training programs in Phoenix — campus stories and day-in-the-life films that actually grow enrollment.",
-        long="Here's the thing about choosing a school: families decide with their hearts first, then find reasons to back it up. A good campus film, a day-in-the-life promo, a teacher spotlight — these let a student feel what it's like to belong before they ever visit. I've made this kind of video for universities, charter schools, and career training programs all over Arizona, and I've watched it move enrollment numbers."),
+        long="Here's the thing about choosing a school: families decide with their hearts first, then find the reasons afterward. A campus film, a day-in-the-life, a teacher who lights up on camera — that's how a student feels what it's like to belong before they've even parked the car. I've spent years filming for universities, charter schools, and career training programs around Phoenix — enrollment promos, program tours, president's messages, graduation films — and I've watched the right video move enrollment numbers. The schools that show their real personality on camera are the ones families remember on decision day."),
     "construction": dict(
         slug="construction.html", name="Construction, Trades & Industrial",
         img="construction-site.jpg",
-        tagline="Show off the work. Win the bid.",
+        tagline="Proof of work, in 4K",
         h1="Construction & Industrial Video Production in Phoenix",
         desc="Video for contractors, trades, and industrial companies in Phoenix — job site footage, drone shots, and commercials that prove your work and win more bids.",
-        long="Your best salesperson is the work you've already finished — most people just never get to see it. Commercial spots, project walkthroughs, recruiting videos, drone passes over an active job site: that's the proof your estimators wish they had in every meeting. I've filmed everything from excavation crews to high-tech manufacturing floors, and my job is simple — make the quality of your work impossible to miss."),
+        long="Your best salesperson is the work you've already finished — most people just never get to see it. A commercial, a project walkthrough, a drone pass over an active site at sunrise: that's proof, and proof wins bids. I've filmed excavation crews, bath remodelers, custom fabricators, and high-tech manufacturing floors around Arizona. I show up in boots, stay out of the way, and leave with footage that makes your estimator's job easier. Recruiting videos too — the trades are competing for talent, and 'come work here' lands differently when people can actually see the shop."),
     "medical": dict(
         slug="medical.html", name="Medical",
         img="medical-shoot.jpg",
-        tagline="Patients trust you before they meet you",
+        tagline="The first visit, before the first visit",
         h1="Medical Practice Video Production in Phoenix",
         desc="Video for medical and dental practices in Phoenix — practice tours, provider intros, and patient stories that build trust before the first appointment.",
-        long="Picking a doctor or dentist is personal — most patients are nervous before they ever call. A practice tour, a friendly provider intro, a real patient telling their story: these turn a stranger's website into a familiar place. New patients walk in already knowing your team, your office, and your vibe. That trust is worth more than any ad."),
+        long="Nobody googles a new dentist for fun. Patients arrive at your website nervous, and that's where the nerves either grow or go away. A practice tour, a provider who comes across like an actual human being, a real patient telling their story — that's what turns 'still searching' into 'scheduled.' I produce practice films and patient stories for medical and dental offices around Phoenix, always working around clinic schedules and patient privacy. The goal is simple: by the time someone walks through your door, your office already feels familiar."),
     "commercial": dict(
         slug="commercial.html", name="Commercial & Everything Else",
         img="gimbal-operator.jpg",
-        tagline="If it matters to you, it'll look amazing",
+        tagline="The uncategorizable stuff — often the best stuff",
         h1="Commercial Video Production in Phoenix — Every Industry",
         desc="Real estate, attractions, events, product launches, nonprofits — commercial video production in Phoenix for every business with a story worth telling.",
-        long="Not everything fits in a neat category — honestly, those are some of my favorite projects. Luxury home walkthroughs, a butterfly conservatory, NCAA event coverage, giveaway campaigns, nonprofit stories. Different worlds, same approach: figure out what makes it special, film it beautifully, and deliver it in the formats where your audience actually spends their time."),
+        long="Some of my favorite projects don't fit a category. A luxury model home. America's largest butterfly conservatory. NCAA event coverage. A VR headset giveaway. Different worlds, same job: find the thing that makes it special and film it so nobody scrolls past. If your business isn't 'education, construction, or medical,' this page is yours — restaurants, nonprofits, real estate, attractions, product launches. If it matters to you, I'll make it look like it matters."),
 }
 
 # ------------------------------------------------------------- templates ----
@@ -280,15 +280,21 @@ W = {}
 # ------------------------------------------------------------------ home ----
 FAQ = [
     ("What areas does Lightbox Digital serve?",
-     "I'm based in Phoenix and work all over the Valley — Scottsdale, Mesa, Tempe, Chandler, Gilbert, Glendale. Somewhere further out in Arizona, or a travel project? Just ask."),
+     "I'm based in Phoenix and work all over the Valley — Scottsdale, Mesa, Tempe, Chandler, Gilbert, Glendale. Further out in Arizona is usually no problem, and I'll travel for the right project. Just ask."),
     ("What types of video do you produce?",
-     "Commercials, website landing videos, social media clips, interviews, event recaps, and drone footage — plus brand photography and headshots. And I shoot horizontal and vertical at the same time, so one shoot covers every platform."),
+     "Commercials, website landing videos, social media clips, professional interviews, event recaps, and FAA-licensed drone footage — plus brand photography and headshots. I frame every shoot for horizontal and vertical at the same time, so one shoot covers your website, YouTube, and Instagram."),
     ("How much does video production cost?",
-     "Honest answer: it depends on what we're making. A one-day social shoot and a multi-location commercial are very different projects. Tell me your goals and your budget, and I'll build something that fits — no surprise invoices, delivered when I said it would be."),
+     "Honest answer: it depends what we're making. A half-day social shoot and a multi-location commercial are very different animals. Tell me your goals and your budget and I'll build something that fits — no surprise line items, and the number I quote is the number you pay."),
+    ("How long does a video project take?",
+     "We agree on a delivery date before I ever press record, and I hit it. If you've got a hard deadline — an event, a launch, an enrollment season — tell me up front and I'll be straight with you about what's doable."),
     ("Are you licensed for drone footage?",
-     "Yep — FAA Part 107 certified for commercial drone work. So the aerial shots are legal, insured, and gorgeous."),
+     "Yep — FAA Part 107 certified for commercial drone work. The aerial shots are legal, insured, and usually everyone's favorite part of the final cut."),
+    ("Do you work alone?",
+     "Mostly, and that's kind of the point. The person on your first phone call is the person behind the camera and the person doing the final color pass. Nothing gets lost in a handoff, because there isn't one. When a project genuinely needs more hands, I bring in people I trust."),
+    ("Do you do photography without video?",
+     "All the time. Headshots, team photos, events, brand libraries — same eye as the films, one frame at a time. Plenty of clients book a photo day first and come back for video later."),
     ("Why does professional video matter for my business?",
-     "Because people buy from businesses they trust, and nothing builds trust faster than seeing you in action. Video does the convincing before the first phone call — and one good shoot can feed your website, ads, and social feeds for months."),
+     "Because people buy from businesses they trust, and nothing builds trust faster than seeing you in action. A good video does the convincing before the first phone call — and one solid shoot can feed your website, your ads, and your social feeds for months."),
 ]
 
 featured_ids = ["1099054535","396854352","1092229333","385325737","480986594","1041569506"]
@@ -315,9 +321,9 @@ home_body = f'''
   </video>
   <div class="hero-overlay"></div>
   <div class="hero-inner">
-    <p class="kicker reveal">Phoenix Video Production &amp; Photography</p>
-    <h1 class="reveal">Get More Qualified Leads with <em>Premium Visual Storytelling</em></h1>
-    <p class="lede reveal">I'm Josh — a one-man film crew in Phoenix. I make videos and photos people actually stop for, whether you run a school, a job site, a practice, or something entirely your own.</p>
+    <p class="kicker reveal">Video Production &amp; Photography · Phoenix, AZ</p>
+    <h1 class="reveal">Videos that win you the customers <em>you actually want</em></h1>
+    <p class="lede reveal">I'm Josh Chappell — a one-man film crew in Phoenix. I film schools, job sites, medical practices, and businesses that don't fit any box, and I'm a little obsessive about making them look as good on screen as they are in person.</p>
     <div class="cta-row reveal">
       <a class="btn btn-lg" href="contact.html">Let's Make Something Awesome</a>
       <a class="btn btn-ghost btn-lg" href="portfolio.html">Watch Our Work</a>
@@ -330,20 +336,20 @@ home_body = f'''
 
 <section class="section">
   <p class="kicker reveal">Industries We Serve</p>
-  <h2 class="reveal">Whatever you do, I'll make it look incredible</h2>
+  <h2 class="reveal">Different worlds, same job: make you the obvious choice</h2>
   <div class="igrid">{home_ind_cards}</div>
 </section>
 
 <section class="section section-alt">
   <p class="kicker reveal">Featured Work</p>
-  <h2 class="reveal">Go ahead, press play</h2>
+  <h2 class="reveal">See what I mean — press play</h2>
   <div class="vgrid">{"".join(video_card(v) for v in featured)}</div>
   <p class="center reveal"><a class="btn btn-ghost" href="portfolio.html">See the full portfolio →</a></p>
 </section>
 
 <section class="section">
   <p class="kicker reveal">What I Do</p>
-  <h2 class="reveal">Everything you need, from one person who actually cares</h2>
+  <h2 class="reveal">One person. A truck full of gear. Every deliverable you need.</h2>
   <div class="sgrid">{svc_cards}</div>
 </section>
 
@@ -359,7 +365,7 @@ home_body = f'''
   <div>
     <p class="kicker reveal">Meet Your Videographer</p>
     <h2 class="reveal">I'm Josh Chappell — your business' new biggest fan</h2>
-    <p class="reveal">Full-time visual storyteller, FAA Part 107 drone certified, and genuinely obsessed with other people's businesses. After years of filming for tech companies and schools around Phoenix, I fell in love with the entrepreneurial story — yours included. I show up prepared, deliver on time, and stay on budget. That shouldn't be rare, but here we are.</p>
+    <p class="reveal">Full-time visual storyteller. FAA Part 107 drone pilot. Chronic early-arriver to shoots. After years of filming for tech companies and schools around Phoenix, I fell hard for the entrepreneurial story — the risk, the craft, the pride people take in what they've built. I show up prepared, deliver on time, and stay on budget. That shouldn't be rare, but here we are.</p>
     <p class="reveal"><a class="btn btn-ghost" href="about.html">More about Josh →</a></p>
   </div>
 </section>
@@ -372,14 +378,14 @@ home_body = f'''
 
 <section class="section cta-final">
   <h2 class="reveal">Let's make something awesome.</h2>
-  <p class="reveal">Tell me what you've got in mind — I'll come back with ideas, a plan, and a real quote.</p>
+  <p class="reveal">You bring the business you're proud of. I'll bring the cameras, the plan, and a quote with no asterisks.</p>
   <a class="btn btn-lg reveal" href="contact.html">Start Your Project</a>
 </section>'''
 
 ld_home = [{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":a}} for q,a in FAQ]}] + video_ld(featured)
 W["index.html"] = page("index.html",
     "Phoenix Video Production & Photography | Lightbox Digital",
-    "Award-quality video production in Phoenix, AZ. Commercial ads, drone footage, social content & brand photography that gets you more qualified leads. 5.0★ on Google.",
+    "Lightbox Digital is Josh Chappell — a one-man video production and photography crew in Phoenix, AZ. Commercials, drone footage, brand photos, and videos people actually watch. 5.0★ on Google.",
     home_body, ld_home)
 
 # -------------------------------------------------------- industry pages ----
@@ -401,8 +407,8 @@ for key, d in INDUSTRIES.items():
   <div class="vgrid">{"".join(video_card(v) for v in vids)}</div>
 </section>
 <section class="section cta-final">
-  <h2 class="reveal">Want something like this for your business?</h2>
-  <p class="reveal">Tell me what you're picturing — I'll tell you what it takes.</p>
+  <h2 class="reveal">Picturing something like this for your business?</h2>
+  <p class="reveal">Tell me what's in your head — I'll tell you exactly what it takes to make it real.</p>
   <a class="btn btn-lg reveal" href="contact.html">Get a Quote</a>
 </section>'''
     W[d["slug"]] = page(d["slug"],
@@ -429,12 +435,12 @@ port_body = f'''
   <p class="center reveal">Looking for stills instead? <a href="photography.html">Browse the photography portfolio →</a></p>
 </section>
 <section class="section cta-final">
-  <h2 class="reveal">Picture your business up there?</h2>
+  <h2 class="reveal">Your business belongs up there too.</h2>
   <a class="btn btn-lg reveal" href="contact.html">Let's Make Something Awesome</a>
 </section>'''
 W["portfolio.html"] = page("portfolio.html",
     "Video Portfolio — Phoenix Video Production Examples | Lightbox Digital",
-    "Watch real client work: commercials, brand films, drone footage, interviews & event videos produced in Phoenix, AZ by Lightbox Digital.",
+    "Real client work from a Phoenix videographer: commercials, brand films, drone footage, interviews, and event videos. 18 projects — press play on any of them.",
     port_body, video_ld(VIDEOS), og_img="assets/img/cinema-camera.jpg")
 
 # ----------------------------------------------------------- photography ----
@@ -444,15 +450,15 @@ ld_photos = [{"@type":"ImageGallery","name":"Lightbox Digital Photography Portfo
               "image":[f"{BASE}/assets/img/{f}" for f,_ in PHOTOS]}]
 W["photography.html"] = page("photography.html",
     "Phoenix Photographer — Portraits, Events & Brand Photography | Lightbox Digital",
-    "Professional photography in Phoenix, AZ: brand photography, headshots, portraits, school and event photography by Josh Chappell of Lightbox Digital.",
+    "Brand photography, headshots, portraits, school and event photos in Phoenix, AZ — shot by Josh Chappell with the same cinematic eye as his films.",
     f'''
 <section class="page-hero small" style="background-image:url('assets/img/videography-bts.jpg')">
   <div class="hero-overlay"></div>
   <div class="hero-inner"><h1 class="reveal">Photography Portfolio</h1>
-  <p class="lede reveal">Portraits, brand shoots, schools, sports, events — same eye as the films, one frame at a time.</p></div>
+  <p class="lede reveal">Portraits, brand shoots, schools, sports, events — same eye as the films, one frame at a time. Every one of these is a real client, a real day, a real moment.</p></div>
 </section>
 <section class="section"><div class="masonry">{photo_items}</div></section>
-<section class="section cta-final"><h2 class="reveal">Need photos that make you look as good as you are?</h2>
+<section class="section cta-final"><h2 class="reveal">Your team is more photogenic than you think.</h2>
 <a class="btn btn-lg reveal" href="contact.html">Book a Shoot</a></section>''',
     ld_photos, og_img="assets/img/videography-bts.jpg")
 
@@ -464,7 +470,7 @@ ld_about = [{"@type":"Person","name":"Josh Chappell","jobTitle":"Videographer, P
              "knowsAbout":["videography","photography","drone operation","visual storytelling"]}]
 W["about.html"] = page("about.html",
     "About Josh Chappell — Phoenix Videographer & Photographer | Lightbox Digital",
-    "Meet Josh Chappell: full-time visual storyteller, FAA Part 107 drone certified videographer and photographer behind Lightbox Digital in Phoenix, Arizona.",
+    "Meet Josh Chappell — the one-man film crew behind Lightbox Digital in Phoenix, AZ. FAA Part 107 drone pilot, full-time storyteller, your business' new biggest fan.",
     f'''
 <section class="section split about-top">
   <img class="reveal" src="assets/img/josh-chappell.jpg" alt="Black and white portrait of Josh Chappell, Phoenix videographer and photographer" width="500" height="640">
@@ -473,9 +479,9 @@ W["about.html"] = page("about.html",
     <h1 class="reveal">I'm Josh Chappell — Your Business' New Biggest Fan.</h1>
     <p class="lede reveal">Full-time visual storyteller. FAA Part 107 drone certified. Videographer, photographer, and creator.</p>
     <div class="prose">
-      <p class="reveal">Through years of experience serving cutting-edge technology and educational corporations in Phoenix, I've fallen in love with the entrepreneurial story. I'm here to take your vision and transform it into a visual masterpiece — dedicated to delivering exactly what you want, on time and within budget.</p>
-      <p class="reveal">I take pride in delivering videos with personality, character, and a real-life feel — striking a balance between professional and creative that represents your business goals.</p>
-      <p class="reveal">The right videographer makes you stand out and reach your audience in a professional yet personal way. By capturing high-end, high-quality images of your business, you can turn up the volume on your reach, revenue, and reality.</p>
+      <p class="reveal">I spent years filming for tech companies and schools around Phoenix, and somewhere along the way I fell hard for the entrepreneurial story — the risk, the craft, the pride people take in the thing they've built. That's what I want on camera.</p>
+      <p class="reveal">My videos have personality because your business has one. The polish matters — light, sound, color, pacing — but the goal never changes: it should feel like you, on your best day, telling the truth.</p>
+      <p class="reveal">The right videographer makes you stand out without making you feel like an actor. My promise is simple: the process will be easy, the result will be right, and it'll land on time and on budget.</p>
       <p class="reveal"><strong>With my lens in hand, I'm ready to capture your journey, frame by frame. Are you?</strong></p>
     </div>
     <a class="btn btn-lg reveal" href="contact.html">Work With Josh</a>
@@ -484,8 +490,8 @@ W["about.html"] = page("about.html",
 <section class="section section-alt split">
   <div>
     <p class="kicker reveal">Behind the scenes</p>
-    <h2 class="reveal">Boutique attention, big-agency craft</h2>
-    <p class="reveal">One dedicated creative from first call to final cut — no handoffs, no telephone game. Professional cinema cameras, lighting, audio, and licensed drone work on every production.</p>
+    <h2 class="reveal">No handoffs. No telephone game.</h2>
+    <p class="reveal">When you hire me, you get me — the person on the first call is the person behind the camera and the person doing the final color pass. Cinema cameras, real lighting, clean audio, licensed drone. Small crew, big output.</p>
   </div>
   <img class="reveal" src="assets/img/bts-interview.jpg" alt="Behind the scenes of a Lightbox Digital interview shoot with professional lighting" loading="lazy" width="600" height="420">
 </section>''',
@@ -505,15 +511,15 @@ ld_rev = [{"@type":"LocalBusiness","@id":BASE+"/#org","name":"Lightbox Digital",
                       "author":{"@type":"Person","name":n},"reviewBody":t} for n,t in REVIEWS]}]
 W["reviews.html"] = page("reviews.html",
     "Reviews — 5.0★ Rated Phoenix Video Production | Lightbox Digital",
-    f"Read {len(REVIEWS)} five-star Google reviews for Lightbox Digital, Phoenix's trusted video production and photography company.",
+    f"{len(REVIEWS)} five-star Google reviews, zero edits. Read what real clients say about working with Lightbox Digital, a Phoenix video production and photography company.",
     f'''
 <section class="page-hero small" style="background-image:url('assets/img/bts-filming.jpg')">
   <div class="hero-overlay"></div>
   <div class="hero-inner"><h1 class="reveal">Client Reviews</h1>
-  <p class="lede reveal">★★★★★ 5.0 across {len(REVIEWS)} Google reviews. Here's what people say about working with me.</p></div>
+  <p class="lede reveal">★★★★★ 5.0 across {len(REVIEWS)} Google reviews — every word below written by a real client, not by me. (I just fixed the typos. Kidding. They're untouched.)</p></div>
 </section>
 <section class="section"><div class="rgrid">{rev_cards}</div></section>
-<section class="section cta-final"><h2 class="reveal">Let's earn the next one together.</h2>
+<section class="section cta-final"><h2 class="reveal">The next review up there could be yours.</h2>
 <a class="btn btn-lg reveal" href="contact.html">Start Your Project</a></section>''',
     ld_rev, og_img="assets/img/bts-filming.jpg")
 
@@ -521,7 +527,7 @@ W["reviews.html"] = page("reviews.html",
 ld_contact = [{"@type":"ContactPage","name":"Contact Lightbox Digital","url":BASE+"/contact.html"}]
 W["contact.html"] = page("contact.html",
     "Contact — Get a Video Production Quote in Phoenix | Lightbox Digital",
-    "Tell us about your project and get a custom video production or photography quote. Lightbox Digital — Phoenix, AZ. Email josh.lightbox@gmail.com.",
+    "Tell Josh what you're building and get a straight answer, a plan, and a real quote — usually within a business day. Video production & photography in Phoenix, AZ.",
     f'''
 <section class="section split contact-wrap">
   <div>
@@ -547,7 +553,7 @@ W["contact.html"] = page("contact.html",
       <option>Photography</option><option>Something else</option></select></label>
     <label>Tell us about your project <textarea name="message" rows="5" required></textarea></label>
     <button class="btn btn-lg" type="submit">Send Inquiry</button>
-    <p class="fine">We typically reply within one business day.</p>
+    <p class="fine">I read every one of these myself — you'll usually hear back within a business day.</p>
   </form>
 </section>''',
     ld_contact)
@@ -556,7 +562,7 @@ W["contact.html"] = page("contact.html",
 W["404.html"] = page("404.html", "Page Not Found | Lightbox Digital",
     "That page has moved. Explore Lightbox Digital's Phoenix video production portfolio, services, and contact info.",
     '''<section class="section cta-final" style="min-height:55vh;display:flex;flex-direction:column;justify-content:center">
-<h1>404 — that scene got cut.</h1><p>The page you're looking for moved or never made the final edit.</p>
+<h1>404 — that scene got cut.</h1><p>Whatever you were looking for didn't make the final edit. Happens to great footage all the time.</p>
 <p><a class="btn btn-lg" href="index.html">Back to the homepage</a></p></section>''')
 
 # ------------------------------------------------------------ write files ---
@@ -582,10 +588,11 @@ Sitemap: {BASE}/sitemap.xml
 
 (ROOT/"llms.txt").write_text(f"""# Lightbox Digital
 
-> Phoenix, Arizona video production and photography company owned by Josh Chappell.
-> Premium visual storytelling — commercial ads, website landing videos, social media
-> content, professional interviews, event recaps, FAA Part 107 drone videography,
-> and brand photography. Rated 5.0 with {len(REVIEWS)} Google reviews.
+> Lightbox Digital is Josh Chappell, a one-man video production and photography crew
+> in Phoenix, Arizona. He makes commercials, website landing videos, social media
+> content, professional interviews, event recaps, FAA Part 107 drone footage, and
+> brand photography for schools, contractors, medical practices, and businesses of
+> every kind. Rated 5.0 across {len(REVIEWS)} Google reviews.
 
 Contact: {EMAIL}
 Service area: Phoenix, Scottsdale, Mesa, Tempe, Chandler, Gilbert, Glendale, and all of Arizona.
