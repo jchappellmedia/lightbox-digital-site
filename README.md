@@ -1,8 +1,8 @@
 # Lightbox Digital — Website
 
-Modern, SEO-optimized static website for [Lightbox Digital](https://jchappellmedia.github.io/lightbox-digital-site/), a Phoenix, AZ video production and photography company by Josh Chappell.
+Modern, SEO-optimized static website for [Lightbox Digital](https://lightbox-digital.com/), a Phoenix, AZ video production and photography company by Josh Chappell.
 
-**Live site:** https://jchappellmedia.github.io/lightbox-digital-site/
+**Live site:** https://lightbox-digital.com/
 
 ## What's inside
 
