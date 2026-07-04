@@ -146,7 +146,7 @@ def nav(active):
              ("about.html","About"),("reviews.html","Reviews")]
     links = "".join(f'<a href="{h}"{" class=active" if h==active else ""}>{t}</a>' for h,t in items)
     return f'''<header class="nav" id="nav">
-  <a class="brand" href="index.html" aria-label="Lightbox Digital home"><span class="brand-mark">◨</span> LIGHTBOX <span>DIGITAL</span></a>
+  <a class="brand" href="index.html" aria-label="Lightbox Digital home"><img class="brand-logo" src="assets/img/logo-mark-dark.png" alt="" width="34" height="33"> LIGHTBOX <span>DIGITAL</span></a>
   <nav class="nav-links" id="navLinks" aria-label="Primary">{links}
     <div class="nav-drop"><button aria-haspopup="true" aria-expanded="false">Industries ▾</button>
       <div class="drop-menu">
@@ -165,7 +165,7 @@ def footer():
     return f'''<footer class="footer">
   <div class="footer-grid">
     <div>
-      <p class="brand">◨ LIGHTBOX <span>DIGITAL</span></p>
+      <p class="brand"><img class="brand-logo" src="assets/img/logo-mark-dark.png" alt="" width="30" height="29"> LIGHTBOX <span>DIGITAL</span></p>
       <p>Phoenix photo + video production services.<br>Premium visual storytelling that gets you more qualified leads.</p>
       <p><a href="mailto:{EMAIL}">{EMAIL}</a></p>
     </div>
@@ -217,7 +217,7 @@ ORG = {
     "alternateName":"Lightbox Digital — Phoenix Video Production",
     "description":"Phoenix video production and photography company. Commercial ads, website landing videos, social media content, drone videography, interviews, event coverage and brand photography for education, construction, medical and more.",
     "url": BASE+"/",
-    "logo": BASE+"/assets/img/logo.jpg",
+    "logo": BASE+"/assets/img/logo-lockup.png",
     "image": BASE+"/assets/img/hero-poster.jpg",
     "email": EMAIL,
     "founder":{"@type":"Person","name":"Josh Chappell","jobTitle":"Videographer & Photographer","sameAs":SOCIALS["Instagram"]},
