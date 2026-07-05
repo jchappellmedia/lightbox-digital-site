@@ -1,26 +1,21 @@
 # Lightbox Digital
 
-> Lightbox Digital is Josh Chappell, a one-man video production and photography crew
-> in Phoenix, Arizona. He makes commercials, website landing videos, social media
-> content, professional interviews, event recaps, FAA Part 107 drone footage, and
-> brand photography for schools, contractors, medical practices, and businesses of
-> every kind. Rated 5.0 across 11 Google reviews.
+> Video production and photography studio in Phoenix, Arizona, founded by Josh Chappell.
+> Makes commercials, brand stories, event films, FAA Part 107 drone footage,
+> AI-generated video, and photography. Rated 5.0 across 11 Google reviews.
 
 Contact: josh.lightbox@gmail.com
-Service area: Phoenix, Scottsdale, Mesa, Tempe, Chandler, Gilbert, Glendale, and all of Arizona.
+Service area: Phoenix, Scottsdale, Mesa, Tempe, Chandler, Gilbert, Glendale, all of Arizona.
 
 ## Pages
-- [Home](https://lightbox-digital.com/): services, industries, featured work, FAQ
-- [Video Portfolio](https://lightbox-digital.com/portfolio.html): 18 client productions with Vimeo embeds
-- [Education](https://lightbox-digital.com/education.html): enrollment-driving video for schools and universities
-- [Construction, Trades & Industrial](https://lightbox-digital.com/construction.html): videos that win bids
-- [Medical](https://lightbox-digital.com/medical.html): patient-trust videos for practices
-- [Commercial & Everything Else](https://lightbox-digital.com/commercial.html): real estate, attractions, events
+- [Home](https://lightbox-digital.com/): demo reel, selected work, services, FAQ
+- [Work](https://lightbox-digital.com/work.html): 20 films — commercials, stories, events & spaces, AI
+- [AI Videos](https://lightbox-digital.com/ai-videos.html): AI-generated commercials, incl. "Dave's Garage"
 - [Photography](https://lightbox-digital.com/photography.html): portraits, brand, school, sports, events
-- [About](https://lightbox-digital.com/about.html): Josh Chappell, FAA Part 107 certified videographer
-- [Reviews](https://lightbox-digital.com/reviews.html): all 11 five-star Google reviews
-- [Contact](https://lightbox-digital.com/contact.html): project inquiry form
+- [About](https://lightbox-digital.com/about.html): the studio, founded by Josh Chappell
+- [Reviews](https://lightbox-digital.com/reviews.html): 11 five-star Google reviews
+- [Contact](https://lightbox-digital.com/contact.html): inquiry form
 
 ## Notable clients & projects
-Grand Canyon University, Blandford Homes, Butterfly Wonderland, Jacuzzi, Charter One,
-Baths For The Brave, Arrowhead Lakes Dentistry, Applied Tech, NCAA event coverage.
+Grand Canyon University, Blandford Homes, Butterfly Wonderland, Baths For The Brave,
+Arrowhead Lakes Dentistry, Applied Tech, Allen Land & Fire, NCAA event coverage.

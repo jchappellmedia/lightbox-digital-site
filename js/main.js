@@ -1,9 +1,5 @@
 // Lightbox Digital — interactions
 (function () {
-  const nav = document.getElementById('nav');
-  const onScroll = () => nav.classList.toggle('scrolled', scrollY > 24);
-  addEventListener('scroll', onScroll, { passive: true }); onScroll();
-
   const burger = document.getElementById('burger');
   const links = document.getElementById('navLinks');
   burger?.addEventListener('click', () => {
@@ -19,37 +15,39 @@
     }
   });
 
-  // scroll reveal
+  // reveal on scroll
   const io = new IntersectionObserver(es => es.forEach(e => {
     if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
-  }), { threshold: 0.12 });
+  }), { threshold: 0.1 });
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
-  // video + photo lightbox
+  // lightbox: vimeo, local video, or image
   const lb = document.getElementById('lightbox');
   const frame = document.getElementById('lbFrame');
   const close = () => { lb.hidden = true; frame.innerHTML = ''; document.body.style.overflow = ''; };
   document.getElementById('lbClose')?.addEventListener('click', close);
   lb?.addEventListener('click', e => { if (e.target === lb) close(); });
   addEventListener('keydown', e => { if (e.key === 'Escape' && !lb.hidden) close(); });
+  const openLb = html => { frame.innerHTML = html; lb.hidden = false; document.body.style.overflow = 'hidden'; };
 
-  document.querySelectorAll('.vthumb').forEach(btn => btn.addEventListener('click', () => {
+  document.querySelectorAll('[data-vimeo]').forEach(btn => btn.addEventListener('click', () => {
     const v = btn.dataset.vimeo;
-    frame.innerHTML = `<iframe src="https://player.vimeo.com/video/${v}${v.includes('?') ? '&' : '?'}autoplay=1&title=0&byline=0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="Video player"></iframe>`;
-    lb.hidden = false; document.body.style.overflow = 'hidden';
+    openLb(`<iframe src="https://player.vimeo.com/video/${v}${v.includes('?') ? '&' : '?'}autoplay=1&title=0&byline=0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="Video player"></iframe>`);
   }));
-  document.querySelectorAll('.pthumb').forEach(btn => btn.addEventListener('click', () => {
-    frame.innerHTML = `<img src="${btn.dataset.img}" alt="">`;
-    lb.hidden = false; document.body.style.overflow = 'hidden';
+  document.querySelectorAll('[data-video]').forEach(btn => btn.addEventListener('click', () => {
+    openLb(`<video src="${btn.dataset.video}" controls autoplay playsinline></video>`);
+  }));
+  document.querySelectorAll('[data-img]').forEach(btn => btn.addEventListener('click', () => {
+    openLb(`<img src="${btn.dataset.img}" alt="">`);
   }));
 
-  // portfolio filters
+  // work filters
   const fbtns = document.querySelectorAll('.fbtn');
   fbtns.forEach(b => b.addEventListener('click', () => {
     fbtns.forEach(x => x.classList.remove('active')); b.classList.add('active');
     const f = b.dataset.f;
-    document.querySelectorAll('#vgrid .vcard').forEach(c => {
-      c.style.display = (f === 'all' || c.dataset.ind === f) ? '' : 'none';
+    document.querySelectorAll('#workgrid .piece').forEach(c => {
+      c.style.display = (f === 'all' || c.dataset.cat === f || c.dataset.cat === 'reel') ? '' : 'none';
     });
   }));
 })();
