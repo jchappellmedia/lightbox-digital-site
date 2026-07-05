@@ -3,7 +3,7 @@
 import json, html, pathlib
 
 ROOT = pathlib.Path(__file__).parent
-BASE = "https://lightbox-digital.com"
+BASE = "https://jchappellmedia.github.io/lightbox-digital-site"
 EMAIL = "josh.lightbox@gmail.com"
 SOCIALS = {
     "Instagram": "https://www.instagram.com/joshrchappell/",
