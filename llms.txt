@@ -10,16 +10,16 @@ Contact: josh.lightbox@gmail.com
 Service area: Phoenix, Scottsdale, Mesa, Tempe, Chandler, Gilbert, Glendale, and all of Arizona.
 
 ## Pages
-- [Home](https://jchappellmedia.github.io/lightbox-digital-site/): services, industries, featured work, FAQ
-- [Video Portfolio](https://jchappellmedia.github.io/lightbox-digital-site/portfolio.html): 18 client productions with Vimeo embeds
-- [Education](https://jchappellmedia.github.io/lightbox-digital-site/education.html): enrollment-driving video for schools and universities
-- [Construction, Trades & Industrial](https://jchappellmedia.github.io/lightbox-digital-site/construction.html): videos that win bids
-- [Medical](https://jchappellmedia.github.io/lightbox-digital-site/medical.html): patient-trust videos for practices
-- [Commercial & Everything Else](https://jchappellmedia.github.io/lightbox-digital-site/commercial.html): real estate, attractions, events
-- [Photography](https://jchappellmedia.github.io/lightbox-digital-site/photography.html): portraits, brand, school, sports, events
-- [About](https://jchappellmedia.github.io/lightbox-digital-site/about.html): Josh Chappell, FAA Part 107 certified videographer
-- [Reviews](https://jchappellmedia.github.io/lightbox-digital-site/reviews.html): all 11 five-star Google reviews
-- [Contact](https://jchappellmedia.github.io/lightbox-digital-site/contact.html): project inquiry form
+- [Home](https://lightbox-digital.com/): services, industries, featured work, FAQ
+- [Video Portfolio](https://lightbox-digital.com/portfolio.html): 18 client productions with Vimeo embeds
+- [Education](https://lightbox-digital.com/education.html): enrollment-driving video for schools and universities
+- [Construction, Trades & Industrial](https://lightbox-digital.com/construction.html): videos that win bids
+- [Medical](https://lightbox-digital.com/medical.html): patient-trust videos for practices
+- [Commercial & Everything Else](https://lightbox-digital.com/commercial.html): real estate, attractions, events
+- [Photography](https://lightbox-digital.com/photography.html): portraits, brand, school, sports, events
+- [About](https://lightbox-digital.com/about.html): Josh Chappell, FAA Part 107 certified videographer
+- [Reviews](https://lightbox-digital.com/reviews.html): all 11 five-star Google reviews
+- [Contact](https://lightbox-digital.com/contact.html): project inquiry form
 
 ## Notable clients & projects
 Grand Canyon University, Blandford Homes, Butterfly Wonderland, Jacuzzi, Charter One,
