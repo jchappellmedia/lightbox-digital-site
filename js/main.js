@@ -15,6 +15,12 @@
     }
   });
 
+  // hero film: honor reduced motion
+  const hv = document.querySelector('.hero-video');
+  if (hv && matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    hv.removeAttribute('autoplay'); hv.pause();
+  }
+
   // reveal on scroll
   const io = new IntersectionObserver(es => es.forEach(e => {
     if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }

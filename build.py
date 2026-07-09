@@ -69,6 +69,11 @@ CATS = [("commercials", "Commercials"), ("stories", "Stories"),
         ("events", "Events & Spaces"), ("ai", "AI")]
 CATNAME = dict(CATS)
 
+# film-frame numbers for the light-table edge print
+REEL["num"] = "00A"
+for _i, _v in enumerate(WORK, 1):
+    _v["num"] = f"{_i:02d}A"
+
 PHOTOS = [
     ("studio-portrait-1.jpg", "Studio portrait with dramatic lighting"),
     ("family-portrait-hug.jpg", "Candid family portrait outdoors"),
@@ -126,7 +131,7 @@ FAQ = [
 ]
 
 # ------------------------------------------------------------- helpers ----
-FONT = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,340..640;1,9..144,340..640&family=Inter:wght@400;500&display=swap" rel="stylesheet">'
+FONT = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Anton&family=Fraunces:ital,opsz,wght@1,9..144,340..640&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">'
 
 def esc(s): return html.escape(s, quote=True)
 
@@ -154,7 +159,7 @@ def footer():
   <button class="lb-close" id="lbClose" aria-label="Close">✕</button>
   <div class="lb-frame" id="lbFrame"></div>
 </div>
-<script src="js/main.js?v=3" defer></script>'''
+<script src="js/main.js?v=4" defer></script>'''
 
 def work_card(v, big=False):
     dur = f"{v['dur']//60}:{v['dur']%60:02d}" if v['dur'] else ""
@@ -164,10 +169,11 @@ def work_card(v, big=False):
         h = f"?h={v['h']}" if v['h'] else ""
         data = f'data-vimeo="{v["id"]}{h}"'
     thumb = f"assets/thumbs/{v['id']}.jpg"
+    fno = f'<span class="fno" aria-hidden="true">LBX 500T · {v["num"]}</span>' if v.get("num") else ""
     return f'''<figure class="piece{' big' if big else ''} reveal" data-cat="{v['cat']}">
   <button class="pthumb" {data} aria-label="Play: {esc(v['title'])}">
     <img src="{thumb}" alt="Still from {esc(v['title'])}" width="640" height="360" loading="lazy">
-    <span class="pplay" aria-hidden="true"></span>
+    {fno}<span class="pplay" aria-hidden="true"></span>
   </button>
   <figcaption><strong>{esc(v['title'])}</strong> <em>{esc(v['line'])}</em>{f'<span class="pdur">{dur}</span>' if dur else ''}</figcaption>
 </figure>'''
@@ -213,6 +219,7 @@ def page(fname, title, desc, body, ld_extra=None, og_img="assets/img/hero-poster
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0e0c09">
 <title>{esc(title)}</title>
 <meta name="description" content="{esc(desc)}">
 <link rel="canonical" href="{url}">
@@ -232,7 +239,7 @@ def page(fname, title, desc, body, ld_extra=None, og_img="assets/img/hero-poster
 <meta name="twitter:image" content="{BASE}/{og_img}">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 {FONT}
-<link rel="stylesheet" href="css/style.css?v=3">
+<link rel="stylesheet" href="css/style.css?v=4">
 <script type="application/ld+json">{ldjson}</script>
 </head>
 <body>
@@ -257,10 +264,15 @@ svc_list = "".join(f'<li class="reveal"><strong>{esc(t)}</strong><span>{esc(d)}<
 faq_html = "".join(f'<details class="faq reveal"><summary>{esc(q)}</summary><p>{esc(a)}</p></details>' for q,a in FAQ)
 
 home_body = f'''
-<section class="intro">
-  <p class="eyebrow reveal">Video production &amp; photography · Phoenix, Arizona</p>
-  <h1 class="reveal">Films for businesses that are <em class="squiggle">proud of their work</em>.</h1>
-  <p class="note reveal">Fewer words, more watching — the reel is 27 seconds. <span class="arrow">↓</span></p>
+<section class="hero">
+  <video class="hero-video" src="assets/video/hero.mp4" poster="assets/img/hero-poster.jpg" autoplay muted loop playsinline aria-hidden="true"></video>
+  <div class="hero-scrim" aria-hidden="true"></div>
+  <div class="hero-hud" aria-hidden="true"><span class="rec">Rec</span><span>Phoenix, AZ · 33.44°N 112.07°W</span></div>
+  <div class="hero-inner">
+    <p class="eyebrow">Video production &amp; photography · Phoenix, Arizona</p>
+    <h1>Films for businesses that are <em class="squiggle">proud of their work</em>.</h1>
+    <p class="note">Fewer words, more watching — the reel is 27 seconds. <span class="arrow">↓</span></p>
+  </div>
 </section>
 
 <section class="reelwrap">
@@ -486,7 +498,7 @@ sm = ['<?xml version="1.0" encoding="UTF-8"?>','<urlset xmlns="http://www.sitema
 pri = {"index.html":"1.0","work.html":"0.9","ai-videos.html":"0.9","contact.html":"0.9"}
 for p in pages:
     loc = BASE+"/" if p=="index.html" else f"{BASE}/{p}"
-    sm.append(f"<url><loc>{loc}</loc><lastmod>2026-07-05</lastmod><priority>{pri.get(p,'0.8')}</priority></url>")
+    sm.append(f"<url><loc>{loc}</loc><lastmod>2026-07-09</lastmod><priority>{pri.get(p,'0.8')}</priority></url>")
 sm.append("</urlset>")
 (ROOT/"sitemap.xml").write_text("\n".join(sm))
 

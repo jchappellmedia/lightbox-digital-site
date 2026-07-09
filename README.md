@@ -2,6 +2,8 @@
 
 Handcrafted, SEO-optimized static site for [Lightbox Digital](https://lightbox-digital.com/), a Phoenix, AZ video production & photography studio.
 
+Design: a darkroom / light-table theme — film-frame thumbnails with glowing sprocket holes and edge print, contact-sheet photo grid, safelight-red grease-pencil accents, full-bleed hero reel, and photos that "develop in" on scroll.
+
 **Live:** https://lightbox-digital.com/
 
 ## Structure
