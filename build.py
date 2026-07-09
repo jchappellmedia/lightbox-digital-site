@@ -4,7 +4,8 @@ import json, html, pathlib
 
 ROOT = pathlib.Path(__file__).parent
 BASE = "https://lightbox-digital.com"
-EMAIL = "josh.lightbox@gmail.com"
+EMAIL = "josh.lightbox@gmail.com"          # public contact address shown on the site
+NOTIFY = "jchappellmedia@gmail.com"        # where form submissions are emailed
 SOCIALS = {
     "Instagram": "https://www.instagram.com/joshrchappell/",
     "Facebook": "https://www.facebook.com/people/Lightbox-Digital/61571745974669/",
@@ -159,7 +160,7 @@ def footer():
   <button class="lb-close" id="lbClose" aria-label="Close">✕</button>
   <div class="lb-frame" id="lbFrame"></div>
 </div>
-<script src="js/main.js?v=4" defer></script>'''
+<script src="js/main.js?v=5" defer></script>'''
 
 def work_card(v, big=False):
     dur = f"{v['dur']//60}:{v['dur']%60:02d}" if v['dur'] else ""
@@ -239,7 +240,7 @@ def page(fname, title, desc, body, ld_extra=None, og_img="assets/img/hero-poster
 <meta name="twitter:image" content="{BASE}/{og_img}">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 {FONT}
-<link rel="stylesheet" href="css/style.css?v=4">
+<link rel="stylesheet" href="css/style.css?v=5">
 <script type="application/ld+json">{ldjson}</script>
 </head>
 <body>
@@ -455,9 +456,9 @@ W["contact.html"] = page("contact.html",
         <p class="fsoc">{" · ".join(f'<a href="{u}" rel="me noopener" target="_blank">{n}</a>' for n,u in SOCIALS.items())}</p>
       </div>
     </div>
-    <form class="form reveal" action="https://formsubmit.co/{EMAIL}" method="POST">
+    <form class="form reveal" id="contactForm" action="https://formsubmit.co/{NOTIFY}" method="POST">
       <input type="hidden" name="_subject" value="New project inquiry — lightbox-digital.com">
-      <input type="text" name="_honey" style="display:none">
+      <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
       <label>Name <input name="name" required autocomplete="name"></label>
       <label>Email <input type="email" name="email" required autocomplete="email"></label>
       <label>What are we making? <select name="project">
@@ -466,6 +467,7 @@ W["contact.html"] = page("contact.html",
         <option>AI video</option><option>Photography</option><option>Something else</option></select></label>
       <label>Tell us about it <textarea name="message" rows="5" required></textarea></label>
       <button class="btn" type="submit">Send</button>
+      <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
     </form>
   </div>
 </section>''',

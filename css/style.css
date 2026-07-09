@@ -164,6 +164,9 @@ h1 em,h2 em{font-style:normal;color:var(--red)}
 .form input,.form select,.form textarea{background:#0a0806;border:1px solid var(--line);color:var(--cream);
   padding:.7rem .8rem;font-family:var(--sans);font-size:.95rem;border-radius:0}
 .form input:focus,.form select:focus,.form textarea:focus{outline:2px solid var(--amber);border-color:transparent}
+.form-status{font-family:var(--mono);font-size:.78rem;letter-spacing:.05em;margin:0;min-height:1.2em}
+.form-status.ok{color:var(--amber)}
+.form-status.err{color:var(--red)}
 
 /* footer */
 .footer{margin-top:3rem;border-top:22px solid transparent;border-image:var(--sprocket) 22 0 0 repeat}

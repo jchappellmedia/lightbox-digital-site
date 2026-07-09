@@ -19,6 +19,11 @@ python3 build.py
 Then commit + push — GitHub Pages deploys automatically. Styles: `css/style.css`, interactions: `js/main.js`.
 When changing CSS/JS, bump the `?v=` number in build.py so browsers fetch the new files.
 
+## Contact form
+Submissions are (1) stored in Supabase (project `lightbox-digital`, table `contact_submissions`,
+insert-only RLS via the publishable key in `js/main.js`) and (2) emailed to jchappellmedia@gmail.com
+via FormSubmit. The form's `action` posts to FormSubmit directly as a no-JS fallback.
+
 ## SEO
 JSON-LD (ProfessionalService, VideoObject, FAQPage, Reviews, ImageGallery), unique metas,
 OG/Twitter cards, sitemap.xml, robots.txt, llms.txt.

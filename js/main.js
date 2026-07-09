@@ -47,6 +47,42 @@
     openLb(`<img src="${btn.dataset.img}" alt="">`);
   }));
 
+  // contact form → Supabase (storage) + FormSubmit (email notification)
+  const cform = document.getElementById('contactForm');
+  if (cform) {
+    const SB_URL = 'https://otcokfqvyburuqcndcne.supabase.co';
+    const SB_KEY = 'sb_publishable_8Tx63dr_5YEjRcBdu21HXA_5EaGTItM'; // public key; RLS = insert-only
+    const status = document.getElementById('formStatus');
+    const btn = cform.querySelector('button[type=submit]');
+    cform.addEventListener('submit', async e => {
+      e.preventDefault();
+      const f = Object.fromEntries(new FormData(cform));
+      if (f._honey) { cform.reset(); return; } // bot trap
+      btn.disabled = true; btn.textContent = 'Sending…';
+      status.textContent = ''; status.className = 'form-status';
+      const save = fetch(SB_URL + '/rest/v1/contact_submissions', {
+        method: 'POST',
+        headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: f.name, email: f.email, project: f.project, message: f.message, page: location.href })
+      }).then(r => r.ok, () => false);
+      const mail = fetch('https://formsubmit.co/ajax/jchappellmedia@gmail.com', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({ name: f.name, email: f.email, project: f.project, message: f.message, _subject: f._subject })
+      }).then(r => r.ok, () => false);
+      const [saved, mailed] = await Promise.all([save, mail]);
+      btn.disabled = false; btn.textContent = 'Send';
+      if (saved || mailed) {
+        cform.reset();
+        status.textContent = "Sent — we'll get back to you within a business day.";
+        status.classList.add('ok');
+      } else {
+        status.textContent = 'Something glitched. Email us directly: josh.lightbox@gmail.com';
+        status.classList.add('err');
+      }
+    });
+  }
+
   // work filters
   const fbtns = document.querySelectorAll('.fbtn');
   fbtns.forEach(b => b.addEventListener('click', () => {
