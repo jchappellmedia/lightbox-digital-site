@@ -104,8 +104,11 @@ h1 em,h2 em{font-style:normal;color:var(--red)}
 .pthumb img{aspect-ratio:16/9;object-fit:cover;width:100%;transition:.3s}
 .pthumb:hover img{opacity:.9}
 .fno{position:absolute;top:26px;right:16px;font-family:var(--mono);font-size:.66rem;letter-spacing:.16em;color:var(--amber);
-  text-shadow:0 1px 6px rgba(0,0,0,.9);pointer-events:none}
-.pplay{position:absolute;inset:22px 10px;display:grid;place-items:center}
+  text-shadow:0 1px 6px rgba(0,0,0,.9);pointer-events:none;z-index:3}
+.ppreview{position:absolute;inset:22px 10px;width:calc(100% - 20px);height:calc(100% - 44px);border:0;
+  object-fit:cover;background:#000;pointer-events:none;opacity:0;transition:opacity .35s ease;z-index:1}
+.ppreview.on{opacity:1}
+.pplay{position:absolute;inset:22px 10px;display:grid;place-items:center;z-index:2}
 .pplay::before{content:"";width:56px;height:58px;background:url("../assets/img/mark-ink.png") no-repeat center/contain;
   filter:invert(1) drop-shadow(0 0 14px rgba(0,0,0,.7));transition:.25s}
 .pthumb:hover .pplay::before{transform:scale(1.12);filter:invert(1) drop-shadow(0 0 18px rgba(232,176,75,.55))}

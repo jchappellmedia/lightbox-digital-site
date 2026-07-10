@@ -15,10 +15,52 @@
     }
   });
 
-  // hero film: honor reduced motion
+  // hero film: autoplay robustly, honor reduced motion
   const hv = document.querySelector('.hero-video');
-  if (hv && matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    hv.removeAttribute('autoplay'); hv.pause();
+  if (hv) {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      hv.removeAttribute('autoplay'); hv.pause();
+    } else {
+      hv.muted = true; // set as property — some browsers ignore the attribute alone
+      const tryPlay = () => { const p = hv.play(); if (p) p.catch(() => {}); };
+      tryPlay();
+      hv.addEventListener('loadeddata', () => { if (hv.paused) tryPlay(); }, { once: true });
+      // Low Power Mode / data-saver block autoplay until a gesture — retry on the first one
+      ['touchstart', 'click', 'scroll', 'keydown'].forEach(ev =>
+        addEventListener(ev, () => { if (hv.paused) tryPlay(); }, { once: true, passive: true }));
+    }
+  }
+
+  // hover previews: silent live loop inside the film frame (desktop pointers only)
+  if (matchMedia('(hover: hover) and (pointer: fine)').matches &&
+      !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.querySelectorAll('.pthumb').forEach(btn => {
+      let el = null, timer = null;
+      const start = () => {
+        if (el) return;
+        if (btn.dataset.video) {
+          el = document.createElement('video');
+          el.src = btn.dataset.video;
+          el.muted = true; el.loop = true; el.autoplay = true; el.playsInline = true;
+        } else if (btn.dataset.vimeo) {
+          const v = btn.dataset.vimeo;
+          el = document.createElement('iframe');
+          el.src = 'https://player.vimeo.com/video/' + v + (v.includes('?') ? '&' : '?') +
+                   'background=1&autoplay=1&loop=1&muted=1&dnt=1';
+          el.allow = 'autoplay';
+          el.tabIndex = -1;
+        } else return;
+        el.className = 'ppreview';
+        el.setAttribute('aria-hidden', 'true');
+        btn.appendChild(el);
+        requestAnimationFrame(() => el.classList.add('on'));
+      };
+      btn.addEventListener('mouseenter', () => { timer = setTimeout(start, 180); });
+      btn.addEventListener('mouseleave', () => {
+        clearTimeout(timer);
+        if (el) { el.remove(); el = null; }
+      });
+    });
   }
 
   // reveal on scroll

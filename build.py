@@ -160,7 +160,7 @@ def footer():
   <button class="lb-close" id="lbClose" aria-label="Close">✕</button>
   <div class="lb-frame" id="lbFrame"></div>
 </div>
-<script src="js/main.js?v=6" defer></script>'''
+<script src="js/main.js?v=7" defer></script>'''
 
 def work_card(v, big=False):
     dur = f"{v['dur']//60}:{v['dur']%60:02d}" if v['dur'] else ""
@@ -240,7 +240,7 @@ def page(fname, title, desc, body, ld_extra=None, og_img="assets/img/hero-poster
 <meta name="twitter:image" content="{BASE}/{og_img}">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 {FONT}
-<link rel="stylesheet" href="css/style.css?v=5">
+<link rel="stylesheet" href="css/style.css?v=7">
 <script type="application/ld+json">{ldjson}</script>
 </head>
 <body>
