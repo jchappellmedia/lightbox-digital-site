@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Static site generator for Lightbox Digital. Run: python3 build.py"""
-import json, html, pathlib
+import json, html, pathlib, struct
 
 ROOT = pathlib.Path(__file__).parent
 BASE = "https://lightbox-digital.com"
@@ -121,7 +121,7 @@ FAQ = [
      "Phoenix and the whole Valley — Scottsdale, Mesa, Tempe, Chandler, Gilbert, Glendale. Arizona-wide and travel projects too."),
     ("What do you make?",
      "Commercials, landing videos, social content, interviews, event films, drone footage, AI-generated video, and photography."),
-    ("What does it cost?",
+    ("What does a video production cost in Phoenix?",
      "Depends on the project. Say what you want to make and what you want to spend — the quote you get is the price you pay."),
     ("How long does it take?",
      "We agree on a date before filming starts, and the date holds."),
@@ -129,9 +129,35 @@ FAQ = [
      "Yes — FAA Part 107 certified and insured."),
     ("What are AI videos?",
      "Commercials built with AI-generated footage instead of a camera crew. Faster and far less expensive than a full shoot — and getting better every month. See Dave's Garage on the AI page."),
+    ("Who runs Lightbox Digital?",
+     "Josh Chappell. The person on your first call is the person behind the camera and the person making the final cut — nothing gets lost between departments, because there aren't any."),
+    ("Do you do photography as well as video?",
+     "Yes — corporate headshots, brand photography, school portraits and events, family portraits, and sports, shot with the same eye as the films."),
+    ("What kinds of businesses do you film?",
+     "Schools and universities, construction and trades, medical and dental practices, real estate, attractions, and industrial companies — including Grand Canyon University, Blandford Homes, and Butterfly Wonderland."),
+    ("Do you make vertical videos for social media?",
+     "Yes. Social content is cut for the feed — vertical and wide versions from the same shoot."),
+    ("How do I get a quote?",
+     "Email josh.lightbox@gmail.com or use the contact form. You'll get straight answers, a plan, and a real quote — usually within a business day."),
 ]
 
 # ------------------------------------------------------------- helpers ----
+def img_size(path):
+    """Read pixel dimensions from a JPEG or PNG header (no dependencies)."""
+    with open(path, "rb") as f:
+        head = f.read(26)
+        if head[:8] == b"\x89PNG\r\n\x1a\n":
+            w, h = struct.unpack(">II", head[16:24]); return w, h
+        f.seek(2)
+        while True:
+            b = f.read(2)
+            if len(b) < 2: return None
+            while b[0] != 0xFF: b = b[1:] + f.read(1)
+            m = b[1]
+            if m in (0xC0,0xC1,0xC2,0xC3,0xC5,0xC6,0xC7,0xC9,0xCA,0xCB,0xCD,0xCE,0xCF):
+                f.read(3); h, w = struct.unpack(">HH", f.read(4)); return w, h
+            f.seek(struct.unpack(">H", f.read(2))[0] - 2, 1)
+
 FONT = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Anton&family=Fraunces:ital,opsz,wght@1,9..144,340..640&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">'
 
 def esc(s): return html.escape(s, quote=True)
@@ -199,7 +225,10 @@ ORG = {
     "email":EMAIL,
     "founder":{"@type":"Person","name":"Josh Chappell","jobTitle":"Founder","sameAs":SOCIALS["Instagram"]},
     "address":{"@type":"PostalAddress","addressLocality":"Phoenix","addressRegion":"AZ","addressCountry":"US"},
+    "geo":{"@type":"GeoCoordinates","latitude":33.4484,"longitude":-112.0740},
     "areaServed":[{"@type":"City","name":n} for n in ["Phoenix","Scottsdale","Mesa","Tempe","Chandler","Gilbert","Glendale"]] + [{"@type":"State","name":"Arizona"}],
+    "hasOfferCatalog":{"@type":"OfferCatalog","name":"Video production & photography services",
+        "itemListElement":[{"@type":"Offer","itemOffered":{"@type":"Service","name":t,"description":d}} for t,d in SERVICES]},
     "priceRange":"$$","sameAs":list(SOCIALS.values()),
     "knowsAbout":["video production","commercials","AI video generation","drone videography","brand photography","event videography","corporate interviews"],
     "aggregateRating":{"@type":"AggregateRating","ratingValue":"5.0","reviewCount":str(len(REVIEWS)),"bestRating":"5"},
@@ -303,6 +332,22 @@ home_body = f'''
   <div class="faqwrap">{faq_html}</div>
 </section>
 
+<section class="section">
+  <p class="label reveal">05 — The studio, in plain words</p>
+  <div class="prose">
+    <p class="reveal">Lightbox Digital is a video production company and photography studio in Phoenix, Arizona,
+    founded and run by Josh Chappell. The studio makes commercials, brand story films, landing-page and recruitment
+    videos, social media content, interview and testimonial videos, event films, FAA Part&nbsp;107 licensed drone
+    footage, AI-generated commercials, and business photography — corporate headshots, brand shoots, school
+    portraits, and event coverage.</p>
+    <p class="reveal">Based in Phoenix and working across the Valley — Scottsdale, Mesa, Tempe, Chandler, Gilbert,
+    and Glendale — as well as statewide and travel projects. Clients include Grand Canyon University, Blandford
+    Homes, Butterfly Wonderland, Arrowhead Lakes Dentistry, Applied Tech, and Baths For The Brave, with a 5.0
+    rating across {len(REVIEWS)} Google reviews. One person answers your call, films your project, and cuts the
+    final edit.</p>
+  </div>
+</section>
+
 <section class="cta">
   <h2 class="reveal">Let's make something <em class="squiggle">good</em>.</h2>
   <p class="reveal"><a class="btn" href="contact.html">Start a project</a> <span class="or">or write to</span> <a href="mailto:{EMAIL}">{EMAIL}</a></p>
@@ -326,6 +371,7 @@ W["work.html"] = page("work.html",
 <section class="intro small">
   <p class="eyebrow reveal">The work</p>
   <h1 class="reveal">Press play. <em class="squiggle">That's the pitch.</em></h1>
+  <p class="note reveal">Commercial video production for Phoenix businesses — brand films, recruitment and landing videos, event coverage, drone footage, and AI-generated spots, filmed across the Valley.</p>
 </section>
 <section class="section">
   {filters}
@@ -365,7 +411,13 @@ W["ai-videos.html"] = page("ai-videos.html",
     video_ld(ai_vids), og_img="assets/thumbs/daves-garage.jpg")
 
 # ----------------------------------------------------------- photography ----
-photo_items = "".join(f'''<figure class="pitem reveal"><button class="pimg" data-img="assets/img/{f}" aria-label="View: {esc(alt)}"><img src="assets/img/{f}" alt="{esc(alt)}" loading="lazy"></button></figure>''' for f,alt in PHOTOS)
+def photo_item(f, alt):
+    dims = img_size(ROOT / "assets/img" / f)
+    wh = f' width="{dims[0]}" height="{dims[1]}"' if dims else ""
+    return (f'<figure class="pitem reveal"><button class="pimg" data-img="assets/img/{f}" aria-label="View: {esc(alt)}">'
+            f'<img src="assets/img/{f}" alt="{esc(alt)}"{wh} loading="lazy"></button></figure>')
+
+photo_items = "".join(photo_item(f, alt) for f, alt in PHOTOS)
 W["photography.html"] = page("photography.html",
     "Phoenix Photographer — Portraits, Events & Brand Photography | Lightbox Digital",
     "Brand photography, headshots, portraits, school and event photos in Phoenix, AZ — with the same eye as the films.",
@@ -373,6 +425,7 @@ W["photography.html"] = page("photography.html",
 <section class="intro small">
   <p class="eyebrow reveal">Photography</p>
   <h1 class="reveal">Same eye, <em class="squiggle">one frame at a time</em>.</h1>
+  <p class="note reveal">Phoenix photographer for corporate headshots, brand and product photography, school portraits and events, family portraits, and sports — across the Valley and Arizona.</p>
 </section>
 <section class="section"><div class="masonry">{photo_items}</div></section>
 <section class="cta">
@@ -501,32 +554,54 @@ sm = ['<?xml version="1.0" encoding="UTF-8"?>','<urlset xmlns="http://www.sitema
 pri = {"index.html":"1.0","work.html":"0.9","ai-videos.html":"0.9","contact.html":"0.9"}
 for p in pages:
     loc = BASE+"/" if p=="index.html" else f"{BASE}/{p}"
-    sm.append(f"<url><loc>{loc}</loc><lastmod>2026-07-09</lastmod><priority>{pri.get(p,'0.8')}</priority></url>")
+    sm.append(f"<url><loc>{loc}</loc><lastmod>2026-07-10</lastmod><priority>{pri.get(p,'0.8')}</priority></url>")
 sm.append("</urlset>")
 (ROOT/"sitemap.xml").write_text("\n".join(sm))
 
-(ROOT/"robots.txt").write_text(f"User-agent: *\nAllow: /\n\nSitemap: {BASE}/sitemap.xml\n")
+AI_BOTS = ["GPTBot","OAI-SearchBot","ChatGPT-User","ClaudeBot","Claude-SearchBot","Claude-User",
+           "PerplexityBot","Perplexity-User","Google-Extended","Applebot-Extended","CCBot",
+           "meta-externalagent","Bytespider","Amazonbot","DuckAssistBot"]
+robots = "User-agent: *\nAllow: /\n\n"
+robots += "".join(f"User-agent: {b}\nAllow: /\n\n" for b in AI_BOTS)
+robots += f"Sitemap: {BASE}/sitemap.xml\n"
+(ROOT/"robots.txt").write_text(robots)
 
+faq_txt = "\n".join(f"**{q}**\n{a}\n" for q, a in FAQ)
+svc_txt = "\n".join(f"- **{t}** — {d}" for t, d in SERVICES)
+rev_txt = "\n".join(f'- "{t}" — {n}, Google review (5 stars)' for n, t in REVIEWS[:6])
 (ROOT/"llms.txt").write_text(f"""# Lightbox Digital
 
-> Video production and photography studio in Phoenix, Arizona, founded by Josh Chappell.
-> Makes commercials, brand stories, event films, FAA Part 107 drone footage,
-> AI-generated video, and photography. Rated 5.0 across {len(REVIEWS)} Google reviews.
+> Video production company and photography studio in Phoenix, Arizona, founded and run by
+> Josh Chappell. Makes commercials, brand story films, landing and recruitment videos,
+> social content, interview and testimonial videos, event films, FAA Part 107 licensed
+> drone footage, AI-generated commercials, and business photography.
+> Rated 5.0 across {len(REVIEWS)} Google reviews.
 
 Contact: {EMAIL}
-Service area: Phoenix, Scottsdale, Mesa, Tempe, Chandler, Gilbert, Glendale, all of Arizona.
+Website: {BASE}/
+Service area: Phoenix, Scottsdale, Mesa, Tempe, Chandler, Gilbert, Glendale, and all of Arizona (travel projects too).
+How it works: one person answers your call, films your project, and cuts the final edit.
+Pricing: quoted per project — the quote you get is the price you pay.
+
+## Services
+{svc_txt}
 
 ## Pages
 - [Home]({BASE}/): demo reel, selected work, services, FAQ
 - [Work]({BASE}/work.html): {len(WORK)+1} films — commercials, stories, events & spaces, AI
 - [AI Videos]({BASE}/ai-videos.html): AI-generated commercials, incl. "Dave's Garage"
-- [Photography]({BASE}/photography.html): portraits, brand, school, sports, events
+- [Photography]({BASE}/photography.html): headshots, brand, school portraits, sports, events
 - [About]({BASE}/about.html): the studio, founded by Josh Chappell
 - [Reviews]({BASE}/reviews.html): {len(REVIEWS)} five-star Google reviews
-- [Contact]({BASE}/contact.html): inquiry form
+- [Contact]({BASE}/contact.html): inquiry form — replies within a business day
 
 ## Notable clients & projects
 Grand Canyon University, Blandford Homes, Butterfly Wonderland, Baths For The Brave,
 Arrowhead Lakes Dentistry, Applied Tech, Allen Land & Fire, NCAA event coverage.
+
+## Frequently asked questions
+{faq_txt}
+## What clients say
+{rev_txt}
 """)
 print("wrote sitemap.xml, robots.txt, llms.txt")
