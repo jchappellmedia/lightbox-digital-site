@@ -160,7 +160,7 @@ def footer():
   <button class="lb-close" id="lbClose" aria-label="Close">✕</button>
   <div class="lb-frame" id="lbFrame"></div>
 </div>
-<script src="js/main.js?v=7" defer></script>'''
+<script src="js/main.js?v=8" defer></script>'''
 
 def work_card(v, big=False):
     dur = f"{v['dur']//60}:{v['dur']%60:02d}" if v['dur'] else ""
@@ -266,7 +266,8 @@ faq_html = "".join(f'<details class="faq reveal"><summary>{esc(q)}</summary><p>{
 
 home_body = f'''
 <section class="hero">
-  <video class="hero-video" src="assets/video/hero.mp4" poster="assets/img/hero-poster.jpg" autoplay muted loop playsinline aria-hidden="true"></video>
+  <video class="hero-video" poster="assets/img/hero-poster.jpg" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
+  <script>(function(){{var v=document.querySelector('.hero-video');v.src=matchMedia('(max-width:820px)').matches?'assets/video/hero-720.mp4':'assets/video/hero.mp4';}})()</script>
   <div class="hero-scrim" aria-hidden="true"></div>
   <div class="hero-hud" aria-hidden="true"><span class="rec">Rec</span><span>Phoenix, AZ · 33.44°N 112.07°W</span></div>
   <div class="hero-inner">

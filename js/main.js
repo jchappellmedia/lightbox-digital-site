@@ -25,9 +25,14 @@
       const tryPlay = () => { const p = hv.play(); if (p) p.catch(() => {}); };
       tryPlay();
       hv.addEventListener('loadeddata', () => { if (hv.paused) tryPlay(); }, { once: true });
-      // Low Power Mode / data-saver block autoplay until a gesture — retry on the first one
-      ['touchstart', 'click', 'scroll', 'keydown'].forEach(ev =>
-        addEventListener(ev, () => { if (hv.paused) tryPlay(); }, { once: true, passive: true }));
+      // Low Power Mode / data-saver block autoplay until a gesture — retry on every gesture
+      ['touchstart', 'touchend', 'click', 'scroll', 'keydown'].forEach(ev =>
+        addEventListener(ev, () => { if (hv.paused) tryPlay(); }, { passive: true }));
+      // resume after tab switches / bfcache restores, which pause videos silently
+      addEventListener('pageshow', () => { if (hv.paused) tryPlay(); });
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden && hv.paused) tryPlay();
+      });
     }
   }
 
