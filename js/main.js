@@ -122,13 +122,4 @@
     });
   }
 
-  // work filters
-  const fbtns = document.querySelectorAll('.fbtn');
-  fbtns.forEach(b => b.addEventListener('click', () => {
-    fbtns.forEach(x => x.classList.remove('active')); b.classList.add('active');
-    const f = b.dataset.f;
-    document.querySelectorAll('#workgrid .piece').forEach(c => {
-      c.style.display = (f === 'all' || c.dataset.cat === f || c.dataset.cat === 'reel') ? '' : 'none';
-    });
-  }));
 })();

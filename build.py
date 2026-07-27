@@ -163,7 +163,7 @@ FONT = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="pr
 def esc(s): return html.escape(s, quote=True)
 
 def nav(active):
-    items = [("work.html","Work"),("ai-videos.html","AI Videos"),("photography.html","Photography"),("about.html","About")]
+    items = [("work.html","Our Work"),("about.html","About")]
     links = "".join(f'<a href="{h}"{" class=active" if h==active else ""}>{t}</a>' for h,t in items)
     return f'''<header class="nav">
   <a class="brand" href="index.html" aria-label="Lightbox Digital home"><img src="assets/img/mark-ink.png" alt="" width="30" height="31"><span>Lightbox&nbsp;Digital</span></a>
@@ -178,7 +178,7 @@ def footer():
     <p class="fmark"><img src="assets/img/mark-ink.png" alt="" width="26" height="27"> Lightbox Digital</p>
     <p>Video production &amp; photography — Phoenix, Arizona.<br><a href="mailto:{EMAIL}">{EMAIL}</a></p>
     <p class="fsoc">{soc}</p>
-    <p class="fnav"><a href="work.html">Work</a> · <a href="ai-videos.html">AI Videos</a> · <a href="photography.html">Photography</a> · <a href="about.html">About</a> · <a href="reviews.html">Reviews</a> · <a href="contact.html">Contact</a></p>
+    <p class="fnav"><a href="work.html">Our Work</a> · <a href="ai-videos.html">AI Videos</a> · <a href="photography.html">Photography</a> · <a href="about.html">About</a> · <a href="reviews.html">Reviews</a> · <a href="contact.html">Contact</a></p>
     <p class="fcopy">© 2026 Joshua Chappell LLC · Serving Phoenix, Scottsdale, Mesa, Tempe, Chandler, Gilbert &amp; all of Arizona</p>
   </div>
 </footer>
@@ -186,7 +186,7 @@ def footer():
   <button class="lb-close" id="lbClose" aria-label="Close">✕</button>
   <div class="lb-frame" id="lbFrame"></div>
 </div>
-<script src="js/main.js?v=8" defer></script>'''
+<script src="js/main.js?v=9" defer></script>'''
 
 def work_card(v, big=False):
     dur = f"{v['dur']//60}:{v['dur']%60:02d}" if v['dur'] else ""
@@ -269,7 +269,7 @@ def page(fname, title, desc, body, ld_extra=None, og_img="assets/img/hero-poster
 <meta name="twitter:image" content="{BASE}/{og_img}">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 {FONT}
-<link rel="stylesheet" href="css/style.css?v=7">
+<link rel="stylesheet" href="css/style.css?v=9">
 <script type="application/ld+json">{ldjson}</script>
 </head>
 <body>
@@ -298,7 +298,7 @@ home_body = f'''
   <video class="hero-video" poster="assets/img/hero-poster.jpg" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
   <script>(function(){{var v=document.querySelector('.hero-video');v.src=matchMedia('(max-width:820px)').matches?'assets/video/hero-720.mp4':'assets/video/hero.mp4';}})()</script>
   <div class="hero-scrim" aria-hidden="true"></div>
-  <div class="hero-hud" aria-hidden="true"><span class="rec">Rec</span><span>Phoenix, AZ · 33.44°N 112.07°W</span></div>
+  <div class="hero-hud" aria-hidden="true"><span class="rec">Rec</span><span>Phoenix, AZ</span></div>
   <div class="hero-inner">
     <p class="eyebrow">Video production &amp; photography · Phoenix, Arizona</p>
     <h1>Films for businesses that are <em class="squiggle">proud of their work</em>.</h1>
@@ -360,10 +360,6 @@ W["index.html"] = page("index.html",
     home_body, ld_home)
 
 # ------------------------------------------------------------------ work ----
-filters = '<div class="filters reveal" role="group" aria-label="Filter">' + \
-  '<button class="fbtn active" data-f="all">All</button>' + \
-  "".join(f'<button class="fbtn" data-f="{k}">{esc(n)}</button>' for k,n in CATS) + '</div>'
-
 W["work.html"] = page("work.html",
     "The Work — Video Production in Phoenix | Lightbox Digital",
     "Commercials, stories, event films, and AI video made in Phoenix, AZ. Press play on any of them.",
@@ -374,9 +370,8 @@ W["work.html"] = page("work.html",
   <p class="note reveal">Commercial video production for Phoenix businesses — brand films, recruitment and landing videos, event coverage, drone footage, and AI-generated spots, filmed across the Valley.</p>
 </section>
 <section class="section">
-  {filters}
   <div class="grid" id="workgrid">{"".join(work_card(v) for v in [REEL]+WORK)}</div>
-  <p class="more reveal">Photos instead? <a href="photography.html">Photography →</a></p>
+  <p class="more reveal">Photos instead? <a href="photography.html">Photography →</a> &nbsp;·&nbsp; Curious about AI? <a href="ai-videos.html">AI Videos →</a></p>
 </section>
 <section class="cta">
   <h2 class="reveal">Your business belongs up here.</h2>
