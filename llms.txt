@@ -24,7 +24,7 @@ Pricing: quoted per project — the quote you get is the price you pay.
 
 ## Pages
 - [Home](https://lightbox-digital.com/): demo reel, selected work, services, FAQ
-- [Work](https://lightbox-digital.com/work.html): 20 films — commercials, stories, events & spaces, AI
+- [Work](https://lightbox-digital.com/work.html): 21 films — commercials, stories, events & spaces, AI
 - [AI Videos](https://lightbox-digital.com/ai-videos.html): AI-generated commercials, incl. "Dave's Garage"
 - [Photography](https://lightbox-digital.com/photography.html): headshots, brand, school portraits, sports, events
 - [About](https://lightbox-digital.com/about.html): the studio, founded by Josh Chappell

@@ -64,6 +64,8 @@ WORK = [
     # AI
     V("daves-garage", "Dave's Garage", 27, "2025-09-02", "ai",
       "A complete commercial, generated with AI.", file="assets/video/daves-garage.mp4"),
+    V("1220703634", "High Plains Provisions", None, "2026-08-24", "ai",
+      "Another complete commercial, generated with AI.", h="1500ae4e40"),
 ]
 
 CATS = [("commercials", "Commercials"), ("stories", "Stories"),
