@@ -36,7 +36,8 @@ DASHBOARD = "studio-9f31c7.html"           # private marketing dashboard (noinde
 #                    grants nothing on its own — the viewer still has to sign
 #                    in with a Google account that can read the property.
 # Both can also be pasted straight into the dashboard, which remembers them.
-GA4_PROPERTY_ID = ""
+APPS_SCRIPT_URL = ""   # Apps Script web app URL incl. ?key=… (simplest route)
+GA4_PROPERTY_ID = ""   # only needed for the browser-OAuth alternative
 OAUTH_CLIENT_ID = ""
 SOCIALS = {
     "Instagram": "https://www.instagram.com/joshrchappell/",
@@ -254,7 +255,7 @@ def footer():
   <button class="lb-close" id="lbClose" aria-label="Close">✕</button>
   <div class="lb-frame" id="lbFrame"></div>
 </div>
-<script src="js/main.js?v=13" defer></script>'''
+<script src="js/main.js?v=14" defer></script>'''
 
 def work_card(v, big=False):
     dur = f"{v['dur']//60}:{v['dur']%60:02d}" if v['dur'] else ""
@@ -337,7 +338,7 @@ def page(fname, title, desc, body, ld_extra=None, og_img="assets/img/hero-poster
 <meta name="twitter:image" content="{BASE}/{og_img}">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 {FONT}
-<link rel="stylesheet" href="css/style.css?v=13">
+<link rel="stylesheet" href="css/style.css?v=14">
 <script type="application/ld+json">{ldjson}</script>
 {analytics()}
 </head>
@@ -876,38 +877,50 @@ ga_js = """
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <script>
 (function(){
-  var K = { prop:'lbx-ga-prop', client:'lbx-ga-client' };
+  var K = { url:'lbx-ga-url', prop:'lbx-ga-prop', client:'lbx-ga-client' };
   var $ = function(i){ return document.getElementById(i); };
-  var cfg = { prop:'', client:'' }, token = null;
+  var cfg = { url:'', prop:'', client:'' }, token = null;
 
   function get(k, fb){ try { return localStorage.getItem(k) || fb || ''; } catch(e){ return fb || ''; } }
-  function loadCfg(){ cfg.prop = get(K.prop, '__PROP__'); cfg.client = get(K.client, '__CLIENT__'); }
+  function set(k, v){ try { localStorage.setItem(k, v); } catch(e){} }
+  function loadCfg(){
+    cfg.url    = get(K.url, '__URL__');
+    cfg.prop   = get(K.prop, '__PROP__');
+    cfg.client = get(K.client, '__CLIENT__');
+  }
   function say(msg, ok){ var e = $('gaErr'); e.className = ok ? 'tiny' : 'err'; e.textContent = msg || ''; }
+  function mode(){ return cfg.url ? 'proxy' : ((cfg.prop && cfg.client) ? 'oauth' : 'none'); }
   function paint(){
-    var ready = !!(cfg.prop && cfg.client);
-    $('gaCfg').hidden = ready;
-    $('gaAuthRow').hidden = !ready || !!token;
-    $('gaData').hidden = !token;
+    var m = mode();
+    $('gaCfg').hidden = (m !== 'none');
+    $('gaAuthRow').hidden = (m !== 'oauth') || !!token;
+    $('gaData').hidden = !(m === 'proxy' || token);
+    if (cfg.url) $('cfgUrl').value = cfg.url;
     if (cfg.prop) $('cfgProp').value = cfg.prop;
     if (cfg.client) $('cfgClient').value = cfg.client;
   }
 
   $('cfgSave').addEventListener('click', function(){
-    var pr = $('cfgProp').value.trim().replace(/[^0-9]/g,'');
-    var cl = $('cfgClient').value.trim();
+    var u = $('cfgUrl').value.trim();
+    if (!/^https:\/\/script\.google\.com\//.test(u)) {
+      say('That should be the https://script.google.com/macros/s/…/exec URL from Deploy.'); return;
+    }
+    set(K.url, u); cfg.url = u; say(''); paint(); refresh();
+  });
+  $('cfgSaveOauth').addEventListener('click', function(){
+    var pr = $('cfgProp').value.trim().replace(/[^0-9]/g,''), cl = $('cfgClient').value.trim();
     if (!pr || !cl) { say('Both IDs are needed.'); return; }
-    try { localStorage.setItem(K.prop, pr); localStorage.setItem(K.client, cl); } catch(e){}
-    cfg.prop = pr; cfg.client = cl; say(''); paint();
+    set(K.prop, pr); set(K.client, cl); cfg.prop = pr; cfg.client = cl; say(''); paint();
   });
   $('gaReset').addEventListener('click', function(e){
     e.preventDefault();
-    try { localStorage.removeItem(K.prop); localStorage.removeItem(K.client); } catch(x){}
-    cfg = { prop:'', client:'' }; token = null; say(''); paint();
+    try { [K.url, K.prop, K.client].forEach(function(k){ localStorage.removeItem(k); }); } catch(x){}
+    cfg = { url:'', prop:'', client:'' }; token = null; say(''); paint();
   });
 
   function auth(next){
     if (!(window.google && google.accounts && google.accounts.oauth2)) {
-      say("Google's sign-in library did not load — check the connection and reload."); return;
+      say("Google's sign-in library did not load — reload the page."); return;
     }
     try {
       google.accounts.oauth2.initTokenClient({
@@ -921,7 +934,17 @@ ga_js = """
     } catch(e){ say('Could not start sign-in: ' + e.message); }
   }
 
-  async function api(method, body){
+  var M = function(a){ return a.map(function(n){ return { name:n }; }); };
+  var RANGE = [{ startDate:'28daysAgo', endDate:'today' }];
+  var QUERIES = [
+    { dateRanges:RANGE, metrics:M(['activeUsers','newUsers','sessions','screenPageViews','bounceRate','averageSessionDuration']) },
+    { dateRanges:RANGE, dimensions:M(['date']), metrics:M(['activeUsers']), orderBys:[{ dimension:{ dimensionName:'date' } }] },
+    { dateRanges:RANGE, dimensions:M(['pagePath']), metrics:M(['screenPageViews','bounceRate']), limit:10, orderBys:[{ metric:{ metricName:'screenPageViews' }, desc:true }] },
+    { dateRanges:RANGE, dimensions:M(['sessionDefaultChannelGroup']), metrics:M(['sessions']), limit:8, orderBys:[{ metric:{ metricName:'sessions' }, desc:true }] },
+    { dateRanges:RANGE, dimensions:M(['eventName']), metrics:M(['eventCount']), limit:15, orderBys:[{ metric:{ metricName:'eventCount' }, desc:true }] }
+  ];
+
+  async function apiDirect(method, body){
     var r = await fetch('https://analyticsdata.googleapis.com/v1beta/properties/' + cfg.prop + ':' + method, {
       method:'POST',
       headers:{ Authorization:'Bearer ' + token, 'Content-Type':'application/json' },
@@ -931,8 +954,6 @@ ga_js = """
     return r.json();
   }
 
-  var M = function(a){ return a.map(function(n){ return { name:n }; }); };
-  var RANGE = [{ startDate:'28daysAgo', endDate:'today' }];
   function val(res,row,i){ try { return res.rows[row].metricValues[i].value; } catch(e){ return '0'; } }
   function dim(res,row,i){ try { return res.rows[row].dimensionValues[i].value; } catch(e){ return ''; } }
   function num(v){ return Number(v||0).toLocaleString(); }
@@ -955,66 +976,79 @@ ga_js = """
          + '<polyline points="'+pts.join(' ')+'"/></svg>';
   }
 
+  function render(r){
+    var tot=r[0], day=r[1], pages=r[2], src=r[3], ev=r[4], rt=r[5];
+    $('gaCards').innerHTML =
+      card(num(val(tot,0,0)), 'Visitors · 28 days') +
+      card(num(val(tot,0,1)), 'First-time') +
+      card(num(val(tot,0,2)), 'Sessions') +
+      card(num(val(tot,0,3)), 'Page views') +
+      card((Number(val(tot,0,4))*100).toFixed(1)+'%', 'Bounce rate') +
+      card(mins(val(tot,0,5)), 'Average visit') +
+      card(num(val(rt,0,0)), 'On the site now');
+    $('gaSpark').innerHTML = spark(day.rows) + '<p class="tiny">Visitors per day · last 28 days</p>';
+    $('gaPages').innerHTML = table(['Page','Views','Bounce'],
+      (pages.rows||[]).map(function(_,i){
+        return '<tr><td class="pg">'+esc(dim(pages,i,0))+'</td><td>'+num(val(pages,i,0))+
+               '</td><td>'+(Number(val(pages,i,1))*100).toFixed(0)+'%</td></tr>'; }).join(''), 3);
+    $('gaSrc').innerHTML = table(['How they found you','Sessions'],
+      (src.rows||[]).map(function(_,i){
+        return '<tr><td class="pg">'+esc(dim(src,i,0))+'</td><td>'+num(val(src,i,0))+'</td></tr>';
+      }).join(''), 2);
+    var LABEL = { email_click:'Clicked your email address', generate_lead:'Sent the contact form',
+                  cta_click:'Pressed a button', video_play:'Played a film' };
+    $('gaEv').innerHTML = table(['What visitors did','Times'],
+      (ev.rows||[]).map(function(_,i){
+        var n = dim(ev,i,0), l = LABEL[n];
+        return '<tr class="evrow"><td class="pg">'+(l ? '<strong>'+l+'</strong> — ' : '')+esc(n)+
+               '</td><td>'+num(val(ev,i,0))+'</td></tr>'; }).join(''), 2);
+    $('gaMeta').textContent = 'Last 28 days · via ' + (mode()==='proxy' ? 'Apps Script' : 'Google sign-in') +
+      ' · pulled ' + new Date().toLocaleTimeString();
+  }
+
   async function refresh(){
+    var m = mode();
+    if (m === 'none') return;
     say('Fetching from Google Analytics…', true);
     try {
-      var r = await Promise.all([
-        api('runReport', { dateRanges:RANGE, metrics:M(['activeUsers','newUsers','sessions','screenPageViews','bounceRate','averageSessionDuration']) }),
-        api('runReport', { dateRanges:RANGE, dimensions:M(['date']), metrics:M(['activeUsers']), orderBys:[{ dimension:{ dimensionName:'date' } }] }),
-        api('runReport', { dateRanges:RANGE, dimensions:M(['pagePath']), metrics:M(['screenPageViews','bounceRate']), limit:10, orderBys:[{ metric:{ metricName:'screenPageViews' }, desc:true }] }),
-        api('runReport', { dateRanges:RANGE, dimensions:M(['sessionDefaultChannelGroup']), metrics:M(['sessions']), limit:8, orderBys:[{ metric:{ metricName:'sessions' }, desc:true }] }),
-        api('runReport', { dateRanges:RANGE, dimensions:M(['eventName']), metrics:M(['eventCount']), limit:15, orderBys:[{ metric:{ metricName:'eventCount' }, desc:true }] }),
-        api('runRealtimeReport', { metrics:M(['activeUsers']) })
-      ]);
-      var tot=r[0], day=r[1], pages=r[2], src=r[3], ev=r[4], rt=r[5];
-
-      $('gaCards').innerHTML =
-        card(num(val(tot,0,0)), 'Visitors · 28 days') +
-        card(num(val(tot,0,1)), 'First-time') +
-        card(num(val(tot,0,2)), 'Sessions') +
-        card(num(val(tot,0,3)), 'Page views') +
-        card((Number(val(tot,0,4))*100).toFixed(1)+'%', 'Bounce rate') +
-        card(mins(val(tot,0,5)), 'Average visit') +
-        card(num(val(rt,0,0)), 'On the site now');
-
-      $('gaSpark').innerHTML = spark(day.rows) + '<p class="tiny">Visitors per day · last 28 days</p>';
-
-      $('gaPages').innerHTML = table(['Page','Views','Bounce'],
-        (pages.rows||[]).map(function(_,i){
-          return '<tr><td class="pg">'+esc(dim(pages,i,0))+'</td><td>'+num(val(pages,i,0))+
-                 '</td><td>'+(Number(val(pages,i,1))*100).toFixed(0)+'%</td></tr>'; }).join(''), 3);
-
-      $('gaSrc').innerHTML = table(['How they found you','Sessions'],
-        (src.rows||[]).map(function(_,i){
-          return '<tr><td class="pg">'+esc(dim(src,i,0))+'</td><td>'+num(val(src,i,0))+'</td></tr>';
-        }).join(''), 2);
-
-      var LABEL = { email_click:'Clicked your email address', generate_lead:'Sent the contact form',
-                    cta_click:'Pressed a button', video_play:'Played a film' };
-      $('gaEv').innerHTML = table(['What visitors did','Times'],
-        (ev.rows||[]).map(function(_,i){
-          var n = dim(ev,i,0), l = LABEL[n];
-          return '<tr class="evrow"><td class="pg">'+(l ? '<strong>'+l+'</strong> — ' : '')+esc(n)+
-                 '</td><td>'+num(val(ev,i,0))+'</td></tr>'; }).join(''), 2);
-
-      $('gaMeta').textContent = 'Property ' + cfg.prop + ' · last 28 days · pulled ' + new Date().toLocaleTimeString();
+      var reports;
+      if (m === 'proxy') {
+        var res = await fetch(cfg.url);
+        if (!res.ok) throw new Error('HTTP ' + res.status + ' from the Apps Script URL.');
+        var j = await res.json();
+        if (j.error) throw new Error(j.error);
+        reports = j.reports;
+        if (!reports || reports.length < 6) throw new Error('The script replied without the expected reports.');
+      } else {
+        reports = await Promise.all(QUERIES.map(function(q){ return apiDirect('runReport', q); })
+          .concat([apiDirect('runRealtimeReport', { metrics:M(['activeUsers']) })]));
+      }
+      $('gaData').hidden = false;
+      render(reports);
       say('');
     } catch(e){
-      var m = String(e.message || e);
-      if (m.indexOf('403') > -1) m += '   That usually means the Analytics Data API is not enabled in the Cloud project, or this Google account cannot read that property.';
-      if (m.indexOf('401') > -1) m += '   The sign-in expired — click "Show my numbers" again.';
-      if (m.indexOf('404') > -1) m += '   Check the Property ID: it is the numeric one in Admin › Property settings, not the G- code.';
-      say(m);
+      var msg = String(e.message || e);
+      if (msg.indexOf('unauthorized') > -1) msg += '   The key on the end of the URL does not match SHARED_KEY in the script.';
+      if (msg.indexOf('403') > -1) msg += '   That account may not be able to read the property.';
+      if (msg.indexOf('401') > -1) msg += '   The sign-in expired — click "Show my numbers" again.';
+      if (msg.indexOf('404') > -1) msg += '   Check the Property ID: the numeric one in Admin ▸ Property settings.';
+      if (msg.indexOf('Failed to fetch') > -1) msg += '   The deployment may be set to "Only myself" — it needs "Anyone".';
+      say(msg);
     }
   }
 
   $('gaSignIn').addEventListener('click', function(){ auth(refresh); });
-  $('gaRefresh').addEventListener('click', function(){ token ? refresh() : auth(refresh); });
+  $('gaRefresh').addEventListener('click', function(){
+    (mode() === 'proxy' || token) ? refresh() : auth(refresh);
+  });
   loadCfg(); paint();
+  if (mode() === 'proxy') refresh();
 })();
 </script>
 """
-ga_js = ga_js.replace("__PROP__", GA4_PROPERTY_ID).replace("__CLIENT__", OAUTH_CLIENT_ID)
+ga_js = (ga_js.replace("__URL__", APPS_SCRIPT_URL)
+              .replace("__PROP__", GA4_PROPERTY_ID)
+              .replace("__CLIENT__", OAUTH_CLIENT_ID))
 
 dash_body = f'''{dash_css}
 <section class="dash">
@@ -1055,24 +1089,38 @@ dash_body = f'''{dash_css}
 
     <div class="setup" id="gaCfg" hidden>
       <p class="dnote" style="margin:0">The tag on your site <em>writes</em> data to Google Analytics.
-      Pulling those numbers back onto this page needs two more IDs. Neither is a password — the figures
-      only appear after you sign in with your Google account, so anyone else who opens this page sees
-      an empty panel.</p>
+      To read it back onto this page, one small script has to ask Analytics for the numbers. The easiest
+      way is Apps Script — it runs inside your own Google account, so there is nothing to install and
+      no Cloud project to set up.</p>
       <ol>
-        <li><strong>Property ID</strong> — in Analytics: <em>Admin › Property settings</em>. A plain
-        number like <code>123456789</code>, not the G- code.</li>
-        <li><strong>OAuth Client ID</strong> — at
-        <a href="https://console.cloud.google.com/apis/credentials" target="_blank" rel="noopener">console.cloud.google.com</a>:
-        make a project, enable the <em>Google Analytics Data API</em>, then
-        <em>Credentials › Create credentials › OAuth client ID › Web application</em>. Under
-        <em>Authorised JavaScript origins</em> add <code>https://lightbox-digital.com</code>.
-        Copy the ID ending <code>.apps.googleusercontent.com</code>.</li>
+        <li>Open <a href="https://script.google.com/home/projects/create" target="_blank" rel="noopener">script.google.com</a>
+        and start a new project.</li>
+        <li>Paste in <a href="https://github.com/jchappellmedia/lightbox-digital-site/blob/main/tools/apps-script/Code.gs" target="_blank" rel="noopener">Code.gs</a>,
+        then fill in your <strong>Property ID</strong> (Analytics ▸ Admin ▸ Property settings) and any
+        random <strong>key</strong> you like.</li>
+        <li><em>Deploy ▸ New deployment ▸ Web app</em> — run as <strong>Me</strong>, access
+        <strong>Anyone</strong>. Approve the Analytics permission when asked.</li>
+        <li>Paste the deployment URL below with your key on the end:
+        <code>…/exec?key=YOURKEY</code></li>
       </ol>
       <div class="cfgrow">
-        <label>GA4 Property ID <input id="cfgProp" placeholder="123456789" inputmode="numeric"></label>
-        <label>OAuth Client ID <input id="cfgClient" placeholder="…apps.googleusercontent.com"></label>
-        <p><button class="btn" id="cfgSave" type="button">Save</button></p>
+        <label>Apps Script web app URL
+          <input id="cfgUrl" placeholder="https://script.google.com/macros/s/…/exec?key=…"></label>
+        <p><button class="btn" id="cfgSave" type="button">Connect</button></p>
       </div>
+      <details class="ref" style="margin-top:1.2rem">
+        <summary>Alternative — connect straight from this browser instead</summary>
+        <p class="dnote" style="margin-top:.8rem">Skips Apps Script, but needs a Google Cloud OAuth
+        client and a sign-in each time. Create one at
+        <a href="https://console.cloud.google.com/apis/credentials" target="_blank" rel="noopener">console.cloud.google.com</a>
+        (enable the <em>Google Analytics Data API</em>, then Credentials ▸ OAuth client ID ▸ Web
+        application, with <code>https://lightbox-digital.com</code> as an authorised origin).</p>
+        <div class="cfgrow">
+          <label>GA4 Property ID <input id="cfgProp" placeholder="123456789" inputmode="numeric"></label>
+          <label>OAuth Client ID <input id="cfgClient" placeholder="…apps.googleusercontent.com"></label>
+          <p><button class="btn" id="cfgSaveOauth" type="button">Save</button></p>
+        </div>
+      </details>
     </div>
 
     <p id="gaAuthRow" hidden><button class="btn" id="gaSignIn" type="button">Show my numbers</button>
