@@ -8,8 +8,25 @@ EMAIL = "josh.lightbox@gmail.com"          # public contact address shown on the
 NOTIFY = "jchappellmedia@gmail.com"        # where form submissions are emailed
 
 # Paste a Google Analytics 4 Measurement ID ("G-XXXXXXXXXX") to switch analytics on.
-# Empty = no tracking script is emitted at all.
+# Empty = no gtag script is emitted at all.
 GA4_ID = ""
+
+# Google Tag Manager container. GTM is a delivery mechanism, not a measurement
+# tool: it only collects data once a GA4 tag is configured inside the container.
+GTM_ID = "GTM-WQC4V454"
+
+GTM_HEAD = """<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','__GTM__');</script>
+<!-- End Google Tag Manager -->"""
+
+GTM_BODY = """<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=__GTM__"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->"""
 
 DASHBOARD = "studio-9f31c7.html"           # private marketing dashboard (noindex, unlinked)
 SOCIALS = {
@@ -171,13 +188,19 @@ FONT = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="pr
 def esc(s): return html.escape(s, quote=True)
 
 def analytics():
-    """GA4 snippet — emitted only when GA4_ID is set, so the site ships zero
-    third-party script until analytics is deliberately switched on."""
-    if not GA4_ID:
-        return ""
-    return f'''<script async src="https://www.googletagmanager.com/gtag/js?id={GA4_ID}"></script>
+    """Tag Manager container and/or a direct GA4 tag. Nothing is emitted unless
+    one of the IDs above is set."""
+    out = []
+    if GTM_ID:
+        out.append(GTM_HEAD.replace("__GTM__", GTM_ID))
+    if GA4_ID:
+        out.append(f'''<script async src="https://www.googletagmanager.com/gtag/js?id={GA4_ID}"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}
-gtag('js',new Date());gtag('config','{GA4_ID}',{{anonymize_ip:true}});</script>'''
+gtag('js',new Date());gtag('config','{GA4_ID}',{{anonymize_ip:true}});</script>''')
+    return "\n".join(out)
+
+def gtm_body():
+    return GTM_BODY.replace("__GTM__", GTM_ID) if GTM_ID else ""
 
 def mailto(subject, label=None):
     href = f"mailto:{EMAIL}?subject={subject.replace(' ', '%20').replace('—', '%E2%80%94')}"
@@ -222,7 +245,7 @@ def footer():
   <button class="lb-close" id="lbClose" aria-label="Close">✕</button>
   <div class="lb-frame" id="lbFrame"></div>
 </div>
-<script src="js/main.js?v=10" defer></script>'''
+<script src="js/main.js?v=11" defer></script>'''
 
 def work_card(v, big=False):
     dur = f"{v['dur']//60}:{v['dur']%60:02d}" if v['dur'] else ""
@@ -305,11 +328,12 @@ def page(fname, title, desc, body, ld_extra=None, og_img="assets/img/hero-poster
 <meta name="twitter:image" content="{BASE}/{og_img}">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 {FONT}
-<link rel="stylesheet" href="css/style.css?v=10">
+<link rel="stylesheet" href="css/style.css?v=11">
 <script type="application/ld+json">{ldjson}</script>
 {analytics()}
 </head>
 <body>
+{gtm_body()}
 {nav(fname)}
 <main id="main">
 {body}
@@ -787,11 +811,27 @@ dash_js = """
   document.getElementById('recheck').addEventListener('click', run);
   run();
 
-  var on = (typeof window.gtag === 'function');
+  // gtag.js registers each measurement ID on window.google_tag_manager, whether
+  // it arrived directly or through a GTM container — so a G- key means GA4 is
+  // genuinely loaded and collecting, not merely that a container exists.
+  var reg = window.google_tag_manager || {};
+  var gaIds = Object.keys(reg).filter(function(k){ return /^G-/.test(k); });
+  var gtmIds = Object.keys(reg).filter(function(k){ return /^GTM-/.test(k); });
+  var live = gaIds.length > 0;
   var el = document.getElementById('gaStatus');
-  el.textContent = on ? 'Analytics connected' : 'Analytics not connected yet';
-  el.className = 'status ' + (on ? 'on' : 'off');
-  document.getElementById('gaSetup').hidden = on;
+  el.textContent = live ? ('Collecting — ' + gaIds.join(', '))
+                        : (gtmIds.length ? 'Tag Manager loaded, no GA4 tag inside it'
+                                         : 'Nothing connected yet');
+  el.className = 'status ' + (live ? 'on' : 'off');
+  document.getElementById('gaSetup').hidden = live;
+  var hint = document.getElementById('gaHint');
+  if (hint) {
+    hint.innerHTML = gtmIds.length
+      ? 'Tag Manager (<strong>' + gtmIds.join(', ') + '</strong>) is installed and loading on every page. '
+        + 'A container on its own measures nothing — it needs a GA4 tag inside it, '
+        + 'which still requires the Measurement ID below.'
+      : 'No container detected on this page yet.';
+  }
 
   // navigation timing is only final after the load event
   function showLoad(){
@@ -855,10 +895,10 @@ dash_body = f'''{dash_css}
     <h2>Traffic, bounce rate &amp; clicks</h2>
     <p><span id="gaStatus" class="status off">Checking…</span></p>
     <div class="setup" id="gaSetup">
-      <p class="dnote" style="margin:0">Counting visitors takes a service that watches the site around
-      the clock — a static site can't remember its own traffic. The measuring code is already written
-      and sitting in the page, switched off. Connecting a free Google Analytics account turns it on;
-      from that moment every visit, every bounce, and every click is recorded.</p>
+      <p class="dnote" id="gaHint" style="margin:0 0 .9rem"></p>
+      <p class="dnote" style="margin:0">Two pieces are involved. <strong>Tag Manager</strong> (GTM-…) is
+      the delivery van; <strong>Analytics</strong> (G-…) is the thing that actually counts. The van is
+      parked out front — it just has nothing to deliver yet. Getting the Measurement ID finishes it:</p>
       <ol>
         <li>Open <a href="https://analytics.google.com/" target="_blank" rel="noopener">analytics.google.com</a>
             and create a property for lightbox-digital.com.</li>

@@ -3,7 +3,12 @@
   // Conversion events. No-op unless an analytics tag is loaded, so the site
   // behaves identically with tracking switched off.
   const track = (name, params) => {
-    if (typeof window.gtag === 'function') window.gtag('event', name, params || {});
+    const p = params || {};
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', name, p);           // GA4, direct or via GTM
+    } else if (window.dataLayer) {
+      window.dataLayer.push(Object.assign({ event: name }, p));  // GTM only
+    }
   };
   document.addEventListener('click', e => {
     const mail = e.target.closest('a[href^="mailto:"]');
