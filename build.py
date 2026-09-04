@@ -9,11 +9,11 @@ NOTIFY = "jchappellmedia@gmail.com"        # where form submissions are emailed
 
 # Paste a Google Analytics 4 Measurement ID ("G-XXXXXXXXXX") to switch analytics on.
 # Empty = no gtag script is emitted at all.
-GA4_ID = ""
+GA4_ID = "G-XNPRM5NLFM"
 
 # Google Tag Manager container. GTM is a delivery mechanism, not a measurement
 # tool: it only collects data once a GA4 tag is configured inside the container.
-GTM_ID = "GTM-WQC4V454"
+GTM_ID = ""   # container removed — GA4 is wired directly above
 
 GTM_HEAD = """<!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -245,7 +245,7 @@ def footer():
   <button class="lb-close" id="lbClose" aria-label="Close">✕</button>
   <div class="lb-frame" id="lbFrame"></div>
 </div>
-<script src="js/main.js?v=11" defer></script>'''
+<script src="js/main.js?v=12" defer></script>'''
 
 def work_card(v, big=False):
     dur = f"{v['dur']//60}:{v['dur']%60:02d}" if v['dur'] else ""
@@ -328,7 +328,7 @@ def page(fname, title, desc, body, ld_extra=None, og_img="assets/img/hero-poster
 <meta name="twitter:image" content="{BASE}/{og_img}">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 {FONT}
-<link rel="stylesheet" href="css/style.css?v=11">
+<link rel="stylesheet" href="css/style.css?v=12">
 <script type="application/ld+json">{ldjson}</script>
 {analytics()}
 </head>
