@@ -82,6 +82,22 @@ h1 em,h2 em{font-style:normal;color:var(--red)}
 .section{max-width:var(--max);margin:0 auto;padding:clamp(2.6rem,6vw,4.5rem) clamp(1rem,4vw,2.2rem)}
 .cta{max-width:var(--max);margin:0 auto;padding:clamp(3rem,8vw,5.5rem) clamp(1rem,4vw,2.2rem);text-align:center;border-top:1px solid var(--line)}
 .cta p{margin-top:1.8rem}
+.ctasub{max-width:34rem;margin-left:auto;margin-right:auto;color:#cfc6b8;line-height:1.65}
+.ctaact{margin-top:1.6rem}
+.trust{margin-top:2.2rem;font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted);line-height:2}
+.trust span{color:var(--amber);margin:0 .55rem;opacity:.6}
+.mailrow{margin:1.6rem 0 .2rem;font-size:1.05rem}
+.mailrow a{color:var(--amber);border-bottom:1px solid rgba(232,176,75,.4);padding-bottom:2px;text-decoration:none}
+.mailrow a:hover{border-bottom-color:var(--amber)}
+.mailaddr{display:block;margin-top:.5rem;font-family:var(--mono);font-size:.8rem;color:var(--muted)}
+.steps{list-style:none;margin:1.8rem 0 1.6rem;padding:0;display:grid;gap:.9rem;max-width:30rem}
+.steps li{display:grid;grid-template-columns:auto 1fr;gap:.8rem;align-items:center;
+  color:#cfc6b8;font-size:.94rem;line-height:1.55}
+.steps span{font-family:var(--mono);font-size:.7rem;color:var(--amber);border:1px solid var(--line);
+  width:1.7rem;height:1.7rem;display:grid;place-items:center;border-radius:50%}
+.formnote{font-family:var(--mono);font-size:.66rem;letter-spacing:.08em;color:var(--muted);
+  margin:0;text-transform:uppercase;line-height:1.6}
 
 /* reel */
 .reelwrap{max-width:var(--max);margin:0 auto;padding:clamp(2.2rem,5vw,3.6rem) clamp(1rem,4vw,2.2rem) 1rem}

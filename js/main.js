@@ -1,5 +1,16 @@
 // Lightbox Digital — interactions
 (function () {
+  // Conversion events. No-op unless an analytics tag is loaded, so the site
+  // behaves identically with tracking switched off.
+  const track = (name, params) => {
+    if (typeof window.gtag === 'function') window.gtag('event', name, params || {});
+  };
+  document.addEventListener('click', e => {
+    const mail = e.target.closest('a[href^="mailto:"]');
+    if (mail) track('email_click', { page: location.pathname });
+    const cta = e.target.closest('a.btn');
+    if (cta) track('cta_click', { cta_text: cta.textContent.trim(), page: location.pathname });
+  });
   const burger = document.getElementById('burger');
   const links = document.getElementById('navLinks');
   burger?.addEventListener('click', () => {
@@ -85,9 +96,11 @@
 
   document.querySelectorAll('[data-vimeo]').forEach(btn => btn.addEventListener('click', () => {
     const v = btn.dataset.vimeo;
+    track('video_play', { video_title: btn.getAttribute('aria-label') || '', page: location.pathname });
     openLb(`<iframe src="https://player.vimeo.com/video/${v}${v.includes('?') ? '&' : '?'}autoplay=1&title=0&byline=0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="Video player"></iframe>`);
   }));
   document.querySelectorAll('[data-video]').forEach(btn => btn.addEventListener('click', () => {
+    track('video_play', { video_title: btn.getAttribute('aria-label') || '', page: location.pathname });
     openLb(`<video src="${btn.dataset.video}" controls autoplay playsinline></video>`);
   }));
   document.querySelectorAll('[data-img]').forEach(btn => btn.addEventListener('click', () => {
@@ -112,6 +125,7 @@
       }).then(r => r.ok, () => false);
       btn.disabled = false; btn.textContent = 'Send';
       if (mailed) {
+        track('generate_lead', { project_type: f.project || '', page: location.pathname });
         cform.reset();
         status.textContent = "Sent — we'll get back to you within a business day.";
         status.classList.add('ok');

@@ -1,11 +1,17 @@
 #!/usr/bin/env python3
 """Static site generator for Lightbox Digital. Run: python3 build.py"""
-import json, html, pathlib, struct
+import json, html, pathlib, struct, re, datetime
 
 ROOT = pathlib.Path(__file__).parent
 BASE = "https://lightbox-digital.com"
 EMAIL = "josh.lightbox@gmail.com"          # public contact address shown on the site
 NOTIFY = "jchappellmedia@gmail.com"        # where form submissions are emailed
+
+# Paste a Google Analytics 4 Measurement ID ("G-XXXXXXXXXX") to switch analytics on.
+# Empty = no tracking script is emitted at all.
+GA4_ID = ""
+
+DASHBOARD = "studio-9f31c7.html"           # private marketing dashboard (noindex, unlinked)
 SOCIALS = {
     "Instagram": "https://www.instagram.com/joshrchappell/",
     "Facebook": "https://www.facebook.com/people/Lightbox-Digital/61571745974669/",
@@ -164,6 +170,34 @@ FONT = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="pr
 
 def esc(s): return html.escape(s, quote=True)
 
+def analytics():
+    """GA4 snippet — emitted only when GA4_ID is set, so the site ships zero
+    third-party script until analytics is deliberately switched on."""
+    if not GA4_ID:
+        return ""
+    return f'''<script async src="https://www.googletagmanager.com/gtag/js?id={GA4_ID}"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}
+gtag('js',new Date());gtag('config','{GA4_ID}',{{anonymize_ip:true}});</script>'''
+
+def mailto(subject, label=None):
+    href = f"mailto:{EMAIL}?subject={subject.replace(' ', '%20').replace('—', '%E2%80%94')}"
+    return f'<a href="{href}">{label or EMAIL}</a>'
+
+TRUST = (f'<p class="trust reveal">5.0 ★ across {len(REVIEWS)} Google reviews'
+         '<span>·</span>FAA Part 107 licensed &amp; insured'
+         '<span>·</span>Phoenix-based, Valley-wide</p>')
+
+def cta(heading, sub, btn_label="Start a project", subject="Project inquiry"):
+    """One CTA band, used site-wide: a clear next step, a one-tap email path,
+    and quiet facts instead of pressure."""
+    return f'''<section class="cta">
+  <h2 class="reveal">{heading}</h2>
+  <p class="ctasub reveal">{sub}</p>
+  <p class="ctaact reveal"><a class="btn" href="contact.html">{btn_label}</a>
+    <span class="or">or email</span> {mailto(subject)}</p>
+  {TRUST}
+</section>'''
+
 def nav(active):
     items = [("work.html","Our Work"),("about.html","About")]
     links = "".join(f'<a href="{h}"{" class=active" if h==active else ""}>{t}</a>' for h,t in items)
@@ -188,7 +222,7 @@ def footer():
   <button class="lb-close" id="lbClose" aria-label="Close">✕</button>
   <div class="lb-frame" id="lbFrame"></div>
 </div>
-<script src="js/main.js?v=9" defer></script>'''
+<script src="js/main.js?v=10" defer></script>'''
 
 def work_card(v, big=False):
     dur = f"{v['dur']//60}:{v['dur']%60:02d}" if v['dur'] else ""
@@ -236,7 +270,7 @@ ORG = {
     "aggregateRating":{"@type":"AggregateRating","ratingValue":"5.0","reviewCount":str(len(REVIEWS)),"bestRating":"5"},
 }
 
-def page(fname, title, desc, body, ld_extra=None, og_img="assets/img/hero-poster.jpg"):
+def page(fname, title, desc, body, ld_extra=None, og_img="assets/img/hero-poster.jpg", index=True):
     ld = [dict(ORG),
           {"@type":"WebSite","name":"Lightbox Digital","url":BASE+"/","publisher":{"@id":BASE+"/#org"}}]
     crumbs = [{"@type":"ListItem","position":1,"name":"Home","item":BASE+"/"}]
@@ -255,7 +289,7 @@ def page(fname, title, desc, body, ld_extra=None, og_img="assets/img/hero-poster
 <title>{esc(title)}</title>
 <meta name="description" content="{esc(desc)}">
 <link rel="canonical" href="{url}">
-<meta name="robots" content="index, follow, max-image-preview:large, max-video-preview:-1">
+<meta name="robots" content="{'index, follow, max-image-preview:large, max-video-preview:-1' if index else 'noindex, nofollow, noarchive'}">
 <meta name="author" content="Josh Chappell">
 <meta name="geo.region" content="US-AZ"><meta name="geo.placename" content="Phoenix">
 <meta property="og:type" content="website">
@@ -271,8 +305,9 @@ def page(fname, title, desc, body, ld_extra=None, og_img="assets/img/hero-poster
 <meta name="twitter:image" content="{BASE}/{og_img}">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 {FONT}
-<link rel="stylesheet" href="css/style.css?v=9">
+<link rel="stylesheet" href="css/style.css?v=10">
 <script type="application/ld+json">{ldjson}</script>
+{analytics()}
 </head>
 <body>
 {nav(fname)}
@@ -350,10 +385,8 @@ home_body = f'''
   </div>
 </section>
 
-<section class="cta">
-  <h2 class="reveal">Let's make something <em class="squiggle">good</em>.</h2>
-  <p class="reveal"><a class="btn" href="contact.html">Start a project</a> <span class="or">or write to</span> <a href="mailto:{EMAIL}">{EMAIL}</a></p>
-</section>'''
+{cta("Let's make something <em class='squiggle'>good</em>.",
+     "Tell us what you're making. You'll get straight answers, a plan, and a real quote — usually within a business day.")}'''
 
 ld_home = [{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":a}} for q,a in FAQ]}] + video_ld([REEL]+featured)
 W["index.html"] = page("index.html",
@@ -375,10 +408,8 @@ W["work.html"] = page("work.html",
   <div class="grid" id="workgrid">{"".join(work_card(v) for v in [REEL]+WORK)}</div>
   <p class="more reveal">Photos instead? <a href="photography.html">Photography →</a> &nbsp;·&nbsp; Curious about AI? <a href="ai-videos.html">AI Videos →</a></p>
 </section>
-<section class="cta">
-  <h2 class="reveal">Your business belongs up here.</h2>
-  <p class="reveal"><a class="btn" href="contact.html">Start a project</a></p>
-</section>''',
+{cta("Your business belongs up here.",
+     "Send us the rough idea — even a sentence. We'll tell you what it takes to film it, and what it costs.")}''',
     video_ld([REEL]+WORK), og_img="assets/img/cinema-camera.jpg")
 
 # ------------------------------------------------------------------- ai ----
@@ -401,10 +432,9 @@ W["ai-videos.html"] = page("ai-videos.html",
     <p>AI video works best for product spots, concept ads, and ideas that would be expensive to film — exotic locations, impossible camera moves, things that don't exist yet. You still get real direction, real writing, real sound design, and a real editor making it all land. When your story needs real people and real places, we bring the cameras. Often the best answer is both.</p>
   </div>
 </section>
-<section class="cta">
-  <h2 class="reveal">Curious what AI could make for you?</h2>
-  <p class="reveal"><a class="btn" href="contact.html">Ask us</a></p>
-</section>''',
+{cta("Curious what AI could make for you?",
+     "Describe the spot you have in mind. We'll tell you honestly whether AI is the right tool for it — and what it would cost either way.",
+     btn_label="Ask us", subject="AI video question")}''',
     video_ld(ai_vids), og_img="assets/thumbs/daves-garage.jpg")
 
 # ----------------------------------------------------------- photography ----
@@ -425,10 +455,9 @@ W["photography.html"] = page("photography.html",
   <p class="note reveal">Phoenix photographer for corporate headshots, brand and product photography, school portraits and events, family portraits, and sports — across the Valley and Arizona.</p>
 </section>
 <section class="section"><div class="masonry">{photo_items}</div></section>
-<section class="cta">
-  <h2 class="reveal">Need photos?</h2>
-  <p class="reveal"><a class="btn" href="contact.html">Book a shoot</a></p>
-</section>''',
+{cta("Need photos?",
+     "Tell us the occasion and roughly when. You'll hear back with availability and a real quote, usually within a business day.",
+     btn_label="Book a shoot", subject="Photography inquiry")}''',
     [{"@type":"ImageGallery","name":"Lightbox Digital Photography","url":f"{BASE}/photography.html",
       "image":[f"{BASE}/assets/img/{f}" for f,_ in PHOTOS]}],
     og_img="assets/img/videography-bts.jpg")
@@ -485,10 +514,8 @@ W["reviews.html"] = page("reviews.html",
   <h1 class="reveal">{len(REVIEWS)} reviews. <em class="squiggle">Five stars each.</em></h1>
 </section>
 <section class="section"><div class="quotes col">{rev_items}</div></section>
-<section class="cta">
-  <h2 class="reveal">The next one could be yours.</h2>
-  <p class="reveal"><a class="btn" href="contact.html">Start a project</a></p>
-</section>''',
+{cta("The next one could be yours.",
+     "Tell us what you're making. You'll get straight answers, a plan, and a real quote — usually within a business day.")}''',
     ld_rev, og_img="assets/img/bts-filming.jpg")
 
 # --------------------------------------------------------------- contact ----
@@ -502,23 +529,35 @@ W["contact.html"] = page("contact.html",
       <p class="eyebrow reveal">Contact</p>
       <h1 class="reveal">Tell us what you want to <em class="squiggle">make</em>.</h1>
       <div class="prose reveal">
-        <p>Straight answers, a plan, and a real quote — usually within a business day.</p>
-        <p><a href="mailto:{EMAIL}">{EMAIL}</a><br>Phoenix, Arizona</p>
+        <p>Straight answers, a plan, and a real quote — usually within a business day.
+        A sentence is enough to start; you don't need the whole thing figured out.</p>
+      </div>
+      <p class="mailrow reveal">{mailto("Project inquiry", "Write to us directly")}
+        <span class="mailaddr">{EMAIL}</span></p>
+      <ol class="steps reveal">
+        <li><span>1</span> You write — a line about what you're making.</li>
+        <li><span>2</span> We reply within a business day with questions and a plan.</li>
+        <li><span>3</span> You get a fixed quote and a date. The date holds.</li>
+      </ol>
+      <div class="prose reveal">
+        <p>Phoenix, Arizona — filming across the Valley and statewide.</p>
         <p class="fsoc">{" · ".join(f'<a href="{u}" rel="me noopener" target="_blank">{n}</a>' for n,u in SOCIALS.items())}</p>
       </div>
     </div>
     <form class="form reveal" id="contactForm" action="https://formsubmit.co/{NOTIFY}" method="POST">
       <input type="hidden" name="_subject" value="New project inquiry — lightbox-digital.com">
       <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
-      <label>Name <input name="name" required autocomplete="name"></label>
-      <label>Email <input type="email" name="email" required autocomplete="email"></label>
+      <label>Name <input name="name" required autocomplete="name" placeholder="Your name"></label>
+      <label>Email <input type="email" name="email" required autocomplete="email" placeholder="you@company.com"></label>
       <label>What are we making? <select name="project">
         <option>Commercial</option><option>Landing video</option><option>Social content</option>
         <option>Interview</option><option>Event</option><option>Drone</option>
         <option>AI video</option><option>Photography</option><option>Something else</option></select></label>
-      <label>Tell us about it <textarea name="message" rows="5" required></textarea></label>
+      <label>Tell us about it <textarea name="message" rows="5" required
+        placeholder="What it's for, roughly when, and anything you already know about budget. A couple of sentences is plenty."></textarea></label>
       <button class="btn" type="submit">Send</button>
       <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
+      <p class="formnote">Goes straight to Josh. No newsletter, no follow-up sequence.</p>
     </form>
   </div>
 </section>''',
@@ -602,3 +641,308 @@ Arrowhead Lakes Dentistry, Applied Tech, Allen Land & Fire, NCAA event coverage.
 {rev_txt}
 """)
 print("wrote sitemap.xml, robots.txt, llms.txt")
+
+# ------------------------------------------- private marketing dashboard ---
+# Not linked, not in the sitemap, not in llms.txt, and marked noindex — so it
+# has no effect on search or AI-answer results.
+
+def audit(src):
+    t = re.search(r"<title>(.*?)</title>", src, re.S)
+    d = re.search(r'<meta name="description" content="(.*?)">', src, re.S)
+    m = re.search(r'<main id="main">(.*)</main>', src, re.S)
+    txt = re.sub(r"<script.*?</script>", " ", m.group(1) if m else src, flags=re.S)
+    txt = html.unescape(re.sub(r"<[^>]+>", " ", txt))
+    imgs = re.findall(r"<img\s[^>]*>", src)
+    ld = re.search(r'application/ld\+json">(.*?)</script>', src, re.S)
+    types = []
+    if ld:
+        try:
+            types = sorted({str(e.get("@type", "?")) for e in json.loads(ld.group(1))["@graph"]})
+        except Exception:
+            pass
+    return {"title": html.unescape(t.group(1)) if t else "",
+            "desc": html.unescape(d.group(1)) if d else "",
+            "h1": len(re.findall(r"<h1[^>]*>", src)),
+            "words": len(txt.split()), "imgs": len(imgs),
+            "alts": len([i for i in imgs if re.search(r'alt="[^"]', i)]),
+            "schema": types,
+            "links": len(set(re.findall(r'href="([a-z0-9\-]+\.html)"', src))),
+            "ctas": len(re.findall(r'class="btn"', src)),
+            "mailto": len(re.findall(r'href="mailto:', src)),
+            "kb": round(len(src.encode()) / 1024, 1)}
+
+AUD = {f: audit(s) for f, s in W.items() if f not in REDIRECTS and f != "404.html"}
+band = lambda n, lo, hi: "g" if lo <= n <= hi else "w"
+
+seo_rows = "".join(
+    f"<tr><td class='pg'>{f}</td>"
+    f"<td class='{band(len(a['title']),30,65)}'>{len(a['title'])}</td>"
+    f"<td class='{band(len(a['desc']),70,165)}'>{len(a['desc'])}</td>"
+    f"<td class='{'g' if a['words']>=250 else 'w'}'>{a['words']}</td>"
+    f"<td class='{'g' if a['h1']==1 else 'w'}'>{a['h1']}</td>"
+    f"<td class='{'g' if a['alts']==a['imgs'] else 'w'}'>{a['alts']}/{a['imgs']}</td>"
+    f"<td>{len(a['schema'])}</td><td>{a['links']}</td><td>{a['kb']}</td></tr>"
+    for f, a in AUD.items())
+
+conv_rows = "".join(
+    f"<tr><td class='pg'>{f}</td><td class='{'g' if a['ctas'] else 'w'}'>{a['ctas']}</td>"
+    f"<td class='{'g' if a['mailto'] else 'w'}'>{a['mailto']}</td>"
+    f"<td>{'form + email' if f=='contact.html' else 'email'}</td></tr>"
+    for f, a in AUD.items())
+
+vid_rows = "".join(
+    f"<tr><td class='pg'>{esc(v['title'])}</td><td>{CATNAME.get(v['cat'],'Reel')}</td>"
+    f"<td>{v['date']}</td><td>{str(v['dur'])+'s' if v['dur'] else '—'}</td>"
+    f"<td>{'self-hosted' if v['file'] else 'Vimeo'}</td></tr>"
+    for v in [REEL] + WORK)
+
+all_schema = sorted({t for a in AUD.values() for t in a["schema"]})
+total_words = sum(a["words"] for a in AUD.values())
+total_ctas = sum(a["ctas"] for a in AUD.values())
+total_mail = sum(a["mailto"] for a in AUD.values())
+llms_kb = round(len((ROOT / "llms.txt").read_text().encode()) / 1024, 1)
+sitemap_n = (ROOT / "sitemap.xml").read_text().count("<url>")
+built = datetime.datetime.now().strftime("%b %d, %Y at %H:%M")
+
+CHECKLIST = [
+    ("Google Business Profile — the single biggest lever for \"video production near me\"",
+     "https://business.google.com/"),
+    ("Google Search Console — submit sitemap.xml, watch real search queries",
+     "https://search.google.com/search-console"),
+    ("Bing Webmaster Tools — also feeds ChatGPT and Copilot search results",
+     "https://www.bing.com/webmasters"),
+    ("Google Analytics 4 — create a property, paste the ID into build.py",
+     "https://analytics.google.com/"),
+]
+check_items = "".join(
+    f'<li><label><input type="checkbox" data-k="c{i}"> {esc(t)}</label>'
+    f' <a href="{u}" target="_blank" rel="noopener">open →</a></li>'
+    for i, (t, u) in enumerate(CHECKLIST))
+
+dash_css = """
+<style>
+.dash{max-width:1180px;margin:0 auto;padding:2.5rem clamp(1rem,4vw,2.2rem) 4rem}
+.dash h1{font-size:clamp(1.9rem,4vw,2.8rem);margin-bottom:.4rem}
+.dash .sub{font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.dblock{margin-top:3rem}
+.dblock > h2{font-family:var(--mono);font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--amber);border-bottom:1px dashed rgba(232,176,75,.3);padding-bottom:.55rem;margin-bottom:1.2rem}
+.dnote{color:var(--muted);font-size:.88rem;max-width:52rem;line-height:1.6;margin-bottom:1.1rem}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem}
+.card{border:1px solid var(--line);background:var(--film);padding:1.1rem 1.2rem}
+.card b{display:block;font-family:var(--display);font-size:1.9rem;color:var(--cream);line-height:1.1}
+.card span{font-family:var(--mono);font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+table.d{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:.76rem}
+table.d th{text-align:left;font-weight:500;color:var(--amber);letter-spacing:.1em;text-transform:uppercase;
+  font-size:.62rem;padding:.5rem .6rem;border-bottom:1px solid var(--line)}
+table.d td{padding:.5rem .6rem;border-bottom:1px solid rgba(240,233,220,.06);color:#cfc6b8}
+table.d td.pg{color:var(--cream)}
+table.d td.g{color:#7fb069}table.d td.w{color:var(--amber)}
+table.d td.bad{color:var(--red)}
+.scroll{overflow-x:auto}
+.status{display:inline-block;font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;
+  padding:.3rem .7rem;border:1px solid var(--line)}
+.status.on{color:#7fb069;border-color:rgba(127,176,105,.4)}
+.status.off{color:var(--amber);border-color:rgba(232,176,75,.35)}
+.chk{list-style:none;padding:0;display:grid;gap:.8rem}
+.chk li{display:flex;gap:.8rem;align-items:baseline;flex-wrap:wrap;font-size:.9rem;color:#cfc6b8}
+.chk label{display:flex;gap:.6rem;align-items:baseline;cursor:pointer;flex:1;min-width:16rem}
+.chk a{font-family:var(--mono);font-size:.68rem;color:var(--amber)}
+.chk input:checked + *,.chk label:has(:checked){opacity:.45;text-decoration:line-through}
+.tiny{font-family:var(--mono);font-size:.66rem;letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
+.setup{border:1px solid var(--line);background:var(--film);padding:1.2rem 1.3rem;margin-top:1rem}
+.setup ol{margin:.7rem 0 0 1.1rem;color:#cfc6b8;font-size:.9rem;line-height:1.8}
+.setup code{font-family:var(--mono);font-size:.8rem;color:var(--amber);background:#0a0806;padding:.15rem .4rem}
+</style>"""
+
+dash_js = """
+<script>
+(function(){
+  var PAGES = __PAGES__, ASSETS = __ASSETS__;
+  var tb = document.getElementById('liveRows'), sum = document.getElementById('liveSum');
+  async function check(u){
+    var t0 = performance.now();
+    try{
+      var r = await fetch(u, {cache:'no-store'});
+      var b = await r.blob();
+      return {u:u, ok:r.ok, s:r.status, ms:Math.round(performance.now()-t0), kb:b.size/1024};
+    }catch(e){ return {u:u, ok:false, s:'ERR', ms:0, kb:0}; }
+  }
+  async function run(){
+    tb.innerHTML = '<tr><td colspan="4">checking…</td></tr>';
+    var all = PAGES.concat(ASSETS), out = [], totalKb = 0, slowest = 0;
+    for (var i=0;i<all.length;i++){
+      var r = await check(all[i]);
+      out.push(r); totalKb += r.kb; if (r.ms > slowest) slowest = r.ms;
+    }
+    tb.innerHTML = out.map(function(r){
+      return '<tr><td class="pg">'+r.u+'</td><td class="'+(r.ok?'g':'bad')+'">'+(r.ok?'200 OK':r.s)+
+             '</td><td>'+r.kb.toFixed(1)+'</td><td>'+r.ms+'</td></tr>';
+    }).join('');
+    var bad = out.filter(function(r){return !r.ok;}).length;
+    sum.textContent = out.length+' resources · '+totalKb.toFixed(0)+' KB total · slowest '+slowest+
+                      ' ms · '+(bad? bad+' FAILING':'all reachable');
+    sum.className = 'tiny' + (bad ? ' bad' : '');
+  }
+  document.getElementById('recheck').addEventListener('click', run);
+  run();
+
+  var on = (typeof window.gtag === 'function');
+  var el = document.getElementById('gaStatus');
+  el.textContent = on ? 'Analytics connected' : 'Analytics not connected yet';
+  el.className = 'status ' + (on ? 'on' : 'off');
+  document.getElementById('gaSetup').hidden = on;
+
+  // navigation timing is only final after the load event
+  function showLoad(){
+    var nav = performance.getEntriesByType('navigation')[0];
+    var ms = (nav && nav.duration) ? nav.duration : performance.now();
+    document.getElementById('loadMs').textContent = Math.round(ms) + ' ms';
+  }
+  if (document.readyState === 'complete') showLoad();
+  else addEventListener('load', function(){ setTimeout(showLoad, 0); });
+
+  document.querySelectorAll('.chk input').forEach(function(box){
+    var k = 'lbx-' + box.dataset.k;
+    try{ box.checked = localStorage.getItem(k) === '1'; }catch(e){}
+    box.addEventListener('change', function(){
+      try{ localStorage.setItem(k, box.checked ? '1' : '0'); }catch(e){}
+    });
+  });
+})();
+</script>"""
+
+dash_js = (dash_js
+           .replace("__PAGES__", json.dumps(list(AUD.keys())))
+           .replace("__ASSETS__", json.dumps(["css/style.css", "js/main.js", "sitemap.xml",
+                                              "robots.txt", "llms.txt",
+                                              "assets/video/hero-720.mp4"])))
+
+dash_body = f'''{dash_css}
+<section class="dash">
+  <p class="sub">Private · not indexed · not linked from the site</p>
+  <h1>Studio dashboard</h1>
+  <p class="sub">Built {built} · rebuilt every time the site deploys</p>
+
+  <div class="dblock">
+    <h2>At a glance</h2>
+    <div class="cards">
+      <div class="card"><b>{len(AUD)}</b><span>Live pages</span></div>
+      <div class="card"><b>{len([REEL])+len(WORK)}</b><span>Films published</span></div>
+      <div class="card"><b>{len(PHOTOS)}</b><span>Photos</span></div>
+      <div class="card"><b>{len(REVIEWS)}</b><span>5★ reviews</span></div>
+      <div class="card"><b>{total_words:,}</b><span>Indexable words</span></div>
+      <div class="card"><b>{total_ctas}</b><span>Calls to action</span></div>
+      <div class="card"><b>{total_mail}</b><span>Email links</span></div>
+      <div class="card"><b>{sitemap_n}</b><span>URLs in sitemap</span></div>
+    </div>
+  </div>
+
+  <div class="dblock">
+    <h2>Live site check</h2>
+    <p class="dnote">Runs in your browser every time you open this page — it actually fetches each
+    page and asset from the live site, so a broken link or a bloated file shows up here first.
+    This page loaded in <strong id="loadMs">—</strong>.</p>
+    <p><button class="btn" id="recheck" type="button">Re-run checks</button></p>
+    <div class="scroll"><table class="d">
+      <thead><tr><th>Resource</th><th>Status</th><th>KB</th><th>ms</th></tr></thead>
+      <tbody id="liveRows"></tbody>
+    </table></div>
+    <p class="tiny" id="liveSum" style="margin-top:.9rem"></p>
+  </div>
+
+  <div class="dblock">
+    <h2>Traffic, bounce rate &amp; clicks</h2>
+    <p><span id="gaStatus" class="status off">Checking…</span></p>
+    <div class="setup" id="gaSetup">
+      <p class="dnote" style="margin:0">Counting visitors takes a service that watches the site around
+      the clock — a static site can't remember its own traffic. The measuring code is already written
+      and sitting in the page, switched off. Connecting a free Google Analytics account turns it on;
+      from that moment every visit, every bounce, and every click is recorded.</p>
+      <ol>
+        <li>Open <a href="https://analytics.google.com/" target="_blank" rel="noopener">analytics.google.com</a>
+            and create a property for lightbox-digital.com.</li>
+        <li>Copy the Measurement ID — it looks like <code>G-XXXXXXXXXX</code>.</li>
+        <li>Send it to Claude, or paste it into <code>GA4_ID</code> at the top of <code>build.py</code>.</li>
+      </ol>
+      <p class="tiny" style="margin-top:.9rem">Data starts from the day it's connected — it can't
+      look backwards, so earlier traffic is gone either way.</p>
+    </div>
+    <p class="dnote" style="margin-top:1.2rem">Once connected, here's where each answer lives.
+    Everything in the right column is already coded on this site.</p>
+    <div class="scroll"><table class="d">
+      <thead><tr><th>What you want to know</th><th>Where it shows up</th></tr></thead>
+      <tbody>
+        <tr><td class="pg">How many people came, and from where</td>
+            <td>Reports › Acquisition › Traffic acquisition — splits Google, Instagram, direct</td></tr>
+        <tr><td class="pg">Bounce rate</td>
+            <td>Reports › Engagement › Pages and screens — GA calls it engagement rate; bounce is the mirror of it</td></tr>
+        <tr><td class="pg">What people click</td>
+            <td>Reports › Engagement › Events — <strong>email_click</strong>, <strong>cta_click</strong>,
+            <strong>video_play</strong>, <strong>generate_lead</strong></td></tr>
+        <tr><td class="pg">Which films actually get watched</td>
+            <td>Events › <strong>video_play</strong> — each row is a film title</td></tr>
+        <tr><td class="pg">How many turned into an email</td>
+            <td>Events › <strong>generate_lead</strong> (form sent) and <strong>email_click</strong> (wrote directly)</td></tr>
+        <tr><td class="pg">Which pages people land on and leave from</td>
+            <td>Reports › Engagement › Landing page</td></tr>
+      </tbody>
+    </table></div>
+    <p class="dnote" style="margin-top:1.1rem">Search Console answers a different question — what people
+    typed into Google to find you, and where you rank for it. Worth connecting alongside:
+    <a href="https://search.google.com/search-console" target="_blank" rel="noopener">search.google.com/search-console</a>.</p>
+  </div>
+
+  <div class="dblock">
+    <h2>Path to an email</h2>
+    <p class="dnote">Every page ends with a way to reach you. This is the map of that — buttons that
+    lead to the contact form, and one-tap email links that skip the form entirely.</p>
+    <div class="scroll"><table class="d">
+      <thead><tr><th>Page</th><th>Buttons</th><th>Email links</th><th>How they reach you</th></tr></thead>
+      <tbody>{conv_rows}</tbody>
+    </table></div>
+  </div>
+
+  <div class="dblock">
+    <h2>Search health, page by page</h2>
+    <p class="dnote">Green is in the ideal range, amber is worth a look. Title 30–65 characters,
+    description 70–165, 250+ words of real copy, exactly one H1, every image with alt text.</p>
+    <div class="scroll"><table class="d">
+      <thead><tr><th>Page</th><th>Title len</th><th>Desc len</th><th>Words</th><th>H1</th>
+      <th>Alt text</th><th>Schema</th><th>Links</th><th>KB</th></tr></thead>
+      <tbody>{seo_rows}</tbody>
+    </table></div>
+  </div>
+
+  <div class="dblock">
+    <h2>AI answer-engine readiness</h2>
+    <div class="cards">
+      <div class="card"><b>{len(AI_BOTS)}</b><span>AI crawlers allowed</span></div>
+      <div class="card"><b>{llms_kb} KB</b><span>llms.txt brief</span></div>
+      <div class="card"><b>{len(FAQ)}</b><span>Q&amp;A pairs</span></div>
+      <div class="card"><b>{len(all_schema)}</b><span>Schema types</span></div>
+    </div>
+    <p class="dnote" style="margin-top:1.1rem">Schema published across the site:
+    {esc(", ".join(all_schema))}.</p>
+  </div>
+
+  <div class="dblock">
+    <h2>Film inventory</h2>
+    <div class="scroll"><table class="d">
+      <thead><tr><th>Title</th><th>Category</th><th>Date</th><th>Length</th><th>Hosted</th></tr></thead>
+      <tbody>{vid_rows}</tbody>
+    </table></div>
+  </div>
+
+  <div class="dblock">
+    <h2>Off-site setup — the things code can't do</h2>
+    <p class="dnote">These live outside the website and move the needle more than anything on it.
+    Ticks are saved in this browser.</p>
+    <ul class="chk">{check_items}</ul>
+  </div>
+</section>
+{dash_js}'''
+
+(ROOT / DASHBOARD).write_text(page(DASHBOARD, "Studio Dashboard — Lightbox Digital",
+    "Private marketing dashboard.", dash_body, index=False))
+print("wrote", DASHBOARD, "(private, noindex)")
