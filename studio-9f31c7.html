@@ -23,7 +23,7 @@
 <meta name="twitter:image" content="https://lightbox-digital.com/assets/img/hero-poster.jpg">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Anton&family=Fraunces:ital,opsz,wght@1,9..144,340..640&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=12">
+<link rel="stylesheet" href="css/style.css?v=13">
 <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "ProfessionalService", "@id": "https://lightbox-digital.com/#org", "name": "Lightbox Digital", "description": "Video production and photography in Phoenix, Arizona. Commercials, brand stories, event films, drone footage, AI-generated video, and photography.", "url": "https://lightbox-digital.com/", "logo": "https://lightbox-digital.com/assets/img/mark-ink.png", "image": "https://lightbox-digital.com/assets/img/hero-poster.jpg", "email": "josh.lightbox@gmail.com", "founder": {"@type": "Person", "name": "Josh Chappell", "jobTitle": "Founder", "sameAs": "https://www.instagram.com/joshrchappell/"}, "address": {"@type": "PostalAddress", "addressLocality": "Phoenix", "addressRegion": "AZ", "addressCountry": "US"}, "geo": {"@type": "GeoCoordinates", "latitude": 33.4484, "longitude": -112.074}, "areaServed": [{"@type": "City", "name": "Phoenix"}, {"@type": "City", "name": "Scottsdale"}, {"@type": "City", "name": "Mesa"}, {"@type": "City", "name": "Tempe"}, {"@type": "City", "name": "Chandler"}, {"@type": "City", "name": "Gilbert"}, {"@type": "City", "name": "Glendale"}, {"@type": "State", "name": "Arizona"}], "hasOfferCatalog": {"@type": "OfferCatalog", "name": "Video production & photography services", "itemListElement": [{"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Commercials", "description": "Concept to final cut."}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Landing videos", "description": "The first thing your website says."}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Social content", "description": "Cut for the feed, vertical and wide."}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Interviews", "description": "Good light, clean sound, real people."}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Events", "description": "The day, kept."}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Drone", "description": "FAA Part 107 licensed aerials."}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Photography", "description": "Headshots, brands, events."}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "AI video", "description": "Generated commercials, made carefully."}}]}, "priceRange": "$$", "sameAs": ["https://www.instagram.com/joshrchappell/", "https://www.facebook.com/people/Lightbox-Digital/61571745974669/", "https://x.com/LightboxDig", "https://vimeo.com/lightboxdigital"], "knowsAbout": ["video production", "commercials", "AI video generation", "drone videography", "brand photography", "event videography", "corporate interviews"], "aggregateRating": {"@type": "AggregateRating", "ratingValue": "5.0", "reviewCount": "11", "bestRating": "5"}}, {"@type": "WebSite", "name": "Lightbox Digital", "url": "https://lightbox-digital.com/", "publisher": {"@id": "https://lightbox-digital.com/#org"}}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://lightbox-digital.com/"}, {"@type": "ListItem", "position": 2, "name": "Studio Dashboard", "item": "https://lightbox-digital.com/studio-9f31c7.html"}]}]}</script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-XNPRM5NLFM"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
@@ -71,11 +71,25 @@ table.d td.bad{color:var(--red)}
 .setup{border:1px solid var(--line);background:var(--film);padding:1.2rem 1.3rem;margin-top:1rem}
 .setup ol{margin:.7rem 0 0 1.1rem;color:#cfc6b8;font-size:.9rem;line-height:1.8}
 .setup code{font-family:var(--mono);font-size:.8rem;color:var(--amber);background:#0a0806;padding:.15rem .4rem}
+.cfgrow{display:grid;gap:.9rem;margin-top:1.1rem;max-width:34rem}
+.cfgrow label{display:grid;gap:.35rem;font-family:var(--mono);font-size:.64rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--amber)}
+.cfgrow input{background:#0a0806;border:1px solid var(--line);color:var(--cream);padding:.6rem .7rem;
+  font-family:var(--mono);font-size:.8rem}
+.cfgrow input:focus{outline:2px solid var(--amber);border-color:transparent}
+.spark{width:100%;height:66px;display:block;margin:1.4rem 0 .3rem}
+.spark polyline{fill:none;stroke:var(--amber);stroke-width:2;vector-effect:non-scaling-stroke}
+.spark path{fill:rgba(232,176,75,.10);stroke:none}
+.err{color:var(--red);font-family:var(--mono);font-size:.72rem;line-height:1.6}
+.evrow strong{color:var(--amber)}
+details.ref summary{font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);cursor:pointer;padding:.5rem 0}
+details.ref[open] summary{color:var(--amber)}
 </style>
 <section class="dash">
   <p class="sub">Private · not indexed · not linked from the site</p>
   <h1>Studio dashboard</h1>
-  <p class="sub">Built Sep 04, 2026 at 17:46 · rebuilt every time the site deploys</p>
+  <p class="sub">Built Sep 04, 2026 at 20:24 · rebuilt every time the site deploys</p>
 
   <div class="dblock">
     <h2>At a glance</h2>
@@ -107,43 +121,67 @@ table.d td.bad{color:var(--red)}
   <div class="dblock">
     <h2>Traffic, bounce rate &amp; clicks</h2>
     <p><span id="gaStatus" class="status off">Checking…</span></p>
-    <div class="setup" id="gaSetup">
-      <p class="dnote" id="gaHint" style="margin:0 0 .9rem"></p>
-      <p class="dnote" style="margin:0">Two pieces are involved. <strong>Tag Manager</strong> (GTM-…) is
-      the delivery van; <strong>Analytics</strong> (G-…) is the thing that actually counts. The van is
-      parked out front — it just has nothing to deliver yet. Getting the Measurement ID finishes it:</p>
+
+    <div class="setup" id="gaCfg" hidden>
+      <p class="dnote" style="margin:0">The tag on your site <em>writes</em> data to Google Analytics.
+      Pulling those numbers back onto this page needs two more IDs. Neither is a password — the figures
+      only appear after you sign in with your Google account, so anyone else who opens this page sees
+      an empty panel.</p>
       <ol>
-        <li>Open <a href="https://analytics.google.com/" target="_blank" rel="noopener">analytics.google.com</a>
-            and create a property for lightbox-digital.com.</li>
-        <li>Copy the Measurement ID — it looks like <code>G-XXXXXXXXXX</code>.</li>
-        <li>Send it to Claude, or paste it into <code>GA4_ID</code> at the top of <code>build.py</code>.</li>
+        <li><strong>Property ID</strong> — in Analytics: <em>Admin › Property settings</em>. A plain
+        number like <code>123456789</code>, not the G- code.</li>
+        <li><strong>OAuth Client ID</strong> — at
+        <a href="https://console.cloud.google.com/apis/credentials" target="_blank" rel="noopener">console.cloud.google.com</a>:
+        make a project, enable the <em>Google Analytics Data API</em>, then
+        <em>Credentials › Create credentials › OAuth client ID › Web application</em>. Under
+        <em>Authorised JavaScript origins</em> add <code>https://lightbox-digital.com</code>.
+        Copy the ID ending <code>.apps.googleusercontent.com</code>.</li>
       </ol>
-      <p class="tiny" style="margin-top:.9rem">Data starts from the day it's connected — it can't
-      look backwards, so earlier traffic is gone either way.</p>
+      <div class="cfgrow">
+        <label>GA4 Property ID <input id="cfgProp" placeholder="123456789" inputmode="numeric"></label>
+        <label>OAuth Client ID <input id="cfgClient" placeholder="…apps.googleusercontent.com"></label>
+        <p><button class="btn" id="cfgSave" type="button">Save</button></p>
+      </div>
     </div>
-    <p class="dnote" style="margin-top:1.2rem">Once connected, here's where each answer lives.
-    Everything in the right column is already coded on this site.</p>
-    <div class="scroll"><table class="d">
-      <thead><tr><th>What you want to know</th><th>Where it shows up</th></tr></thead>
-      <tbody>
-        <tr><td class="pg">How many people came, and from where</td>
-            <td>Reports › Acquisition › Traffic acquisition — splits Google, Instagram, direct</td></tr>
-        <tr><td class="pg">Bounce rate</td>
-            <td>Reports › Engagement › Pages and screens — GA calls it engagement rate; bounce is the mirror of it</td></tr>
-        <tr><td class="pg">What people click</td>
-            <td>Reports › Engagement › Events — <strong>email_click</strong>, <strong>cta_click</strong>,
-            <strong>video_play</strong>, <strong>generate_lead</strong></td></tr>
-        <tr><td class="pg">Which films actually get watched</td>
-            <td>Events › <strong>video_play</strong> — each row is a film title</td></tr>
-        <tr><td class="pg">How many turned into an email</td>
-            <td>Events › <strong>generate_lead</strong> (form sent) and <strong>email_click</strong> (wrote directly)</td></tr>
-        <tr><td class="pg">Which pages people land on and leave from</td>
-            <td>Reports › Engagement › Landing page</td></tr>
-      </tbody>
-    </table></div>
-    <p class="dnote" style="margin-top:1.1rem">Search Console answers a different question — what people
-    typed into Google to find you, and where you rank for it. Worth connecting alongside:
-    <a href="https://search.google.com/search-console" target="_blank" rel="noopener">search.google.com/search-console</a>.</p>
+
+    <p id="gaAuthRow" hidden><button class="btn" id="gaSignIn" type="button">Show my numbers</button>
+      <span class="tiny" style="margin-left:1rem">Signs in with Google · read-only</span></p>
+
+    <div id="gaData" hidden>
+      <div class="cards" id="gaCards"></div>
+      <div id="gaSpark"></div>
+      <div class="dblock"><h2>Most-viewed pages</h2><div id="gaPages"></div></div>
+      <div class="dblock"><h2>How they found you</h2><div id="gaSrc"></div></div>
+      <div class="dblock"><h2>What they clicked</h2><div id="gaEv"></div></div>
+      <p class="tiny" id="gaMeta" style="margin-top:1.2rem"></p>
+      <p style="margin-top:.8rem"><button class="btn" id="gaRefresh" type="button">Refresh</button>
+        <a href="#" id="gaReset" class="tiny" style="margin-left:1.2rem">reset connection</a></p>
+    </div>
+
+    <p id="gaErr" class="err" style="margin-top:1.1rem"></p>
+
+    <details class="ref" style="margin-top:1.6rem">
+      <summary>Where these numbers live inside Google Analytics itself</summary>
+      <div class="scroll"><table class="d">
+        <thead><tr><th>What you want to know</th><th>Where it shows up</th></tr></thead>
+        <tbody>
+          <tr><td class="pg">How many people came, and from where</td>
+              <td>Reports › Acquisition › Traffic acquisition</td></tr>
+          <tr><td class="pg">Bounce rate</td>
+              <td>Reports › Engagement › Pages and screens — GA shows engagement rate; bounce is its mirror</td></tr>
+          <tr><td class="pg">What people click</td>
+              <td>Reports › Engagement › Events — <strong>email_click</strong>, <strong>cta_click</strong>,
+              <strong>video_play</strong>, <strong>generate_lead</strong></td></tr>
+          <tr><td class="pg">Which films get watched</td>
+              <td>Events › <strong>video_play</strong> — one row per film title</td></tr>
+          <tr><td class="pg">How many turned into an email</td>
+              <td>Events › <strong>generate_lead</strong> and <strong>email_click</strong></td></tr>
+        </tbody>
+      </table></div>
+      <p class="dnote" style="margin-top:1rem">Search Console answers a different question — what people
+      typed into Google to find you, and where you rank:
+      <a href="https://search.google.com/search-console" target="_blank" rel="noopener">search.google.com/search-console</a>.</p>
+    </details>
   </div>
 
   <div class="dblock">
@@ -238,15 +276,6 @@ table.d td.bad{color:var(--red)}
                         : (gtmIds.length ? 'Tag Manager loaded, no GA4 tag inside it'
                                          : 'Nothing connected yet');
   el.className = 'status ' + (live ? 'on' : 'off');
-  document.getElementById('gaSetup').hidden = live;
-  var hint = document.getElementById('gaHint');
-  if (hint) {
-    hint.innerHTML = gtmIds.length
-      ? 'Tag Manager (<strong>' + gtmIds.join(', ') + '</strong>) is installed and loading on every page. '
-        + 'A container on its own measures nothing — it needs a GA4 tag inside it, '
-        + 'which still requires the Measurement ID below.'
-      : 'No container detected on this page yet.';
-  }
 
   // navigation timing is only final after the load event
   function showLoad(){
@@ -266,6 +295,148 @@ table.d td.bad{color:var(--red)}
   });
 })();
 </script>
+
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script>
+(function(){
+  var K = { prop:'lbx-ga-prop', client:'lbx-ga-client' };
+  var $ = function(i){ return document.getElementById(i); };
+  var cfg = { prop:'', client:'' }, token = null;
+
+  function get(k, fb){ try { return localStorage.getItem(k) || fb || ''; } catch(e){ return fb || ''; } }
+  function loadCfg(){ cfg.prop = get(K.prop, ''); cfg.client = get(K.client, ''); }
+  function say(msg, ok){ var e = $('gaErr'); e.className = ok ? 'tiny' : 'err'; e.textContent = msg || ''; }
+  function paint(){
+    var ready = !!(cfg.prop && cfg.client);
+    $('gaCfg').hidden = ready;
+    $('gaAuthRow').hidden = !ready || !!token;
+    $('gaData').hidden = !token;
+    if (cfg.prop) $('cfgProp').value = cfg.prop;
+    if (cfg.client) $('cfgClient').value = cfg.client;
+  }
+
+  $('cfgSave').addEventListener('click', function(){
+    var pr = $('cfgProp').value.trim().replace(/[^0-9]/g,'');
+    var cl = $('cfgClient').value.trim();
+    if (!pr || !cl) { say('Both IDs are needed.'); return; }
+    try { localStorage.setItem(K.prop, pr); localStorage.setItem(K.client, cl); } catch(e){}
+    cfg.prop = pr; cfg.client = cl; say(''); paint();
+  });
+  $('gaReset').addEventListener('click', function(e){
+    e.preventDefault();
+    try { localStorage.removeItem(K.prop); localStorage.removeItem(K.client); } catch(x){}
+    cfg = { prop:'', client:'' }; token = null; say(''); paint();
+  });
+
+  function auth(next){
+    if (!(window.google && google.accounts && google.accounts.oauth2)) {
+      say("Google's sign-in library did not load — check the connection and reload."); return;
+    }
+    try {
+      google.accounts.oauth2.initTokenClient({
+        client_id: cfg.client,
+        scope: 'https://www.googleapis.com/auth/analytics.readonly',
+        callback: function(r){
+          if (r.error) { say('Sign-in failed: ' + r.error); return; }
+          token = r.access_token; say(''); paint(); next();
+        }
+      }).requestAccessToken();
+    } catch(e){ say('Could not start sign-in: ' + e.message); }
+  }
+
+  async function api(method, body){
+    var r = await fetch('https://analyticsdata.googleapis.com/v1beta/properties/' + cfg.prop + ':' + method, {
+      method:'POST',
+      headers:{ Authorization:'Bearer ' + token, 'Content-Type':'application/json' },
+      body: JSON.stringify(body)
+    });
+    if (!r.ok) throw new Error('HTTP ' + r.status + ' — ' + (await r.text()).slice(0,240));
+    return r.json();
+  }
+
+  var M = function(a){ return a.map(function(n){ return { name:n }; }); };
+  var RANGE = [{ startDate:'28daysAgo', endDate:'today' }];
+  function val(res,row,i){ try { return res.rows[row].metricValues[i].value; } catch(e){ return '0'; } }
+  function dim(res,row,i){ try { return res.rows[row].dimensionValues[i].value; } catch(e){ return ''; } }
+  function num(v){ return Number(v||0).toLocaleString(); }
+  function mins(sec){ sec = Math.round(Number(sec)||0); return Math.floor(sec/60)+'m '+('0'+(sec%60)).slice(-2)+'s'; }
+  function esc(s){ return String(s).replace(/[&<>]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c]; }); }
+  function card(b,s){ return '<div class="card"><b>'+b+'</b><span>'+s+'</span></div>'; }
+  function table(head, rows, cols){
+    return '<div class="scroll"><table class="d"><thead><tr>' +
+      head.map(function(h){ return '<th>'+h+'</th>'; }).join('') + '</tr></thead><tbody>' +
+      (rows || '<tr><td colspan="'+cols+'">Nothing recorded in this window yet.</td></tr>') +
+      '</tbody></table></div>';
+  }
+  function spark(rows){
+    if (!rows || !rows.length) return '';
+    var v = rows.map(function(r){ return Number(r.metricValues[0].value)||0; });
+    var max = Math.max.apply(null, v) || 1, n = v.length;
+    var pts = v.map(function(x,i){ return (i/((n-1)||1)*100).toFixed(2)+','+(100-x/max*100).toFixed(2); });
+    return '<svg class="spark" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">'
+         + '<path d="M0,100 L'+pts.join(' L')+' L100,100 Z"/>'
+         + '<polyline points="'+pts.join(' ')+'"/></svg>';
+  }
+
+  async function refresh(){
+    say('Fetching from Google Analytics…', true);
+    try {
+      var r = await Promise.all([
+        api('runReport', { dateRanges:RANGE, metrics:M(['activeUsers','newUsers','sessions','screenPageViews','bounceRate','averageSessionDuration']) }),
+        api('runReport', { dateRanges:RANGE, dimensions:M(['date']), metrics:M(['activeUsers']), orderBys:[{ dimension:{ dimensionName:'date' } }] }),
+        api('runReport', { dateRanges:RANGE, dimensions:M(['pagePath']), metrics:M(['screenPageViews','bounceRate']), limit:10, orderBys:[{ metric:{ metricName:'screenPageViews' }, desc:true }] }),
+        api('runReport', { dateRanges:RANGE, dimensions:M(['sessionDefaultChannelGroup']), metrics:M(['sessions']), limit:8, orderBys:[{ metric:{ metricName:'sessions' }, desc:true }] }),
+        api('runReport', { dateRanges:RANGE, dimensions:M(['eventName']), metrics:M(['eventCount']), limit:15, orderBys:[{ metric:{ metricName:'eventCount' }, desc:true }] }),
+        api('runRealtimeReport', { metrics:M(['activeUsers']) })
+      ]);
+      var tot=r[0], day=r[1], pages=r[2], src=r[3], ev=r[4], rt=r[5];
+
+      $('gaCards').innerHTML =
+        card(num(val(tot,0,0)), 'Visitors · 28 days') +
+        card(num(val(tot,0,1)), 'First-time') +
+        card(num(val(tot,0,2)), 'Sessions') +
+        card(num(val(tot,0,3)), 'Page views') +
+        card((Number(val(tot,0,4))*100).toFixed(1)+'%', 'Bounce rate') +
+        card(mins(val(tot,0,5)), 'Average visit') +
+        card(num(val(rt,0,0)), 'On the site now');
+
+      $('gaSpark').innerHTML = spark(day.rows) + '<p class="tiny">Visitors per day · last 28 days</p>';
+
+      $('gaPages').innerHTML = table(['Page','Views','Bounce'],
+        (pages.rows||[]).map(function(_,i){
+          return '<tr><td class="pg">'+esc(dim(pages,i,0))+'</td><td>'+num(val(pages,i,0))+
+                 '</td><td>'+(Number(val(pages,i,1))*100).toFixed(0)+'%</td></tr>'; }).join(''), 3);
+
+      $('gaSrc').innerHTML = table(['How they found you','Sessions'],
+        (src.rows||[]).map(function(_,i){
+          return '<tr><td class="pg">'+esc(dim(src,i,0))+'</td><td>'+num(val(src,i,0))+'</td></tr>';
+        }).join(''), 2);
+
+      var LABEL = { email_click:'Clicked your email address', generate_lead:'Sent the contact form',
+                    cta_click:'Pressed a button', video_play:'Played a film' };
+      $('gaEv').innerHTML = table(['What visitors did','Times'],
+        (ev.rows||[]).map(function(_,i){
+          var n = dim(ev,i,0), l = LABEL[n];
+          return '<tr class="evrow"><td class="pg">'+(l ? '<strong>'+l+'</strong> — ' : '')+esc(n)+
+                 '</td><td>'+num(val(ev,i,0))+'</td></tr>'; }).join(''), 2);
+
+      $('gaMeta').textContent = 'Property ' + cfg.prop + ' · last 28 days · pulled ' + new Date().toLocaleTimeString();
+      say('');
+    } catch(e){
+      var m = String(e.message || e);
+      if (m.indexOf('403') > -1) m += '   That usually means the Analytics Data API is not enabled in the Cloud project, or this Google account cannot read that property.';
+      if (m.indexOf('401') > -1) m += '   The sign-in expired — click "Show my numbers" again.';
+      if (m.indexOf('404') > -1) m += '   Check the Property ID: it is the numeric one in Admin › Property settings, not the G- code.';
+      say(m);
+    }
+  }
+
+  $('gaSignIn').addEventListener('click', function(){ auth(refresh); });
+  $('gaRefresh').addEventListener('click', function(){ token ? refresh() : auth(refresh); });
+  loadCfg(); paint();
+})();
+</script>
+
 </main>
 <footer class="footer">
   <div class="footer-inner">
@@ -280,6 +451,6 @@ table.d td.bad{color:var(--red)}
   <button class="lb-close" id="lbClose" aria-label="Close">✕</button>
   <div class="lb-frame" id="lbFrame"></div>
 </div>
-<script src="js/main.js?v=12" defer></script>
+<script src="js/main.js?v=13" defer></script>
 </body>
 </html>

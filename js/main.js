@@ -123,7 +123,9 @@
       if (f._honey) { cform.reset(); return; } // bot trap
       btn.disabled = true; btn.textContent = 'Sending…';
       status.textContent = ''; status.className = 'form-status';
-      const mailed = await fetch('https://formsubmit.co/ajax/jchappellmedia@gmail.com', {
+      // endpoint follows the form's action, so the address lives in one place
+      const endpoint = cform.action.replace('formsubmit.co/', 'formsubmit.co/ajax/');
+      const mailed = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify({ name: f.name, email: f.email, project: f.project, message: f.message, _subject: f._subject })
