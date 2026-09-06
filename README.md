@@ -8,8 +8,9 @@ Design: a darkroom / light-table theme — film-frame thumbnails with glowing sp
 
 ## Structure
 - Pages: home, work (filterable: Commercials / Stories / Events & Spaces / AI), AI videos, photography, about, reviews, contact, 404
+- Ranking / geo landings: Phoenix video production, Phoenix commercial video, Phoenix drone (Part 107), Scottsdale, Tempe
 - 20 films: 19 Vimeo embeds + self-hosted AI commercial (assets/video/daves-garage.mp4)
-- Old page URLs (portfolio/education/construction/medical/commercial) redirect to work.html
+- Old page URLs (portfolio/education/construction/medical/commercial/our-work/construstion-trades-industrial) redirect to work.html via meta-refresh stubs (GitHub Pages does not support true HTTP 301s on a plain static site)
 
 ## Editing
 Content lives in `build.py` (WORK list, reviews, services, FAQ, copy). After editing:
@@ -24,5 +25,5 @@ Submissions are emailed to jchappellmedia@gmail.com via FormSubmit (AJAX from `j
 with the form's `action` posting to FormSubmit directly as a no-JS fallback).
 
 ## SEO
-JSON-LD (ProfessionalService, VideoObject, FAQPage, Reviews, ImageGallery), unique metas,
-OG/Twitter cards, sitemap.xml, robots.txt, llms.txt.
+JSON-LD (ProfessionalService + LocalBusiness, VideoObject, FAQPage, Reviews, ImageGallery), unique metas,
+OG/Twitter cards, sitemap.xml, robots.txt (AI crawlers allowed), llms.txt.
