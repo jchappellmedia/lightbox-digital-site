@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-<url><loc>https://lightbox-digital.com/</loc><lastmod>2026-07-10</lastmod><priority>1.0</priority></url>
-<url><loc>https://lightbox-digital.com/work.html</loc><lastmod>2026-07-10</lastmod><priority>0.9</priority></url>
-<url><loc>https://lightbox-digital.com/ai-videos.html</loc><lastmod>2026-07-10</lastmod><priority>0.9</priority></url>
-<url><loc>https://lightbox-digital.com/photography.html</loc><lastmod>2026-07-10</lastmod><priority>0.8</priority></url>
-<url><loc>https://lightbox-digital.com/about.html</loc><lastmod>2026-07-10</lastmod><priority>0.8</priority></url>
-<url><loc>https://lightbox-digital.com/reviews.html</loc><lastmod>2026-07-10</lastmod><priority>0.8</priority></url>
-<url><loc>https://lightbox-digital.com/contact.html</loc><lastmod>2026-07-10</lastmod><priority>0.9</priority></url>
+<url><loc>https://lightbox-digital.com/</loc><lastmod>2026-09-06</lastmod><priority>1.0</priority></url>
+<url><loc>https://lightbox-digital.com/work.html</loc><lastmod>2026-09-06</lastmod><priority>0.9</priority></url>
+<url><loc>https://lightbox-digital.com/ai-videos.html</loc><lastmod>2026-09-06</lastmod><priority>0.9</priority></url>
+<url><loc>https://lightbox-digital.com/photography.html</loc><lastmod>2026-09-06</lastmod><priority>0.85</priority></url>
+<url><loc>https://lightbox-digital.com/about.html</loc><lastmod>2026-09-06</lastmod><priority>0.8</priority></url>
+<url><loc>https://lightbox-digital.com/reviews.html</loc><lastmod>2026-09-06</lastmod><priority>0.8</priority></url>
+<url><loc>https://lightbox-digital.com/contact.html</loc><lastmod>2026-09-06</lastmod><priority>0.9</priority></url>
+<url><loc>https://lightbox-digital.com/phoenix-video-production.html</loc><lastmod>2026-09-06</lastmod><priority>0.9</priority></url>
+<url><loc>https://lightbox-digital.com/phoenix-commercial-video.html</loc><lastmod>2026-09-06</lastmod><priority>0.9</priority></url>
+<url><loc>https://lightbox-digital.com/phoenix-drone-video.html</loc><lastmod>2026-09-06</lastmod><priority>0.85</priority></url>
+<url><loc>https://lightbox-digital.com/scottsdale-video-production.html</loc><lastmod>2026-09-06</lastmod><priority>0.85</priority></url>
+<url><loc>https://lightbox-digital.com/tempe-video-production.html</loc><lastmod>2026-09-06</lastmod><priority>0.85</priority></url>
 </urlset>

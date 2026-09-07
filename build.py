@@ -235,7 +235,7 @@ def nav(active):
     items = [("work.html","Our Work"),("about.html","About")]
     links = "".join(f'<a href="{h}"{" class=active" if h==active else ""}>{t}</a>' for h,t in items)
     return f'''<header class="nav">
-  <a class="brand" href="index.html" aria-label="Lightbox Digital home"><img src="assets/img/mark-ink.png" alt="" width="30" height="31"><span>Lightbox&nbsp;Digital</span></a>
+  <a class="brand" href="index.html" aria-label="Lightbox Digital home"><img src="assets/img/mark-ink.png" alt="Lightbox Digital" width="30" height="31"><span>Lightbox&nbsp;Digital</span></a>
   <nav class="nav-links" id="navLinks" aria-label="Primary">{links}<a href="contact.html" class="contact-link{' active' if active=='contact.html' else ''}">Contact</a></nav>
   <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false"><span></span><span></span></button>
 </header>'''
@@ -244,10 +244,10 @@ def footer():
     soc = " · ".join(f'<a href="{u}" rel="me noopener" target="_blank">{n}</a>' for n,u in SOCIALS.items())
     return f'''<footer class="footer">
   <div class="footer-inner">
-    <p class="fmark"><img src="assets/img/mark-ink.png" alt="" width="26" height="27"> Lightbox Digital</p>
+    <p class="fmark"><img src="assets/img/mark-ink.png" alt="Lightbox Digital" width="26" height="27"> Lightbox Digital</p>
     <p>Video production &amp; photography — Phoenix, Arizona.<br><a href="mailto:{EMAIL}">{EMAIL}</a></p>
     <p class="fsoc">{soc}</p>
-    <p class="fnav"><a href="work.html">Our Work</a> · <a href="ai-videos.html">AI Videos</a> · <a href="photography.html">Photography</a> · <a href="about.html">About</a> · <a href="reviews.html">Reviews</a> · <a href="contact.html">Contact</a></p>
+    <p class="fnav"><a href="work.html">Our Work</a> · <a href="phoenix-video-production.html">Phoenix Video</a> · <a href="phoenix-commercial-video.html">Commercials</a> · <a href="phoenix-drone-video.html">Drone</a> · <a href="ai-videos.html">AI Videos</a> · <a href="photography.html">Photography</a> · <a href="scottsdale-video-production.html">Scottsdale</a> · <a href="tempe-video-production.html">Tempe</a> · <a href="about.html">About</a> · <a href="reviews.html">Reviews</a> · <a href="contact.html">Contact</a></p>
     <p class="fcopy">© 2026 Joshua Chappell LLC · Serving Phoenix, Scottsdale, Mesa, Tempe, Chandler, Gilbert &amp; all of Arizona</p>
   </div>
 </footer>
@@ -288,7 +288,7 @@ def video_ld(vs):
     return out
 
 ORG = {
-    "@type":"ProfessionalService","@id":BASE+"/#org","name":"Lightbox Digital",
+    "@type":["ProfessionalService","LocalBusiness"],"@id":BASE+"/#org","name":"Lightbox Digital",
     "description":"Video production and photography in Phoenix, Arizona. Commercials, brand stories, event films, drone footage, AI-generated video, and photography.",
     "url":BASE+"/","logo":BASE+"/assets/img/mark-ink.png","image":BASE+"/assets/img/hero-poster.jpg",
     "email":EMAIL,
@@ -299,7 +299,7 @@ ORG = {
     "hasOfferCatalog":{"@type":"OfferCatalog","name":"Video production & photography services",
         "itemListElement":[{"@type":"Offer","itemOffered":{"@type":"Service","name":t,"description":d}} for t,d in SERVICES]},
     "priceRange":"$$","sameAs":list(SOCIALS.values()),
-    "knowsAbout":["video production","commercials","AI video generation","drone videography","brand photography","event videography","corporate interviews"],
+    "knowsAbout":["video production","commercials","AI video generation","drone videography","brand photography","event videography","corporate interviews","corporate headshots"],
     "aggregateRating":{"@type":"AggregateRating","ratingValue":"5.0","reviewCount":str(len(REVIEWS)),"bestRating":"5"},
 }
 
@@ -390,6 +390,13 @@ home_body = f'''
 <section class="section">
   <p class="label reveal">02 — What we make</p>
   <ul class="svc">{svc_list}</ul>
+  <p class="more reveal"><a href="phoenix-video-production.html">Phoenix video production</a> ·
+    <a href="phoenix-commercial-video.html">Commercials</a> ·
+    <a href="phoenix-drone-video.html">Drone</a> ·
+    <a href="ai-videos.html">AI</a> ·
+    <a href="photography.html">Photography</a> ·
+    <a href="scottsdale-video-production.html">Scottsdale</a> ·
+    <a href="tempe-video-production.html">Tempe</a></p>
 </section>
 
 <section class="section">
@@ -440,7 +447,7 @@ W["work.html"] = page("work.html",
 </section>
 <section class="section">
   <div class="grid" id="workgrid">{"".join(work_card(v) for v in [REEL]+WORK)}</div>
-  <p class="more reveal">Photos instead? <a href="photography.html">Photography →</a> &nbsp;·&nbsp; Curious about AI? <a href="ai-videos.html">AI Videos →</a></p>
+  <p class="more reveal">Photos instead? <a href="photography.html">Photography →</a> &nbsp;·&nbsp; Curious about AI? <a href="ai-videos.html">AI Videos →</a> &nbsp;·&nbsp; <a href="phoenix-video-production.html">Phoenix video production →</a></p>
 </section>
 {cta("Your business belongs up here.",
      "Send us the rough idea — even a sentence. We'll tell you what it takes to film it, and what it costs.")}''',
@@ -448,9 +455,18 @@ W["work.html"] = page("work.html",
 
 # ------------------------------------------------------------------- ai ----
 ai_vids = [v for v in WORK if v["cat"]=="ai"]
+ai_faq = [
+    ("When does AI video make sense?",
+     "Product spots, concept ads, and ideas that would be expensive or impossible to film — exotic locations, impossible camera moves, things that don't exist yet. If the story needs real people in a real room, we bring cameras."),
+    ("Is AI video just a prompt and a render?",
+     "No. You still get real direction, real writing, real sound design, and a real editor. AI generates the footage. Craft still makes the commercial."),
+    ("Can AI and live-action mix?",
+     "Often the best answer is both — AI for what cameras can't reach, live footage for the moments that need a human face."),
+]
+ai_faq_html = "".join(f'<details class="faq reveal"><summary>{esc(q)}</summary><p>{esc(a)}</p></details>' for q,a in ai_faq)
 W["ai-videos.html"] = page("ai-videos.html",
     "AI Video Production in Phoenix — AI-Generated Commercials | Lightbox Digital",
-    "AI-generated commercials from Lightbox Digital in Phoenix, AZ. Full ads made with AI — a fraction of the cost of a shoot. Watch Dave's Garage.",
+    "AI-generated commercials from Lightbox Digital in Phoenix, AZ. Full ads made with AI — a fraction of the cost of a shoot. Watch Dave's Garage and High Plains Provisions.",
     f'''
 <section class="intro small">
   <p class="eyebrow reveal">AI videos</p>
@@ -461,15 +477,22 @@ W["ai-videos.html"] = page("ai-videos.html",
   <div class="grid">{"".join(work_card(v, big=True) for v in ai_vids)}</div>
 </section>
 <section class="section">
-  <p class="label reveal">Good to know</p>
-  <div class="prose reveal">
-    <p>AI video works best for product spots, concept ads, and ideas that would be expensive to film — exotic locations, impossible camera moves, things that don't exist yet. You still get real direction, real writing, real sound design, and a real editor making it all land. When your story needs real people and real places, we bring the cameras. Often the best answer is both.</p>
+  <p class="label reveal">How we use AI</p>
+  <div class="prose">
+    <p class="reveal">Lightbox Digital treats AI like another camera — not a gimmick. The spots on this page are complete commercials: written, directed, scored, and cut with the same standards as our live shoots for clients like Grand Canyon University, Blandford Homes, and Butterfly Wonderland.</p>
+    <p class="reveal">AI video works best when the idea outruns the budget. Need a desert highway at golden hour, a warehouse that doesn't exist, or a product that hasn't shipped? We generate the frames, then edit them like film. You get a finished ad you can run — not a demo reel of prompts.</p>
+    <p class="reveal">When your story needs real people and real places, we still bring the cinema cameras, lighting, and FAA Part&nbsp;107 drone work. Many projects mix both. See the <a href="work.html">full work</a>, <a href="phoenix-commercial-video.html">Phoenix commercial video</a>, or <a href="phoenix-video-production.html">Phoenix video production</a> pillar for live-action work.</p>
   </div>
+</section>
+<section class="section">
+  <p class="label reveal">Questions</p>
+  <div class="faqwrap">{ai_faq_html}</div>
 </section>
 {cta("Curious what AI could make for you?",
      "Describe the spot you have in mind. We'll tell you honestly whether AI is the right tool for it — and what it would cost either way.",
      btn_label="Ask us", subject="AI video question")}''',
-    video_ld(ai_vids), og_img="assets/thumbs/daves-garage.jpg")
+    video_ld(ai_vids) + [{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":a}} for q,a in ai_faq]}],
+    og_img="assets/thumbs/daves-garage.jpg")
 
 # ----------------------------------------------------------- photography ----
 def photo_item(f, alt):
@@ -479,6 +502,15 @@ def photo_item(f, alt):
             f'<img src="assets/img/{f}" alt="{esc(alt)}"{wh} loading="lazy"></button></figure>')
 
 photo_items = "".join(photo_item(f, alt) for f, alt in PHOTOS)
+photo_faq = [
+    ("Do you shoot corporate headshots in Phoenix?",
+     "Yes. Studio and on-location headshots for teams, executives, and personal brands — lit and edited with the same care as our films."),
+    ("Can photography and video happen on the same day?",
+     "Often. Many clients book both so the look stays consistent across the website, LinkedIn, and the brand film."),
+    ("Where do you shoot?",
+     "Phoenix and the Valley — Scottsdale, Tempe, Mesa, Chandler, Gilbert, Glendale — plus statewide travel when the job calls for it."),
+]
+photo_faq_html = "".join(f'<details class="faq reveal"><summary>{esc(q)}</summary><p>{esc(a)}</p></details>' for q,a in photo_faq)
 W["photography.html"] = page("photography.html",
     "Phoenix Photographer — Portraits, Events & Brand Photography | Lightbox Digital",
     "Brand photography, headshots, portraits, school and event photos in Phoenix, AZ — with the same eye as the films.",
@@ -488,12 +520,25 @@ W["photography.html"] = page("photography.html",
   <h1 class="reveal">Same eye, <em class="squiggle">one frame at a time</em>.</h1>
   <p class="note reveal">Phoenix photographer for corporate headshots, brand and product photography, school portraits and events, family portraits, and sports — across the Valley and Arizona.</p>
 </section>
+<section class="section">
+  <p class="label reveal">Corporate headshots &amp; brand photography</p>
+  <div class="prose">
+    <p class="reveal">Your headshot is often the first frame someone trusts. We shoot clean, modern corporate headshots and brand photography for Phoenix businesses — teams, founders, clinics, schools, and trades — with the same lighting discipline we use on commercials for Arrowhead Lakes Dentistry, Applied Tech, and Allen Land &amp; Fire.</p>
+    <p class="reveal">Need a set for LinkedIn, a website team page, or a campaign stills package that matches a <a href="phoenix-commercial-video.html">brand video</a>? We plan wardrobe, backdrop, and crop so the photos work hard after the shoot. Reviews call out the polish: professionally done photos, refined and delivered for quick review, creative vision that helps tell a client's story.</p>
+    <p class="reveal">Also available: school portraits and events, family sessions, sports action, and behind-the-scenes stills on video days. Browse <a href="work.html">the films</a> or the <a href="phoenix-video-production.html">Phoenix video production</a> page if you need motion too.</p>
+  </div>
+</section>
 <section class="section"><div class="masonry">{photo_items}</div></section>
+<section class="section">
+  <p class="label reveal">Questions</p>
+  <div class="faqwrap">{photo_faq_html}</div>
+</section>
 {cta("Need photos?",
      "Tell us the occasion and roughly when. You'll hear back with availability and a real quote, usually within a business day.",
      btn_label="Book a shoot", subject="Photography inquiry")}''',
     [{"@type":"ImageGallery","name":"Lightbox Digital Photography","url":f"{BASE}/photography.html",
-      "image":[f"{BASE}/assets/img/{f}" for f,_ in PHOTOS]}],
+      "image":[f"{BASE}/assets/img/{f}" for f,_ in PHOTOS]},
+     {"@type":"FAQPage","mainEntity":[{"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":a}} for q,a in photo_faq]}],
     og_img="assets/img/videography-bts.jpg")
 
 # ----------------------------------------------------------------- about ----
@@ -597,6 +642,163 @@ W["contact.html"] = page("contact.html",
 </section>''',
     [{"@type":"ContactPage","name":"Contact Lightbox Digital","url":BASE+"/contact.html"}])
 
+# ------------------------------------------- ranking / geo landing pages ----
+def landing(fname, title, desc, eyebrow, h1, note, sections, faqs, og_img="assets/img/hero-poster.jpg", extra_ld=None):
+    """Shared layout for SEO service and geo pages — same design system, unique copy."""
+    faq_html = "".join(f'<details class="faq reveal"><summary>{esc(q)}</summary><p>{esc(a)}</p></details>' for q,a in faqs) if faqs else ""
+    body_sections = "".join(
+        f'''<section class="section">
+  <p class="label reveal">{esc(label)}</p>
+  <div class="prose">{"".join(f'<p class="reveal">{html}</p>' for html in paras)}</div>
+</section>''' for label, paras in sections)
+    faq_block = f'''<section class="section">
+  <p class="label reveal">Questions</p>
+  <div class="faqwrap">{faq_html}</div>
+</section>''' if faqs else ""
+    body = f'''
+<section class="intro small">
+  <p class="eyebrow reveal">{eyebrow}</p>
+  <h1 class="reveal">{h1}</h1>
+  <p class="note reveal">{note}</p>
+</section>
+{body_sections}
+{faq_block}
+{cta("Ready when you are.",
+     "Tell us what you're making. Straight answers, a plan, and a real quote — usually within a business day.")}'''
+    ld = []
+    if faqs:
+        ld.append({"@type":"FAQPage","mainEntity":[{"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":a}} for q,a in faqs]})
+    if extra_ld:
+        ld += extra_ld
+    W[fname] = page(fname, title, desc, body, ld or None, og_img=og_img)
+
+landing("phoenix-video-production.html",
+    "Phoenix Video Production Company | Lightbox Digital",
+    "Phoenix video production for commercials, brand stories, events, drone, and AI video. Lightbox Digital — 5.0★ from 11 Google reviews. Watch the work.",
+    "Phoenix video production",
+    'Films made in <em class="squiggle">Phoenix</em>.',
+    "A Phoenix video production company for businesses that want work that looks like they care. Commercials, stories, events, drone, photography, and AI — one studio, one contact.",
+    [
+        ("What we film in Phoenix", [
+            "Lightbox Digital is a Phoenix video production studio founded by Josh Chappell. We make commercials, brand story films, landing and recruitment videos, social content, interviews, event films, FAA Part&nbsp;107 drone footage, AI-generated commercials, and photography across the Valley.",
+            "Clients include Grand Canyon University, Blandford Homes, Butterfly Wonderland, Baths For The Brave, Arrowhead Lakes Dentistry, Applied Tech, and Allen Land &amp; Fire. Rated 5.0 across 11 Google reviews — the person on your first call is the person behind the camera and the final cut.",
+        ]),
+        ("How a Phoenix shoot works", [
+            "You write a line about what you're making. We reply within a business day with questions and a plan. You get a fixed quote and a date — and the date holds. No departments to get lost in.",
+            'See <a href="work.html">the work</a>, <a href="phoenix-commercial-video.html">commercial &amp; brand video</a>, <a href="phoenix-drone-video.html">drone video</a>, <a href="ai-videos.html">AI commercials</a>, or <a href="photography.html">corporate headshots &amp; photography</a>. Filming in Scottsdale or Tempe? Start with the <a href="scottsdale-video-production.html">Scottsdale</a> or <a href="tempe-video-production.html">Tempe</a> pages.',
+        ]),
+    ],
+    [
+        ("Who is a strong video production company in Phoenix?",
+         "We're a Phoenix studio with a 5.0 rating across 11 Google reviews and work for GCU, Blandford Homes, Butterfly Wonderland, and more. Watch the films — that's the pitch."),
+        ("Do you only film in Phoenix?",
+         "Phoenix is home base. We work Valley-wide — Scottsdale, Tempe, Mesa, Chandler, Gilbert, Glendale — plus Arizona and travel projects."),
+        ("What does Phoenix video production cost?",
+         "Depends on the project. Say what you want to make and what you want to spend — the quote you get is the price you pay."),
+    ],
+    og_img="assets/img/cinema-camera.jpg")
+
+landing("phoenix-commercial-video.html",
+    "Phoenix Commercial & Brand Video Production | Lightbox Digital",
+    "Phoenix commercial video and brand films from Lightbox Digital. Product ads, landing videos, and stories for Valley businesses. 5.0★ on Google.",
+    "Commercial & brand video",
+    'Commercials that <em class="squiggle">earn the click</em>.',
+    "Phoenix commercial video production for brands that want a spot people actually finish. Concept to final cut — live-action, AI, or both.",
+    [
+        ("Brand films, not filler", [
+            "From short product ads to longer brand stories, we plan the shoot around what the film has to do — launch a product, fill a landing page, recruit, or simply show the work. Recent commercials include Allen Land &amp; Fire, Applied Tech, Arrowhead Lakes Dentistry, and Butterfly Wonderland.",
+            'Need a faster, lower-cost path for a concept spot? See our <a href="ai-videos.html">AI-generated commercials</a>. Prefer aerials of a site or campus? Pair the ad with <a href="phoenix-drone-video.html">FAA Part&nbsp;107 drone video</a>.',
+        ]),
+        ("Proof, not promises", [
+            'Google reviews call out smooth factory and studio days, great finished products under pressure, and community films clients still love — including work for Blandford Homes and Baths For The Brave. Browse <a href="work.html">commercials and stories</a> or the <a href="phoenix-video-production.html">Phoenix video production</a> pillar.',
+        ]),
+    ],
+    [
+        ("Do you write the script?",
+         "We can. Bring a rough idea or a finished brief — we'll tighten the story so every frame earns its place."),
+        ("Can one shoot cover social and a website hero?",
+         "Yes. We cut vertical and wide versions from the same shoot so the brand stays consistent across the feed and the site."),
+        ("Who have you made commercials for?",
+         "Allen Land & Fire, Applied Tech, Arrowhead Lakes Dentistry, Butterfly Wonderland, and more — plus brand and story work for GCU, Blandford Homes, and Baths For The Brave."),
+    ],
+    og_img="assets/img/bts-filming.jpg")
+
+landing("phoenix-drone-video.html",
+    "Phoenix Drone Video — FAA Part 107 Licensed | Lightbox Digital",
+    "FAA Part 107 licensed drone video in Phoenix and the Valley. Aerials for commercials, real estate, construction, campuses, and events. Insured.",
+    "Drone video · FAA Part 107",
+    'Aerials, done <em class="squiggle">by the book</em>.',
+    "Phoenix drone video from an FAA Part&nbsp;107 certified and insured operator. Clean aerials that lock into your commercial, property film, or campus story.",
+    [
+        ("Licensed aerial videography", [
+            "Every drone flight is FAA Part&nbsp;107 licensed and insured. We use aerials when they serve the story — site overviews, construction progress, campus establishing shots, event coverage — not as decoration.",
+            'Drone work pairs naturally with <a href="phoenix-commercial-video.html">commercial video</a>, real-estate films like Blandford Homes\' Mandarin Grove piece, and larger <a href="phoenix-video-production.html">Phoenix video production</a> projects. Need stills of the same location? See <a href="photography.html">photography</a>.',
+        ]),
+        ("Valley-wide, on a schedule that holds", [
+            "Based in Phoenix and flying across Scottsdale, Tempe, Mesa, Chandler, and the rest of the Valley. You get a plan, a fixed quote, and a date that holds — the same process as our ground shoots.",
+        ]),
+    ],
+    [
+        ("Is the drone work licensed?",
+         "Yes — FAA Part 107 certified and insured."),
+        ("Can drone footage be part of a larger commercial?",
+         "That's the usual path. Aerials open the film; interviews and b-roll finish it."),
+        ("Do you fly for construction and industrial sites?",
+         "Yes. Progress films and site stories for trades and industrial clients — including work in the spirit of projects like Applied Tech and Allen Land & Fire."),
+    ],
+    og_img="assets/img/cinema-camera.jpg")
+
+landing("scottsdale-video-production.html",
+    "Scottsdale Video Production | Lightbox Digital",
+    "Video production in Scottsdale, AZ from Lightbox Digital. Commercials, brand films, events, drone, and photography for Scottsdale businesses. 5.0★.",
+    "Scottsdale video production",
+    'Scottsdale films, <em class="squiggle">Phoenix craft</em>.',
+    "Video production for Scottsdale brands that want cinema-level work without a bloated crew. We film in Scottsdale regularly — same studio, same standards.",
+    [
+        ("What we make for Scottsdale clients", [
+            "Commercials, landing videos, social content, interviews, event films, FAA Part&nbsp;107 drone footage, AI commercials, and photography. Scottsdale sits in our core Valley service area alongside Phoenix, Tempe, Mesa, Chandler, Gilbert, and Glendale.",
+            "The studio's body of work includes brand and story films for Grand Canyon University, Blandford Homes, Butterfly Wonderland, Baths For The Brave, Arrowhead Lakes Dentistry, Applied Tech, and Allen Land &amp; Fire — 5.0 across 11 Google reviews.",
+        ]),
+        ("Why Scottsdale teams book Lightbox", [
+            'One contact from first call to final cut. Honest quotes. Dates that hold. Start with <a href="phoenix-video-production.html">Phoenix video production</a>, <a href="phoenix-commercial-video.html">commercials</a>, <a href="work.html">the work</a>, or neighboring <a href="tempe-video-production.html">Tempe video production</a>.',
+        ]),
+    ],
+    [
+        ("Do you travel to Scottsdale for shoots?",
+         "Yes — Scottsdale is part of our regular Valley coverage, not a special trip fee surprise."),
+        ("Can you film events in Scottsdale?",
+         "Yes. Event films distilled for the moments that matter, cut for the web and social."),
+        ("Do you offer photography in Scottsdale too?",
+         "Yes — corporate headshots, brand stills, and event photography. See the photography page."),
+    ],
+    og_img="assets/img/hero-poster.jpg")
+
+landing("tempe-video-production.html",
+    "Tempe Video Production | Lightbox Digital",
+    "Video production in Tempe, AZ from Lightbox Digital. Commercials, campus and brand films, drone, AI video, and photography. Phoenix studio, Valley-wide.",
+    "Tempe video production",
+    'Tempe stories, <em class="squiggle">shot right</em>.',
+    "Video production for Tempe businesses, campuses, and brands. Lightbox Digital films across Tempe with the same craft we bring to Phoenix and Scottsdale.",
+    [
+        ("Commercials, campus films, and more", [
+            "From brand spots to recruitment and day-in-the-life stories, we film in Tempe for schools, companies, and organizations that want clear, confident work. Education and brand storytelling are a core lane — including projects for Grand Canyon University and related school films in our portfolio.",
+            'Also available on Tempe jobs: FAA Part&nbsp;107 drone, <a href="ai-videos.html">AI-generated commercials</a>, and <a href="photography.html">corporate headshots &amp; photography</a>.',
+        ]),
+        ("Valley studio, local shoots", [
+            'Based in Phoenix, filming Tempe, Scottsdale, Mesa, Chandler, and beyond. See <a href="phoenix-video-production.html">Phoenix video production</a>, <a href="scottsdale-video-production.html">Scottsdale</a>, <a href="phoenix-commercial-video.html">commercials</a>, or <a href="work.html">all work</a>.',
+        ]),
+    ],
+    [
+        ("Do you film on Tempe campuses and business sites?",
+         "Yes. We plan access, sound, and lighting so the day stays calm and the film stays sharp."),
+        ("How fast can we get a quote?",
+         "Usually within a business day once we know what you're making."),
+        ("Is drone filming available in Tempe?",
+         "Yes — FAA Part 107 licensed and insured aerials when the story needs them."),
+    ],
+    og_img="assets/img/bts-interview.jpg")
+
+
 # ------------------------------------------------------------------- 404 ----
 W["404.html"] = page("404.html", "Page Not Found | Lightbox Digital",
     "That page didn't make the final cut. Head back to the work.",
@@ -605,26 +807,49 @@ W["404.html"] = page("404.html", "Page Not Found | Lightbox Digital",
 <p class="note"><a class="btn" href="index.html">Back to the homepage</a></p></section>''')
 
 # ------------------------------------------------------- redirect stubs ----
-REDIRECTS = {"portfolio.html":"work.html", "education.html":"work.html",
-             "construction.html":"work.html", "medical.html":"work.html",
-             "commercial.html":"work.html"}
+# Flat .html stubs cover old site paths. Directory index.html stubs cover
+# extensionless Squarespace URLs that still 404 in search (GH Pages cannot
+# issue true HTTP 301s on a plain static site — meta-refresh + canonical).
+REDIRECTS = {
+    "portfolio.html": "work.html",
+    "education.html": "work.html",
+    "construction.html": "work.html",
+    "medical.html": "work.html",
+    "commercial.html": "work.html",
+    "our-work.html": "work.html",
+    "our-work/index.html": "work.html",
+    "construstion-trades-industrial.html": "work.html",  # legacy typo URL
+    "construstion-trades-industrial/index.html": "work.html",
+}
+def redirect_html(new):
+    return f'''<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="robots" content="noindex, follow">
+<meta http-equiv="refresh" content="0;url=/{new}">
+<link rel="canonical" href="{BASE}/{new}">
+<title>Moved — Lightbox Digital</title>
+<script>location.replace("/{new}");</script>
+</head>
+<body><p>This page moved to <a href="/{new}">{new}</a>.</p></body></html>'''
 for old, new in REDIRECTS.items():
-    W[old] = f'''<!doctype html><html lang="en"><head><meta charset="utf-8">
-<meta http-equiv="refresh" content="0;url={new}"><link rel="canonical" href="{BASE}/{new}">
-<title>Moved — Lightbox Digital</title></head>
-<body><p>This page moved to <a href="{new}">{new}</a>.</p></body></html>'''
+    W[old] = redirect_html(new)
 
 # ------------------------------------------------------------ write files ---
-for f, src in W.items():
-    (ROOT / f).write_text(src)
-    print("wrote", f, len(src)//1024, "KB")
+for f, html_src in W.items():
+    out = ROOT / f
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(html_src)
+    print("wrote", f, len(html_src)//1024, "KB")
 
-pages = [p for p in W if p not in REDIRECTS and p != "404.html"]
+pages = [p for p in W if p not in REDIRECTS and p != "404.html" and not str(p).endswith("/index.html")]
 sm = ['<?xml version="1.0" encoding="UTF-8"?>','<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
-pri = {"index.html":"1.0","work.html":"0.9","ai-videos.html":"0.9","contact.html":"0.9"}
-for p in pages:
-    loc = BASE+"/" if p=="index.html" else f"{BASE}/{p}"
-    sm.append(f"<url><loc>{loc}</loc><lastmod>2026-07-10</lastmod><priority>{pri.get(p,'0.8')}</priority></url>")
+pri = {"index.html":"1.0","work.html":"0.9","ai-videos.html":"0.9","contact.html":"0.9",
+       "phoenix-video-production.html":"0.9","phoenix-commercial-video.html":"0.9",
+       "phoenix-drone-video.html":"0.85","photography.html":"0.85",
+       "scottsdale-video-production.html":"0.85","tempe-video-production.html":"0.85"}
+today = datetime.date.today().isoformat()
+for pg in pages:
+    loc = BASE+"/" if pg=="index.html" else f"{BASE}/{pg}"
+    sm.append(f"<url><loc>{loc}</loc><lastmod>{today}</lastmod><priority>{pri.get(pg,'0.8')}</priority></url>")
 sm.append("</urlset>")
 (ROOT/"sitemap.xml").write_text("\n".join(sm))
 
@@ -659,8 +884,13 @@ Pricing: quoted per project — the quote you get is the price you pay.
 ## Pages
 - [Home]({BASE}/): demo reel, selected work, services, FAQ
 - [Work]({BASE}/work.html): {len(WORK)+1} films — commercials, stories, events & spaces, AI
+- [Phoenix Video Production]({BASE}/phoenix-video-production.html): pillar page for Phoenix video production
+- [Phoenix Commercial Video]({BASE}/phoenix-commercial-video.html): commercials & brand films
+- [Phoenix Drone Video]({BASE}/phoenix-drone-video.html): FAA Part 107 licensed aerials
 - [AI Videos]({BASE}/ai-videos.html): AI-generated commercials, incl. "Dave's Garage"
-- [Photography]({BASE}/photography.html): headshots, brand, school portraits, sports, events
+- [Photography]({BASE}/photography.html): corporate headshots, brand, school portraits, sports, events
+- [Scottsdale Video Production]({BASE}/scottsdale-video-production.html): Scottsdale geo page
+- [Tempe Video Production]({BASE}/tempe-video-production.html): Tempe geo page
 - [About]({BASE}/about.html): the studio, founded by Josh Chappell
 - [Reviews]({BASE}/reviews.html): {len(REVIEWS)} five-star Google reviews
 - [Contact]({BASE}/contact.html): inquiry form — replies within a business day
@@ -705,7 +935,7 @@ def audit(src):
             "mailto": len(re.findall(r'href="mailto:', src)),
             "kb": round(len(src.encode()) / 1024, 1)}
 
-AUD = {f: audit(s) for f, s in W.items() if f not in REDIRECTS and f != "404.html"}
+AUD = {f: audit(s) for f, s in W.items() if f not in REDIRECTS and f != "404.html" and not str(f).endswith("/index.html")}
 band = lambda n, lo, hi: "g" if lo <= n <= hi else "w"
 
 seo_rows = "".join(

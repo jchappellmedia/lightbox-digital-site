@@ -25,8 +25,13 @@ Pricing: quoted per project — the quote you get is the price you pay.
 ## Pages
 - [Home](https://lightbox-digital.com/): demo reel, selected work, services, FAQ
 - [Work](https://lightbox-digital.com/work.html): 21 films — commercials, stories, events & spaces, AI
+- [Phoenix Video Production](https://lightbox-digital.com/phoenix-video-production.html): pillar page for Phoenix video production
+- [Phoenix Commercial Video](https://lightbox-digital.com/phoenix-commercial-video.html): commercials & brand films
+- [Phoenix Drone Video](https://lightbox-digital.com/phoenix-drone-video.html): FAA Part 107 licensed aerials
 - [AI Videos](https://lightbox-digital.com/ai-videos.html): AI-generated commercials, incl. "Dave's Garage"
-- [Photography](https://lightbox-digital.com/photography.html): headshots, brand, school portraits, sports, events
+- [Photography](https://lightbox-digital.com/photography.html): corporate headshots, brand, school portraits, sports, events
+- [Scottsdale Video Production](https://lightbox-digital.com/scottsdale-video-production.html): Scottsdale geo page
+- [Tempe Video Production](https://lightbox-digital.com/tempe-video-production.html): Tempe geo page
 - [About](https://lightbox-digital.com/about.html): the studio, founded by Josh Chappell
 - [Reviews](https://lightbox-digital.com/reviews.html): 11 five-star Google reviews
 - [Contact](https://lightbox-digital.com/contact.html): inquiry form — replies within a business day
