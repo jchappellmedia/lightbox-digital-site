@@ -512,8 +512,8 @@ photo_faq = [
 ]
 photo_faq_html = "".join(f'<details class="faq reveal"><summary>{esc(q)}</summary><p>{esc(a)}</p></details>' for q,a in photo_faq)
 W["photography.html"] = page("photography.html",
-    "Phoenix Photographer — Corporate Headshots, Brand & Events | Lightbox Digital",
-    "Corporate headshots, brand photography, school and event photos in Phoenix, AZ — same cinematic eye as our films. Book a shoot.",
+    "Phoenix Photographer — Portraits, Events & Brand Photography | Lightbox Digital",
+    "Brand photography, headshots, portraits, school and event photos in Phoenix, AZ — with the same eye as the films.",
     f'''
 <section class="intro small">
   <p class="eyebrow reveal">Photography</p>
