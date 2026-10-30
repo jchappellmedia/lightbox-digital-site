@@ -23,6 +23,12 @@ When changing CSS/JS, bump the `?v=` number in build.py so browsers fetch the ne
 Submissions are emailed to jchappellmedia@gmail.com via FormSubmit (AJAX from `js/main.js`,
 with the form's `action` posting to FormSubmit directly as a no-JS fallback).
 
-## SEO
+## SEO & indexing
+- sitemap.xml carries image and video extensions (all films on work.html, photos on
+  photography/about) and per-page lastmod that only changes when a page's output changes
+- IndexNow: a key file at the root plus .github/workflows/indexnow.yml pings Bing/Yandex
+  with every sitemap URL after each deploy to main
+- 404 and the old redirect stubs are noindex; the private dashboard is noindex and unlinked
+- Images: thumbs capped at 1280px, photos at 1600px, JPEG q80 progressive
 JSON-LD (ProfessionalService, VideoObject, FAQPage, Reviews, ImageGallery), unique metas,
 OG/Twitter cards, sitemap.xml, robots.txt, llms.txt.

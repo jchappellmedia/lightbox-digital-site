@@ -117,7 +117,7 @@ PHOTOS = [
     ("school-portrait.jpg", "School portrait of a smiling student"),
     ("ocean-landscape.jpg", "Ocean landscape"),
     ("studio-portrait-2.jpg", "Corporate headshot on studio backdrop"),
-    ("posed-portrait.png", "Editorial portrait"),
+    ("posed-portrait.jpg", "Editorial portrait"),
     ("studio-portrait-3.jpg", "Environmental portrait, cinematic color"),
     ("relaxed-portrait.jpg", "Natural-light lifestyle portrait"),
     ("gorilla-wildlife.jpg", "Wildlife photography — gorilla"),
@@ -255,7 +255,7 @@ def footer():
   <button class="lb-close" id="lbClose" aria-label="Close">✕</button>
   <div class="lb-frame" id="lbFrame"></div>
 </div>
-<script src="js/main.js?v=14" defer></script>'''
+<script src="js/main.js?v=15" defer></script>'''
 
 def work_card(v, big=False):
     dur = f"{v['dur']//60}:{v['dur']%60:02d}" if v['dur'] else ""
@@ -268,7 +268,7 @@ def work_card(v, big=False):
     fno = f'<span class="fno" aria-hidden="true">LBX 500T · {v["num"]}</span>' if v.get("num") else ""
     return f'''<figure class="piece{' big' if big else ''} reveal" data-cat="{v['cat']}">
   <button class="pthumb" {data} aria-label="Play: {esc(v['title'])}">
-    <img src="{thumb}" alt="Still from {esc(v['title'])}" width="640" height="360" loading="lazy">
+    <img src="{thumb}" alt="Still from {esc(v['title'])}" width="640" height="360" loading="lazy" decoding="async">
     {fno}<span class="pplay" aria-hidden="true"></span>
   </button>
   <figcaption><strong>{esc(v['title'])}</strong> <em>{esc(v['line'])}</em>{f'<span class="pdur">{dur}</span>' if dur else ''}</figcaption>
@@ -290,7 +290,7 @@ def video_ld(vs):
 ORG = {
     "@type":"ProfessionalService","@id":BASE+"/#org","name":"Lightbox Digital",
     "description":"Video production and photography in Phoenix, Arizona. Commercials, brand stories, event films, drone footage, AI-generated video, and photography.",
-    "url":BASE+"/","logo":BASE+"/assets/img/mark-ink.png","image":BASE+"/assets/img/hero-poster.jpg",
+    "url":BASE+"/","logo":BASE+"/assets/img/icon-512.png","image":BASE+"/assets/img/hero-poster.jpg",
     "email":EMAIL,
     "founder":{"@type":"Person","name":"Josh Chappell","jobTitle":"Founder","sameAs":SOCIALS["Instagram"]},
     "address":{"@type":"PostalAddress","addressLocality":"Phoenix","addressRegion":"AZ","addressCountry":"US"},
@@ -303,8 +303,14 @@ ORG = {
     "aggregateRating":{"@type":"AggregateRating","ratingValue":"5.0","reviewCount":str(len(REVIEWS)),"bestRating":"5"},
 }
 
-def page(fname, title, desc, body, ld_extra=None, og_img="assets/img/hero-poster.jpg", index=True):
-    ld = [dict(ORG),
+def page(fname, title, desc, body, ld_extra=None, og_img="assets/img/hero-poster.jpg", index=True,
+         base=False, head=""):
+    org = dict(ORG)
+    # nodes describing the business itself extend ORG rather than redeclaring it
+    for n in [n for n in (ld_extra or []) if n.get("@id") == ORG["@id"]]:
+        org.update({k: v for k, v in n.items() if k not in ("@type", "@id")})
+    ld_extra = [n for n in (ld_extra or []) if n.get("@id") != ORG["@id"]]
+    ld = [org,
           {"@type":"WebSite","name":"Lightbox Digital","url":BASE+"/","publisher":{"@id":BASE+"/#org"}}]
     crumbs = [{"@type":"ListItem","position":1,"name":"Home","item":BASE+"/"}]
     if fname != "index.html":
@@ -317,6 +323,7 @@ def page(fname, title, desc, body, ld_extra=None, og_img="assets/img/hero-poster
 <html lang="en">
 <head>
 <meta charset="utf-8">
+{'<base href="/">' if base else ''}
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#0e0c09">
 <title>{esc(title)}</title>
@@ -337,8 +344,10 @@ def page(fname, title, desc, body, ld_extra=None, og_img="assets/img/hero-poster
 <meta name="twitter:description" content="{esc(desc)}">
 <meta name="twitter:image" content="{BASE}/{og_img}">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+{head}
 {FONT}
-<link rel="stylesheet" href="css/style.css?v=14">
+<link rel="stylesheet" href="css/style.css?v=15">
 <script type="application/ld+json">{ldjson}</script>
 {analytics()}
 </head>
@@ -425,8 +434,9 @@ home_body = f'''
 ld_home = [{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":a}} for q,a in FAQ]}] + video_ld([REEL]+featured)
 W["index.html"] = page("index.html",
     "Phoenix Video Production & Photography | Lightbox Digital",
-    "Lightbox Digital makes commercials, brand stories, event films, drone footage, AI video, and photography in Phoenix, AZ. Watch the work — it speaks for itself. 5.0★ on Google.",
-    home_body, ld_home)
+    f"Phoenix video production and photography: commercials, brand films, drone, AI video and headshots. 5.0★ across {len(REVIEWS)} Google reviews.",
+    home_body, ld_home,
+    head='<link rel="preload" as="image" href="assets/img/hero-poster.jpg" fetchpriority="high">')
 
 # ------------------------------------------------------------------ work ----
 W["work.html"] = page("work.html",
@@ -449,7 +459,7 @@ W["work.html"] = page("work.html",
 # ------------------------------------------------------------------- ai ----
 ai_vids = [v for v in WORK if v["cat"]=="ai"]
 W["ai-videos.html"] = page("ai-videos.html",
-    "AI Video Production in Phoenix — AI-Generated Commercials | Lightbox Digital",
+    "AI Video Production in Phoenix | Lightbox Digital",
     "AI-generated commercials from Lightbox Digital in Phoenix, AZ. Full ads made with AI — a fraction of the cost of a shoot. Watch Dave's Garage.",
     f'''
 <section class="intro small">
@@ -476,11 +486,11 @@ def photo_item(f, alt):
     dims = img_size(ROOT / "assets/img" / f)
     wh = f' width="{dims[0]}" height="{dims[1]}"' if dims else ""
     return (f'<figure class="pitem reveal"><button class="pimg" data-img="assets/img/{f}" aria-label="View: {esc(alt)}">'
-            f'<img src="assets/img/{f}" alt="{esc(alt)}"{wh} loading="lazy"></button></figure>')
+            f'<img src="assets/img/{f}" alt="{esc(alt)}"{wh} loading="lazy" decoding="async"></button></figure>')
 
 photo_items = "".join(photo_item(f, alt) for f, alt in PHOTOS)
 W["photography.html"] = page("photography.html",
-    "Phoenix Photographer — Portraits, Events & Brand Photography | Lightbox Digital",
+    "Phoenix Photographer — Headshots & Events | Lightbox Digital",
     "Brand photography, headshots, portraits, school and event photos in Phoenix, AZ — with the same eye as the films.",
     f'''
 <section class="intro small">
@@ -533,10 +543,7 @@ W["about.html"] = page("about.html",
 
 # --------------------------------------------------------------- reviews ----
 rev_items = "".join(f'''<blockquote class="quote reveal"><p>“{esc(t)}”</p><cite>— {esc(n)} · ★★★★★ Google</cite></blockquote>''' for n,t in REVIEWS)
-ld_rev = [{"@type":"LocalBusiness","@id":BASE+"/#org","name":"Lightbox Digital",
-           "image":BASE+"/assets/img/hero-poster.jpg",
-           "address":{"@type":"PostalAddress","addressLocality":"Phoenix","addressRegion":"AZ","addressCountry":"US"},
-           "aggregateRating":{"@type":"AggregateRating","ratingValue":"5.0","reviewCount":str(len(REVIEWS)),"bestRating":"5"},
+ld_rev = [{"@id":BASE+"/#org",
            "review":[{"@type":"Review","reviewRating":{"@type":"Rating","ratingValue":"5","bestRating":"5"},
                       "author":{"@type":"Person","name":n},"reviewBody":t} for n,t in REVIEWS]}]
 W["reviews.html"] = page("reviews.html",
@@ -602,7 +609,8 @@ W["404.html"] = page("404.html", "Page Not Found | Lightbox Digital",
     "That page didn't make the final cut. Head back to the work.",
     '''<section class="intro"><p class="eyebrow">404</p>
 <h1>That scene got <em class="squiggle">cut</em>.</h1>
-<p class="note"><a class="btn" href="index.html">Back to the homepage</a></p></section>''')
+<p class="note"><a class="btn" href="index.html">Back to the homepage</a> <span class="or">or</span> <a href="work.html">see the work</a></p></section>''',
+    index=False, base=True)
 
 # ------------------------------------------------------- redirect stubs ----
 REDIRECTS = {"portfolio.html":"work.html", "education.html":"work.html",
@@ -611,22 +619,54 @@ REDIRECTS = {"portfolio.html":"work.html", "education.html":"work.html",
 for old, new in REDIRECTS.items():
     W[old] = f'''<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta http-equiv="refresh" content="0;url={new}"><link rel="canonical" href="{BASE}/{new}">
+<meta name="robots" content="noindex, follow">
 <title>Moved — Lightbox Digital</title></head>
 <body><p>This page moved to <a href="{new}">{new}</a>.</p></body></html>'''
 
 # ------------------------------------------------------------ write files ---
+TODAY = datetime.date.today().isoformat()
+_old_sm = (ROOT / "sitemap.xml").read_text() if (ROOT / "sitemap.xml").exists() else ""
+_prev = dict(re.findall(r"<loc>(.*?)</loc>\s*<lastmod>(.*?)</lastmod>", _old_sm))
+LASTMOD = {}
 for f, src in W.items():
+    loc = BASE + "/" if f == "index.html" else f"{BASE}/{f}"
+    old = (ROOT / f).read_text() if (ROOT / f).exists() else None
+    LASTMOD[f] = _prev.get(loc, TODAY) if old == src else TODAY
     (ROOT / f).write_text(src)
     print("wrote", f, len(src)//1024, "KB")
 
 pages = [p for p in W if p not in REDIRECTS and p != "404.html"]
-sm = ['<?xml version="1.0" encoding="UTF-8"?>','<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+def _x(t): return html.escape(t, quote=False)
+SM_IMAGES = {"photography.html": [(f, alt) for f, alt in PHOTOS],
+             "about.html": [("josh-chappell.jpg", "Josh Chappell, founder of Lightbox Digital"),
+                            ("bts-interview.jpg", "Behind the scenes on a Lightbox Digital interview shoot")]}
+SM_VIDEOS = {"work.html": [REEL] + WORK}     # one canonical watch page per film
 pri = {"index.html":"1.0","work.html":"0.9","ai-videos.html":"0.9","contact.html":"0.9"}
+sm = ['<?xml version="1.0" encoding="UTF-8"?>',
+      '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"'
+      ' xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"'
+      ' xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">']
 for p in pages:
     loc = BASE+"/" if p=="index.html" else f"{BASE}/{p}"
-    sm.append(f"<url><loc>{loc}</loc><lastmod>2026-07-10</lastmod><priority>{pri.get(p,'0.8')}</priority></url>")
+    e = [f"<url><loc>{loc}</loc><lastmod>{LASTMOD[p]}</lastmod><priority>{pri.get(p,'0.8')}</priority>"]
+    for f, alt in SM_IMAGES.get(p, []):
+        e.append(f"<image:image><image:loc>{BASE}/assets/img/{f}</image:loc></image:image>")
+    for v in SM_VIDEOS.get(p, []):
+        src = (f"<video:content_loc>{BASE}/{v['file']}</video:content_loc>" if v["file"] else
+               f"<video:player_loc>https://player.vimeo.com/video/{v['id']}{'?h='+v['h'] if v['h'] else ''}</video:player_loc>")
+        e.append("<video:video>"
+                 f"<video:thumbnail_loc>{BASE}/assets/thumbs/{v['id']}.jpg</video:thumbnail_loc>"
+                 f"<video:title>{_x(v['title'])}</video:title>"
+                 f"<video:description>{_x(v['line'])}</video:description>{src}"
+                 + (f"<video:duration>{v['dur']}</video:duration>" if v["dur"] else "")
+                 + f"<video:publication_date>{v['date']}</video:publication_date></video:video>")
+    e.append("</url>")
+    sm.append("".join(e))
 sm.append("</urlset>")
 (ROOT/"sitemap.xml").write_text("\n".join(sm))
+
+INDEXNOW_KEY = "1ee434a395390c5e7e56ee97d1163185"
+(ROOT / f"{INDEXNOW_KEY}.txt").write_text(INDEXNOW_KEY)
 
 AI_BOTS = ["GPTBot","OAI-SearchBot","ChatGPT-User","ClaudeBot","Claude-SearchBot","Claude-User",
            "PerplexityBot","Perplexity-User","Google-Extended","Applebot-Extended","CCBot",

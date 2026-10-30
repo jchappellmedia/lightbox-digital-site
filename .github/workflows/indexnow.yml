@@ -1,0 +1,24 @@
+name: IndexNow ping
+# Tells Bing / Yandex / Seznam (Bing also feeds ChatGPT and Copilot search)
+# which URLs changed, right after each deploy, instead of waiting for a recrawl.
+on:
+  push:
+    branches: [main]
+    paths: ['*.html', 'sitemap.xml']
+  workflow_dispatch:
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Wait for GitHub Pages to publish
+        run: sleep 120
+      - name: Submit sitemap URLs
+        run: |
+          KEY=$(ls *.txt | grep -E '^[0-9a-f]{32}\.txt$' | head -1 | sed 's/\.txt$//')
+          URLS=$(grep -o '<loc>[^<]*</loc>' sitemap.xml | sed 's/<[^>]*>//g' | jq -R . | jq -s -c .)
+          BODY=$(jq -n --arg k "$KEY" --argjson u "$URLS" \
+            '{host:"lightbox-digital.com", key:$k, keyLocation:("https://lightbox-digital.com/"+$k+".txt"), urlList:$u}')
+          echo "$BODY"
+          curl -sS -o /dev/null -w "IndexNow responded %{http_code}\n" -X POST \
+            -H 'Content-Type: application/json; charset=utf-8' -d "$BODY" https://api.indexnow.org/indexnow
